@@ -301,26 +301,42 @@ tr:hover td{background:#fafafa}
 </div>
 </div></div>
 
-<div class="modal-backdrop" id="modal-sale"><div class="modal" style="max-width:720px">
-<div class="modal-head"><b>Penjualan Sparepart - Stok Berkurang Otomatis</b><button class="btn btn-ghost btn-sm" onclick="closeModal('sale')">✕</button></div>
+<div class="modal-backdrop" id="modal-sale"><div class="modal" style="max-width:760px">
+<div class="modal-head"><b>Penjualan Sparepart - Cash / Tempo</b><button class="btn btn-ghost btn-sm" onclick="closeModal('sale')">✕</button></div>
 <div class="modal-body">
 <form id="formSale" onsubmit="saveSale(event)">
 <div class="form-grid">
 <div><label class="label">Pelanggan</label><select id="sale_customer"></select></div>
-<div><label class="label">Tanggal</label><input class="input" id="sale_date" type="date" required></div>
-<div style="grid-column:1/-1"><label class="label">Pilih Sparepart</label>
+<div><label class="label">Tanggal Jual</label><input class="input" id="sale_date" type="date" required></div>
+<div style="grid-column:1/-1"><label class="label">Pilih Sparepart (Stok Auto Kurang)</label>
 <div class="row"><select id="sale_partSelect"></select><input class="input" id="sale_qty" type="number" min="1" value="1" style="max-width:90px"><button type="button" class="btn btn-black btn-sm" onclick="addPartToSale()">+ Keranjang</button></div>
 <div id="sale_partsInfo" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
 <div id="sale_cart" style="margin-top:12px"></div>
 </div>
-<div><label class="label">Total Bayar (otomatis)</label><input class="input" id="sale_total" type="number" readonly></div>
+<div style="grid-column:1/-1; background:#fffbeb; border:1px solid #facc15; border-radius:12px; padding:14px">
+<div style="font-size:11px; font-weight:800; letter-spacing:.08em; color:#92400e; margin-bottom:10px">💳 METODE PEMBAYARAN</div>
+<div class="form-grid" style="gap:12px">
+<div><label class="label">Metode Bayar *</label>
+<select id="sale_paymentMethod" onchange="toggleTempoFields()" required>
+<option value="Tunai">Tunai / Cash - Lunas</option>
+<option value="Transfer">Transfer - Lunas</option>
+<option value="Tempo">Tempo / Kredit / Bon</option>
+</select>
+</div>
+<div id="sale_dueDateWrap" style="display:none"><label class="label">Jatuh Tempo (Tempo)</label><input class="input" id="sale_dueDate" type="date"></div>
+<div><label class="label">DP / Bayar Awal (Rp)</label><input class="input" id="sale_dp" type="number" min="0" value="0" oninput="updateSalePaymentCalc()"></div>
+<div><label class="label">Sisa Piutang (otomatis)</label><input class="input" id="sale_sisa" type="number" readonly style="background:#fef3c7; font-weight:800"></div>
+</div>
+<div id="sale_tempoInfo" style="display:none; margin-top:10px; padding:8px 10px; background:#fef2f2; border:1px solid #fecaca; border-radius:8px; font-size:12px; color:#991b1b">⚠️ Mode Tempo: Stok tetap berkurang, tapi pendapatan real hanya DP. Sisa dicatat sebagai PIUTANG. Tagih sesuai tanggal jatuh tempo.</div>
+</div>
+<div><label class="label">Total Bayar (otomatis)</label><input class="input" id="sale_total" type="number" readonly style="font-weight:900"></div>
 <div><label class="label">Laba Penjualan</label><input class="input" id="sale_profit" type="number" readonly></div>
-<div style="grid-column:1/-1"><label class="label">Catatan</label><input class="input" id="sale_notes" placeholder="Tunai, transfer, dll"></div>
+<div style="grid-column:1/-1"><label class="label">Catatan</label><input class="input" id="sale_notes" placeholder="Tunai, transfer, tempo 7 hari, dll"></div>
 </div>
 <input type="hidden" id="sale_id">
 <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
 <button type="button" class="btn btn-ghost" onclick="closeModal('sale')">Batal</button>
-<button type="submit" class="btn btn-green">Simpan Penjualan & Kurangi Stok</button>
+<button type="submit" class="btn btn-green" id="sale_submitBtn">Simpan Penjualan & Kurangi Stok</button>
 </div>
 </form>
 </div>
@@ -537,9 +553,28 @@ const items=sale.items.map(i=>{
 const part=db.parts.find(p=>p.id===i.partId)?.name||i.partId;
 return `- ${part} x${i.qty} = Rp ${Number(i.total).toLocaleString("id-ID")}`;
 }).join("\n");
-const msg=`Halo ${cust.name} 👋\nTerima kasih sudah belanja di ${db.config.shopName}\nInvoice: ${sale.invoiceNo}\nTanggal: ${sale.date}\n\nDetail:\n${items}\n\nTotal: Rp ${Number(sale.total).toLocaleString("id-ID")}\n\n${sale.notes||""}\nTerima kasih 🙏`;
+const paymentInfo=sale.paymentMethod==="Tempo"?`Metode: ${sale.paymentMethod} (Tempo)\nJatuh Tempo: ${sale.dueDate||"-"}\nDP: Rp ${Number(sale.dp||0).toLocaleString("id-ID")}\nSisa Piutang: Rp ${Number(sale.sisa||0).toLocaleString("id-ID")}`:`Metode: ${sale.paymentMethod||"Tunai"} (Lunas)`;
+const msg=`Halo ${cust.name} 👋\nTerima kasih sudah belanja di ${db.config.shopName}\nInvoice: ${sale.invoiceNo}\nTanggal: ${sale.date}\n${paymentInfo}\n\nDetail:\n${items}\n\nTotal: Rp ${Number(sale.total).toLocaleString("id-ID")}\n${Number(sale.sisa)>0?`Sisa yang harus dibayar: Rp ${Number(sale.sisa).toLocaleString("id-ID")}\n`:''}\n${sale.notes||""}\nTerima kasih 🙏`;
 window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`,"_blank");
 }
+function payTempo(saleId){
+const sale=db.sales.find(s=>s.id===saleId);
+if(!sale) return;
+if(sale.paymentMethod!=="Tempo"){ alert("Hanya penjualan tempo yang bisa dibayar sisanya"); return; }
+const sisa=Number(sale.sisa||0);
+if(sisa<=0){ alert("Sudah lunas!"); return; }
+const bayarStr=prompt(`Pelunasan Tempo\nInvoice: ${sale.invoiceNo}\nSisa piutang: Rp ${sisa.toLocaleString("id-ID")}\n\nMasukkan jumlah bayar (maks Rp ${sisa.toLocaleString("id-ID")}):`, sisa);
+if(bayarStr===null) return;
+let bayar=Number(bayarStr);
+if(isNaN(bayar)||bayar<=0){ alert("Jumlah tidak valid"); return; }
+if(bayar>sisa) bayar=sisa;
+sale.dp=Number(sale.dp||0)+bayar;
+sale.sisa=Math.max(0, Number(sale.total)-sale.dp);
+if(sale.sisa===0){ sale.paymentStatus="Lunas"; sale.paymentMethod="Tunai"; }
+saveDB();
+alert(`Pembayaran Rp ${bayar.toLocaleString("id-ID")} berhasil! Sisa sekarang Rp ${sale.sisa.toLocaleString("id-ID")}`);
+}
+
 
 // DASHBOARD
 function renderDashboard(){
@@ -641,35 +676,41 @@ function renderPenjualan(){
 const filtered=db.sales.filter(s=>{
 const q=filters.salesSearch.toLowerCase();
 const cust=db.customers.find(c=>c.id===s.customerId);
-return !q|| s.invoiceNo.toLowerCase().includes(q)|| (cust?.name.toLowerCase().includes(q));
+return !q|| s.invoiceNo.toLowerCase().includes(q)|| (cust?.name.toLowerCase().includes(q)) || (s.paymentMethod||"").toLowerCase().includes(q);
 }).sort((a,b)=>b.date.localeCompare(a.date));
 const totalPenjualan=db.sales.reduce((a,b)=>a+Number(b.total),0);
 const totalProfit=db.sales.reduce((a,b)=>a+Number(b.profit||0),0);
+const totalPiutang=db.sales.filter(s=>s.paymentMethod==="Tempo").reduce((a,b)=>a+Number(b.sisa||0),0);
+const totalDPTempo=db.sales.filter(s=>s.paymentMethod==="Tempo").reduce((a,b)=>a+Number(b.dp||0),0);
+const totalTunai=db.sales.filter(s=>s.paymentMethod!=="Tempo").reduce((a,b)=>a+Number(b.total||0),0);
 return `
-<div class="grid grid-3">
-<div class="card"><h3>Total Penjualan</h3><div class="stat">Rp ${totalPenjualan.toLocaleString("id-ID")}</div><div style="font-size:12px;color:var(--muted);margin-top:4px">${db.sales.length} transaksi</div></div>
-<div class="card"><h3>Laba Penjualan</h3><div class="stat" style="color:var(--success)">Rp ${totalProfit.toLocaleString("id-ID")}</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Dari selisih jual-beli</div></div>
+<div class="grid grid-4">
+<div class="card"><h3>Total Penjualan</h3><div class="stat">Rp ${totalPenjualan.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">${db.sales.length} transaksi • Tunai Rp ${totalTunai.toLocaleString("id-ID")}</div></div>
+<div class="card"><h3>Laba Penjualan</h3><div class="stat" style="color:var(--success)">Rp ${totalProfit.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Dari selisih jual-beli</div></div>
+<div class="card" style="border-left:4px solid #ef4444"><h3>Piutang Tempo</h3><div class="stat" style="color:#ef4444">Rp ${totalPiutang.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">DP Tempo masuk: Rp ${totalDPTempo.toLocaleString("id-ID")}</div></div>
 <div class="card" style="background:#070707;color:#fff"><h3 style="color:#a1a1aa">Stok Menipis</h3><div class="stat" style="color:var(--yellow)">${db.parts.filter(p=>p.stock<=3).length} item</div><button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="openModal('sale')">+ Jual Sparepart</button></div>
 </div>
 <div class="card" style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-<div class="search" style="flex:1;min-width:200px"><span>🔍</span><input class="input" placeholder="Cari invoice penjualan, pelanggan..." value="${filters.salesSearch}" oninput="filters.salesSearch=this.value;render()"></div>
-<button class="btn btn-primary btn-sm" onclick="openModal('sale')">+ Jual Sparepart (Stok Auto Kurang)</button>
+<div class="search" style="flex:1;min-width:200px"><span>🔍</span><input class="input" placeholder="Cari invoice, pelanggan, Tunai/Tempo..." value="${filters.salesSearch}" oninput="filters.salesSearch=this.value;render()"></div>
+<button class="btn btn-primary btn-sm" onclick="openModal('sale')">+ Jual Sparepart (Cash/Tempo + Tgl)</button>
 </div>
 <div class="table-wrap" style="margin-top:12px">
-<table><thead><tr><th>Invoice / Tgl</th><th>Pelanggan</th><th>Item</th><th>Total</th><th>Laba</th><th>Aksi</th></tr></thead><tbody>
+<table><thead><tr><th>Invoice / Tgl</th><th>Pelanggan</th><th>Item</th><th>Metode & Tempo</th><th>Total / DP / Sisa</th><th>Laba</th><th>Aksi</th></tr></thead><tbody>
 ${filtered.length?filtered.map(s=>{
 const cust=db.customers.find(c=>c.id===s.customerId);
 const items=s.items.map(i=>{
 const part=db.parts.find(p=>p.id===i.partId)?.name||i.partId;
 return `${part} x${i.qty}`;
 }).join(", ");
-return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.date}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td style="max-width:260px"><div style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${items}</div></td><td><b>Rp ${Number(s.total).toLocaleString("id-ID")}</b></td><td style="color:var(--success);font-weight:700">Rp ${Number(s.profit||0).toLocaleString("id-ID")}</td><td><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="openSaleDetail('${s.id}')">Detail</button><button class="btn btn-green btn-sm" onclick="openWASale('${s.id}')">WA</button><button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteSale('${s.id}')">Hapus</button></div></td></tr>`
-}).join(""):`<tr><td colspan=6><div class=empty>Belum ada penjualan. Stok akan otomatis berkurang saat terjual.</div></td></tr>`}
+const isTempo=s.paymentMethod==="Tempo";
+const tempoBadge=isTempo?`<span class="status s-Menunggu">Tempo</span>`:`<span class="status s-Selesai">${s.paymentMethod||"Tunai"}</span>`;
+const dueInfo=isTempo?`<div style="font-size:11px;color:#ef4444">J.Tempo: ${s.dueDate||"-"}<br>DP Rp ${Number(s.dp||0).toLocaleString("id-ID")} | Sisa Rp ${Number(s.sisa||0).toLocaleString("id-ID")}</div>`:`<div style="font-size:11px;color:#16a34a">Lunas • ${s.paymentMethod||"Tunai"}</div>`;
+return `<tr style="${isTempo&&Number(s.sisa)>0?'background:#fff7ed':''}"><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.date}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td style="max-width:200px"><div style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${items}</div></td><td>${tempoBadge}<div style="margin-top:4px">${dueInfo}</div></td><td><b>Rp ${Number(s.total).toLocaleString("id-ID")}</b><div style="font-size:11px">DP: Rp ${Number(s.dp||0).toLocaleString("id-ID")}<br>Sisa: <b style="color:${Number(s.sisa)>0?'#ef4444':'#16a34a'}">Rp ${Number(s.sisa||0).toLocaleString("id-ID")}</b></div></td><td style="color:var(--success);font-weight:700">Rp ${Number(s.profit||0).toLocaleString("id-ID")}</td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" onclick="openSaleDetail('${s.id}')">Detail</button><button class="btn btn-green btn-sm" onclick="openWASale('${s.id}')">WA</button>${isTempo&&Number(s.sisa)>0?`<button class="btn btn-black btn-sm" onclick="payTempo('${s.id}')">Bayar Sisa</button>`:''}<button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteSale('${s.id}')">Hapus</button></div></td></tr>`
+}).join(""):`<tr><td colspan=7><div class=empty>Belum ada penjualan. Stok akan otomatis berkurang saat terjual. Pilih Tunai atau Tempo + Tanggal Jatuh Tempo.</div></td></tr>`}
 </tbody></table>
 </div>`;
 }
 
-// PELANGGAN
 function renderPelanggan(){
 return `
 <div class="card" style="display:flex;justify-content:space-between;align-items:center"><h3>Daftar Pelanggan • ${db.customers.length}</h3><button class="btn btn-primary btn-sm" onclick="openModal('pelanggan')">+ Pelanggan</button></div>
@@ -741,7 +782,10 @@ return `<tr><td><b>${p.name}</b></td><td>${p.stock} ${Number(p.stock)<=3?'<span 
 // KEUANGAN
 function renderKeuangan(){
 const totalMasukRealServis=db.services.filter(s=>s.status==="Diambil").reduce((a,b)=>a+(Number(b.finalCost||b.estCost||0)),0);
-const totalMasukSales=db.sales.reduce((a,b)=>a+Number(b.total||0),0);
+const totalMasukSalesTunai=db.sales.filter(s=>s.paymentMethod!=="Tempo").reduce((a,b)=>a+Number(b.total||0),0);
+const totalMasukSalesTempoDP=db.sales.filter(s=>s.paymentMethod==="Tempo").reduce((a,b)=>a+Number(b.dp||0),0);
+const totalMasukSales=totalMasukSalesTunai+totalMasukSalesTempoDP;
+const totalPiutang=db.sales.filter(s=>s.paymentMethod==="Tempo").reduce((a,b)=>a+Number(b.sisa||0),0);
 const totalMasukReal=totalMasukRealServis+totalMasukSales;
 const totalMasukEstimasi=db.services.filter(s=>s.status!=="Diambil"&&s.status!=="Batal").reduce((a,b)=>a+(Number(b.estCost||b.finalCost||0)),0);
 const totalDPReal=db.services.filter(s=>s.status==="Diambil").reduce((a,b)=>a+Number(b.dp||0),0);
@@ -751,7 +795,7 @@ const laba=totalMasukReal-totalExpense;
 const profitSales=db.sales.reduce((a,b)=>a+Number(b.profit||0),0);
 return `
 <div class="grid grid-4">
-<div class="card" style="border-left:4px solid #16a34a"><h3>Pendapatan Real (Diambil+Jual)</h3><div class="stat" style="color:#16a34a">Rp ${totalMasukReal.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Servis: Rp ${totalMasukRealServis.toLocaleString("id-ID")} + Jual: Rp ${totalMasukSales.toLocaleString("id-ID")}</div></div>
+<div class="card" style="border-left:4px solid #16a34a"><h3>Pendapatan Real (Diambil+Jual)</h3><div class="stat" style="color:#16a34a">Rp ${totalMasukReal.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Servis: Rp ${totalMasukRealServis.toLocaleString("id-ID")} + Jual Tunai: Rp ${totalMasukSalesTunai.toLocaleString("id-ID")} + DP Tempo: Rp ${totalMasukSalesTempoDP.toLocaleString("id-ID")}<br>Piutang Tempo: <b style="color:#ef4444">Rp ${totalPiutang.toLocaleString("id-ID")}</b></div></div>
 <div class="card"><h3>Estimasi Tertahan</h3><div class="stat" style="color:#a1a1aa">Rp ${totalMasukEstimasi.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Belum diambil = belum pendapatan</div></div>
 <div class="card"><h3>Total Pengeluaran</h3><div class="stat" style="color:var(--danger)">Rp ${totalExpense.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Gaji: Rp ${totalGaji.toLocaleString("id-ID")} • Laba jual: Rp ${profitSales.toLocaleString("id-ID")}</div></div>
 <div class="card" style="background:#070707;color:#fff"><h3 style="color:#a1a1aa">Laba Kotor Real</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:11px;color:#52525b;margin-top:4px">DP Real: Rp ${totalDPReal.toLocaleString("id-ID")}</div></div>
@@ -822,7 +866,7 @@ return `<tr><td>Jual</td><td>${s.invoiceNo}</td><td>${s.date}</td><td>${cust}</t
 // MODALS
 function openModal(type){
 if(type==="servis"){populateServisSelects();tempServiceParts=[];renderServiceParts();document.getElementById("servisModalTitle").innerText=document.getElementById("s_id").value?"Edit Servis":"Tambah Servis Baru"}
-if(type==="sale"){populateSaleSelects();tempSaleCart=[];renderSaleCart();document.getElementById("sale_id").value="";document.getElementById("sale_date").valueAsDate=new Date();}
+if(type==="sale"){populateSaleSelects();tempSaleCart=[];renderSaleCart();document.getElementById("sale_id").value="";document.getElementById("sale_date").valueAsDate=new Date();document.getElementById("sale_paymentMethod").value="Tunai";document.getElementById("sale_dp").value=0;document.getElementById("sale_dueDate").value="";toggleTempoFields();}
 document.getElementById(`modal-${type}`).classList.add("show");
 }
 function closeModal(type){
@@ -857,6 +901,7 @@ const partSel=document.getElementById("sale_partSelect");
 partSel.innerHTML=`<option value="">- Pilih Part -</option>`+db.parts.map(p=>`<option value="${p.id}">${p.name} (Stok: ${p.stock}) - Jual Rp ${Number(p.sellPrice).toLocaleString("id-ID")} | Beli Rp ${Number(p.buyPrice).toLocaleString("id-ID")}</option>`).join("");
 updateSalePartInfo();
 document.getElementById("sale_partSelect").addEventListener("change",updateSalePartInfo);
+toggleTempoFields();
 }
 function updateSalePartInfo(){
 const partId=document.getElementById("sale_partSelect")?.value;
@@ -918,6 +963,7 @@ if(!tempSaleCart.length){
 container.innerHTML=`<div style="font-size:12px;color:var(--muted);padding:12px;border:1px dashed var(--border);border-radius:10px;text-align:center">Keranjang kosong. Pilih part dan klik + Keranjang. Stok akan otomatis berkurang saat disimpan.</div>`;
 if(totalInput) totalInput.value=0;
 if(profitInput) profitInput.value=0;
+updateSalePaymentCalc();
 return
 }
 container.innerHTML=tempSaleCart.map((item,idx)=>`
@@ -927,6 +973,7 @@ const total=tempSaleCart.reduce((a,b)=>a+b.total,0);
 const profit=tempSaleCart.reduce((a,b)=>a+b.profit,0);
 if(totalInput) totalInput.value=total;
 if(profitInput) profitInput.value=profit;
+updateSalePaymentCalc();
 }
 
 // SAVE LOGIC
@@ -1174,26 +1221,55 @@ setTimeout(()=>{addPartToSale();},200);
 }
 
 // SALE
+function toggleTempoFields(){
+const method=document.getElementById("sale_paymentMethod")?.value||"Tunai";
+const dueWrap=document.getElementById("sale_dueDateWrap");
+const tempoInfo=document.getElementById("sale_tempoInfo");
+const dpInput=document.getElementById("sale_dp");
+const submitBtn=document.getElementById("sale_submitBtn");
+if(method==="Tempo"){
+if(dueWrap) dueWrap.style.display="block";
+if(tempoInfo) tempoInfo.style.display="block";
+if(dpInput){ dpInput.placeholder="DP awal, bisa 0"; }
+if(submitBtn){ submitBtn.textContent="Simpan Tempo & Kurangi Stok"; }
+if(!document.getElementById("sale_dueDate").value){
+const d=new Date(); d.setDate(d.getDate()+7);
+document.getElementById("sale_dueDate").valueAsDate=d;
+}
+}else{
+if(dueWrap) dueWrap.style.display="none";
+if(tempoInfo) tempoInfo.style.display="none";
+if(dpInput && method!=="Tempo"){ dpInput.value=document.getElementById("sale_total")?.value||0; }
+if(submitBtn){ submitBtn.textContent="Simpan Penjualan & Kurangi Stok"; }
+}
+updateSalePaymentCalc();
+}
+function updateSalePaymentCalc(){
+const total=Number(document.getElementById("sale_total")?.value||0);
+let dp=Number(document.getElementById("sale_dp")?.value||0);
+if(dp>total) dp=total;
+const sisa=Math.max(0, total-dp);
+const sisaInput=document.getElementById("sale_sisa");
+if(sisaInput) sisaInput.value=sisa;
+}
+
 function saveSale(e){
 e.preventDefault();
 const id=document.getElementById("sale_id").value||`SALE-${Date.now()}`;
 const isNew=!document.getElementById("sale_id").value;
 const oldSale=db.sales.find(s=>s.id===id);
 if(!isNew && oldSale){
-// kembalikan stok lama
 oldSale.items.forEach(i=>{
 const part=db.parts.find(p=>p.id===i.partId);
 if(part) part.stock+=Number(i.qty);
 });
 }
 if(!tempSaleCart.length){alert("Keranjang kosong! Tambah part dulu.");return}
-// cek stok lagi
 for(const item of tempSaleCart){
 const part=db.parts.find(p=>p.id===item.partId);
 if(!part || Number(part.stock)<Number(item.qty)){
 alert(`Stok ${part?.name||item.partId} tidak cukup! Sisa ${part?.stock||0}`);
 if(!isNew && oldSale){
-// kembalikan pengurangan yang sudah dilakukan? sebenarnya belum dikurangi, karena kita baru cek, tapi stok lama sudah dikembalikan di atas, jadi harus kurangi lagi oldSale? biar aman kembalikan ke semula:
 oldSale.items.forEach(ii=>{
 const pp=db.parts.find(pp=>pp.id===ii.partId);
 if(pp) pp.stock-=Number(ii.qty);
@@ -1204,6 +1280,13 @@ return;
 }
 const total=tempSaleCart.reduce((a,b)=>a+b.total,0);
 const profit=tempSaleCart.reduce((a,b)=>a+b.profit,0);
+const paymentMethod=document.getElementById("sale_paymentMethod")?.value||"Tunai";
+const dueDate=document.getElementById("sale_dueDate")?.value||"";
+let dp=Number(document.getElementById("sale_dp")?.value||0);
+if(paymentMethod!=="Tempo"){ dp=total; }
+if(dp>total) dp=total;
+const sisa=Math.max(0,total-dp);
+const paymentStatus=paymentMethod==="Tempo"?(sisa===0?"Lunas":"Tempo / Belum Lunas"):"Lunas";
 const data={
 id,
 invoiceNo:isNew?`${db.config.salesPrefix||"JUAL"}-${db.salesSeq++}`:oldSale.invoiceNo,
@@ -1212,9 +1295,13 @@ customerId:document.getElementById("sale_customer").value,
 items:[...tempSaleCart],
 total:total,
 profit:profit,
+paymentMethod:paymentMethod,
+dueDate:dueDate,
+dp:dp,
+sisa:sisa,
+paymentStatus:paymentStatus,
 notes:document.getElementById("sale_notes").value
 };
-// kurangi stok
 data.items.forEach(i=>{
 const part=db.parts.find(p=>p.id===i.partId);
 if(part) part.stock-=Number(i.qty);
@@ -1225,17 +1312,34 @@ const idx=db.sales.findIndex(s=>s.id===id);
 if(idx>=0) db.sales[idx]=data;
 }
 saveDB();closeModal("sale");
-setTimeout(()=>{ if(confirm("Penjualan disimpan! Stok otomatis berkurang. Kirim WA ke pelanggan?")){ openWASale(data.id);} },300);
+const msgTempo=paymentMethod==="Tempo"?`Penjualan Tempo disimpan! DP Rp ${dp.toLocaleString("id-ID")}, Sisa piutang Rp ${sisa.toLocaleString("id-ID")} jatuh tempo ${dueDate}.`:"Penjualan Tunai disimpan! Stok otomatis berkurang.";
+setTimeout(()=>{ if(confirm(msgTempo+" Kirim WA ke pelanggan?")){ openWASale(data.id);} },300);
 }
+
 function openSaleDetail(id){
 const s=db.sales.find(x=>x.id===id);if(!s)return;
 const cust=db.customers.find(c=>c.id===s.customerId)||{};
+const isTempo=s.paymentMethod==="Tempo";
 document.getElementById("saleDetailBody").innerHTML=`
 <div style="display:grid;gap:12px">
-<div style="display:flex;justify-content:space-between"><div><div style="font-size:11px;color:var(--muted);font-weight:800">INVOICE PENJUALAN</div><div style="font-size:20px;font-weight:900">${s.invoiceNo}</div><div style="font-size:12px;color:var(--muted)">${s.date}</div></div><div style="text-align:right"><div style="font-weight:800">${cust.name}</div><div style="font-size:13px">${cust.phone}</div></div></div>
+<div style="display:flex;justify-content:space-between"><div><div style="font-size:11px;color:var(--muted);font-weight:800">INVOICE PENJUALAN</div><div style="font-size:20px;font-weight:900">${s.invoiceNo}</div><div style="font-size:12px;color:var(--muted)">${s.date} • ${isTempo?'<span style="color:#ef4444">TEMPO</span>':'<span style="color:#16a34a">TUNAI LUNAS</span>'}</div></div><div style="text-align:right"><div style="font-weight:800">${cust.name}</div><div style="font-size:13px">${cust.phone}</div></div></div>
+<div class="card" style="${isTempo?'border-left:4px solid #ef4444;background:#fff7ed':''}"><h3>Metode Pembayaran</h3>
+<div style="margin-top:8px;display:grid;gap:6px">
+<div style="display:flex;justify-content:space-between"><span>Metode</span><b>${s.paymentMethod||"Tunai"}</b></div>
+${isTempo?`<div style="display:flex;justify-content:space-between"><span>Jatuh Tempo</span><b style="color:#ef4444">${s.dueDate||"-"}</b></div>`:''}
+<div style="display:flex;justify-content:space-between"><span>Total</span><span>Rp ${Number(s.total).toLocaleString("id-ID")}</span></div>
+<div style="display:flex;justify-content:space-between"><span>DP Dibayar</span><span>Rp ${Number(s.dp||0).toLocaleString("id-ID")}</span></div>
+<div style="display:flex;justify-content:space-between;font-weight:900;border-top:1px solid var(--border);padding-top:6px"><span>Sisa Piutang</span><span style="color:${Number(s.sisa)>0?'#ef4444':'#16a34a'}">Rp ${Number(s.sisa||0).toLocaleString("id-ID")} ${Number(s.sisa)===0?'(LUNAS)':''}</span></div>
+</div>
+</div>
 <div class="card"><h3>Item</h3><div style="margin-top:8px">${s.items.map(i=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f4f4f5"><span>${i.name} x${i.qty}</span><span>Rp ${Number(i.total).toLocaleString("id-ID")}</span></div>`).join("")}</div><div style="display:flex;justify-content:space-between;font-weight:900;margin-top:10px"><span>Total</span><span>Rp ${Number(s.total).toLocaleString("id-ID")}</span></div><div style="display:flex;justify-content:space-between;color:var(--success)"><span>Laba</span><span>Rp ${Number(s.profit).toLocaleString("id-ID")}</span></div></div>
 <div class="card"><h3>Catatan</h3><div style="margin-top:6px">${s.notes||"-"}</div></div>
-<div style="display:flex;gap:8px"><button class="btn btn-green btn-sm" onclick="openWASale('${s.id}')">📲 Kirim WA</button><button class="btn btn-black btn-sm" onclick="printSale('${s.id}')">🖨 Print Nota</button><button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteSale('${s.id}')">Hapus</button></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn btn-green btn-sm" onclick="openWASale('${s.id}')">📲 Kirim WA</button>
+${isTempo&&Number(s.sisa)>0?`<button class="btn btn-black btn-sm" onclick="payTempo('${s.id}')">💰 Bayar Sisa Piutang</button>`:''}
+<button class="btn btn-black btn-sm" onclick="printSale('${s.id}')">🖨 Print Nota</button>
+<button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteSale('${s.id}')">Hapus</button>
+</div>
 </div>
 `;
 document.getElementById("modal-sale-detail").classList.add("show");
@@ -1256,21 +1360,29 @@ const s=db.sales.find(x=>x.id===id);if(!s)return;
 const cust=db.customers.find(c=>c.id===s.customerId)||{};
 const cfg=db.config;
 const printArea=document.getElementById("printArea");
+const isTempo=s.paymentMethod==="Tempo";
 printArea.innerHTML=`
 <div style="padding:20px;font-family:sans-serif;color:#000">
 <div style="text-align:center;border-bottom:2px dashed #000;padding-bottom:12px;margin-bottom:12px">
-<div style="display:flex;align-items:center;justify-content:center;gap:10px"><img src="logo.png" style="width:40px;height:40px"><h2 style="margin:0">${cfg.shopName}</h2></div><div style="font-size:12px">${cfg.address} • ${cfg.phone}</div><div style="font-size:11px;margin-top:6px">NOTA PENJUALAN • ${s.invoiceNo} • ${s.date}</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px"><img src="logo.png" style="width:40px;height:40px"><h2 style="margin:0">${cfg.shopName}</h2></div><div style="font-size:12px">${cfg.address} • ${cfg.phone}</div><div style="font-size:11px;margin-top:6px">NOTA PENJUALAN • ${s.invoiceNo} • ${s.date} • ${s.paymentMethod||"Tunai"}</div>
 </div>
 <div style="font-size:13px">Pelanggan: <b>${cust.name}</b> (${cust.phone})</div>
+<div style="font-size:12px;margin-top:6px">Metode: <b>${s.paymentMethod||"Tunai"}</b> ${isTempo?`• Jatuh Tempo: <b style="color:red">${s.dueDate||"-"}</b>`:''}</div>
 <div style="margin-top:12px">${s.items.map(i=>`<div style="display:flex;justify-content:space-between;border-bottom:1px dashed #ccc;padding:6px 0"><span>${i.name} x${i.qty}</span><span>Rp ${Number(i.total).toLocaleString("id-ID")}</span></div>`).join("")}</div>
-<div style="display:flex;justify-content:space-between;font-weight:800;margin-top:12px;border-top:2px solid #000;padding-top:8px"><span>TOTAL</span><span>Rp ${Number(s.total).toLocaleString("id-ID")}</span></div>
-<div style="margin-top:20px;text-align:center;font-size:11px">Terima kasih sudah belanja di ${cfg.shopName}</div>
+<div style="margin-top:12px;border-top:2px solid #000;padding-top:8px">
+<div style="display:flex;justify-content:space-between"><span>Total</span><span>Rp ${Number(s.total).toLocaleString("id-ID")}</span></div>
+<div style="display:flex;justify-content:space-between"><span>DP / Dibayar</span><span>Rp ${Number(s.dp||0).toLocaleString("id-ID")}</span></div>
+<div style="display:flex;justify-content:space-between;font-weight:800;border-top:1px dashed #000;margin-top:6px;padding-top:6px"><span>SISA ${isTempo?'(PIUTANG)':''}</span><span>Rp ${Number(s.sisa||0).toLocaleString("id-ID")}</span></div>
+</div>
+${isTempo&&Number(s.sisa)>0?`<div style="margin-top:10px;padding:8px;border:1px solid #000;text-align:center;font-weight:800">JATUH TEMPO: ${s.dueDate||"-"} • SISA Rp ${Number(s.sisa).toLocaleString("id-ID")}</div>`:''}
+<div style="margin-top:20px;text-align:center;font-size:11px">Terima kasih sudah belanja di ${cfg.shopName}<br>${isTempo?'Harap lunasi sesuai jatuh tempo':'Lunas - Barang sudah dibayar'}</div>
 </div>`;
 printArea.style.display="block";
 window.print();
 setTimeout(()=>printArea.style.display="none",500);
 }
 
+// EXPENSE
 // EXPENSE
 function saveExpense(e){e.preventDefault();const id=document.getElementById("e_id").value||`EXP-${Date.now()}`;const data={id,date:document.getElementById("e_date").value,category:document.getElementById("e_cat").value,amount:Number(document.getElementById("e_amount").value),description:document.getElementById("e_desc").value,technicianId:document.getElementById("e_tech").value||""};const idx=db.expenses.findIndex(x=>x.id===id);if(idx>=0)db.expenses[idx]=data;else db.expenses.push(data);saveDB();closeModal("expense");}
 function deleteExpense(id){if(!confirm("Hapus pengeluaran?"))return;db.expenses=db.expenses.filter(e=>e.id!==id);saveDB();}
