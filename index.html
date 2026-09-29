@@ -28,23 +28,10 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#070707">
 <style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
+@font-face {font-family:"Optimistic";font-style:normal;font-weight:400 600;font-display:swap;src:url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");}
+@font-face {font-family:"Optimistic Mono";font-style:normal;font-weight:400;font-display:swap;src:url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");}
 :where(html){font-family:"Optimistic",system-ui,sans-serif}
 :where(code,pre,kbd,samp){font-family:"Optimistic Mono",ui-monospace,monospace}
-
 :root{
 --bg:#f6f6f7;--card:#ffffff;--text:#0a0a0a;--muted:#71717a;--border:#e4e4e7;
 --black:#070707;--black2:#111111;--black3:#1a1a1a;
@@ -54,8 +41,6 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);min-height:100vh}
-
-/* PRO HEADER HITAM KUNING */
 .pro-header{
 position:fixed;top:0;left:0;right:0;height:64px;
 background:linear-gradient(90deg,#070707 0%,#111111 100%);
@@ -72,7 +57,6 @@ padding:0 18px;box-shadow:0 4px 20px rgba(0,0,0,.4)
 .brand-title p{font-size:10px;letter-spacing:.18em;color:#a1a1aa;font-weight:700;margin-top:2px}
 .pro-header-right{display:flex;align-items:center;gap:10px}
 .pro-badge{background:var(--yellow);color:#000;font-size:10px;font-weight:900;padding:4px 10px;border-radius:999px;letter-spacing:.08em}
-
 .sidebar{
 width:280px;background:var(--black);color:#fff;display:flex;flex-direction:column;
 position:fixed;top:64px;bottom:0;left:0;z-index:20;transition:.3s;border-right:1px solid #1e1e1e
@@ -82,7 +66,6 @@ position:fixed;top:64px;bottom:0;left:0;z-index:20;transition:.3s;border-right:1
 .sidebar-header .mini-logo img{width:24px;height:24px}
 .sidebar-header h2{font-size:14px;font-weight:800;color:#fff}
 .sidebar-header p{font-size:11px;color:#71717a;margin-top:2px}
-
 .nav{padding:12px;flex:1;overflow:auto}
 .nav button{
 width:100%;text-align:left;padding:12px 14px;border-radius:12px;border:0;background:transparent;
@@ -92,7 +75,6 @@ color:#a1a1aa;display:flex;gap:11px;align-items:center;font-size:14px;cursor:poi
 .nav button.active{background:var(--yellow);color:#000;font-weight:800;box-shadow:0 4px 12px rgba(255,212,0,.25)}
 .badge{margin-left:auto;background:#1e1e1e;color:#e4e4e7;font-size:11px;padding:2px 8px;border-radius:999px}
 .nav button.active .badge{background:#000;color:var(--yellow)}
-
 .main{margin-left:280px;margin-top:64px;flex:1;min-width:0}
 .topbar{
 position:sticky;top:64px;z-index:10;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);
@@ -100,7 +82,7 @@ border-bottom:1px solid #1f1f1f;padding:14px 28px;display:flex;justify-content:s
 }
 .topbar h2{font-size:18px;font-weight:800;letter-spacing:-.02em;color:#fff}
 .topbar h2 span{color:var(--yellow)}
-.topbar-right{display:flex;gap:10px;align-items:center}
+.topbar-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .btn{border:0;border-radius:12px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.2s}
 .btn-primary{background:var(--yellow);color:#000;font-weight:800;box-shadow:0 2px 0 #c9a600}
 .btn-primary:hover{background:var(--yellow2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,212,0,.35),0 2px 0 #c9a600}
@@ -108,13 +90,16 @@ border-bottom:1px solid #1f1f1f;padding:14px 28px;display:flex;justify-content:s
 .btn-ghost:hover{background:#f4f4f5}
 .btn-black{background:#111;color:#fff;border:1px solid #222}
 .btn-black:hover{background:#1a1a1a;border-color:var(--yellow)}
+.btn-green{background:#16a34a;color:#fff}
+.btn-green:hover{background:#15803d}
 .btn-sm{padding:7px 12px;font-size:13px;border-radius:10px}
 .content{padding:24px 28px 40px;background:var(--bg);min-height:calc(100vh - 128px)}
 .grid{display:grid;gap:16px}
 .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:1100px){
-.grid-4{grid-template-columns:repeat(2,1fr)} 
+.grid-4{grid-template-columns:repeat(2,1fr)} .grid-3{grid-template-columns:1fr}
 .sidebar{transform:translateX(-100%);top:64px} 
 .sidebar.open{transform:translateX(0)} 
 .main{margin-left:0} 
@@ -131,7 +116,7 @@ box-shadow:0 1px 2px rgba(0,0,0,.05);position:relative;overflow:hidden;transitio
 .card::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:transparent;transition:.2s}
 .card:hover::after{background:var(--yellow)}
 .card h3{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.1em;text-transform:uppercase}
-.stat{font-size:28px;font-weight:900;margin-top:8px;letter-spacing:-.04em}
+.stat{font-size:26px;font-weight:900;margin-top:8px;letter-spacing:-.04em}
 .stat small{font-size:13px;color:var(--muted);font-weight:600}
 .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px;background:var(--card)}
 table{width:100%;border-collapse:collapse;min-width:720px}
@@ -145,7 +130,7 @@ tr:hover td{background:#fafafa}
 .s-Menunggu{background:#fee2e2;color:#991b1b}
 .s-Dikerjakan{background:#fef08a;color:#000;border-color:var(--yellow)}
 .s-Selesai{background:#dcfce7;color:#166534}
-.s-Diambil{background:#f4f4f5;color:#3f3f46;border-color:#e4e4e7}
+.s-Diambil{background:#070707;color:var(--yellow);border-color:#1a1a1a}
 .s-Batal{background:#f4f4f5;color:#a1a1aa;text-decoration:line-through}
 .input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:12px;font-size:14px;background:#fff;outline:none;transition:.2s}
 .input:focus,select:focus,textarea:focus{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(255,212,0,.25)}
@@ -156,7 +141,7 @@ tr:hover td{background:#fafafa}
 @media(max-width:700px){.form-grid{grid-template-columns:1fr} .row{flex-direction:column}}
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
 .modal-backdrop.show{display:flex}
-.modal{background:#fff;border-radius:20px;max-width:760px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 24px 80px rgba(0,0,0,.45);border-top:4px solid var(--yellow)}
+.modal{background:#fff;border-radius:20px;max-width:800px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 24px 80px rgba(0,0,0,.45);border-top:4px solid var(--yellow)}
 .modal-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;z-index:1}
 .modal-body{padding:20px}
 .search{position:relative}
@@ -164,37 +149,36 @@ tr:hover td{background:#fafafa}
 .search span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
 .empty{padding:36px;text-align:center;color:var(--muted)}
 .empty b{color:var(--text)}
+.wa-preview{background:#dcf8c6;border:1px solid #b6e49b;border-radius:12px;padding:12px;font-size:13px;white-space:pre-wrap;line-height:1.5}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;background:#fafafa}
 @media print{body *{visibility:hidden} #printArea,#printArea *{visibility:visible} #printArea{position:absolute;left:0;top:0;width:100%}}
 .menu-toggle{display:none}
 @media(max-width:1100px){.menu-toggle{display:inline-flex}}
-.yellow-line{height:4px;background:var(--yellow);width:100%}
 </style>
 </head>
 <body>
 
-<!-- PRO HEADER HITAM KUNING DENGAN LOGO.PNG -->
 <header class="pro-header">
 <div class="pro-header-left">
 <div class="logo-box"><img src="logo.png" alt="logo"></div>
-<div class="brand-title"><h1>SERVIS<span>.ID</span></h1><p>OFFLINE • PRO EDITION • CIREBON</p></div>
+<div class="brand-title"><h1>SERVIS<span>.ID</span></h1><p>OFFLINE • PRO v3 • WA + UPAH + JUAL STOK</p></div>
 </div>
 <div class="pro-header-right">
 <div class="pro-badge">100% OFFLINE</div>
-<button class="btn btn-black btn-sm" onclick="toggleSidebar()" style="display:none" id="mobileMenuBtn">☰</button>
 </div>
 </header>
 
 <aside class="sidebar" id="sidebar">
 <div class="sidebar-header">
 <div class="mini-logo"><img src="logo.png" alt="logo"></div>
-<div><h2>SERVIS.ID PRO</h2><p>Pembukuan Lengkap v2.0</p></div>
+<div><h2>SERVIS.ID PRO</h2><p>v3.0 • Lengkap</p></div>
 </div>
 <div class="nav" id="nav"></div>
 <div style="padding:14px;border-top:1px solid #1e1e1e">
 <div style="background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:12px">
 <div style="font-size:11px;color:#71717a;font-weight:700;letter-spacing:.1em">PENYIMPANAN LOKAL</div>
 <div id="storageInfo" style="font-size:13px;font-weight:700;margin-top:6px;color:#fff">Menghitung...</div>
-<div style="font-size:11px;color:#52525b;margin-top:6px;line-height:1.4">Data di browser. Backup rutin biar aman!</div>
+<div style="font-size:11px;color:#52525b;margin-top:6px;line-height:1.4">Data aman di browser. Backup rutin!</div>
 <div style="margin-top:10px;height:4px;background:#1e1e1e;border-radius:999px;overflow:hidden"><div id="storageBar" style="height:100%;background:var(--yellow);width:20%"></div></div>
 </div>
 </div>
@@ -209,13 +193,13 @@ tr:hover td{background:#fafafa}
 <div class="topbar-right">
 <button class="btn btn-black btn-sm" onclick="openBackup()">⬇ Backup</button>
 <button class="btn btn-primary btn-sm" onclick="openModal('servis')">+ Servis Baru</button>
+<button class="btn btn-green btn-sm" onclick="openModal('sale')">+ Jual Sparepart</button>
 </div>
 </div>
-
 <div class="content" id="content"></div>
 </div>
 
-<!-- MODALS (sama logic) -->
+<!-- MODAL SERVIS -->
 <div class="modal-backdrop" id="modal-servis"><div class="modal">
 <div class="modal-head"><b id="servisModalTitle">Tambah Servis Baru</b><button class="btn btn-ghost btn-sm" onclick="closeModal('servis')">✕</button></div>
 <div class="modal-body">
@@ -233,6 +217,10 @@ tr:hover td{background:#fafafa}
 <div><label class="label">DP / Uang Muka</label><input class="input" id="s_dp" type="number" min="0" placeholder="0"></div>
 <div><label class="label">Status</label><select id="s_status"><option>Masuk</option><option>Diagnosis</option><option>Menunggu Sparepart</option><option>Dikerjakan</option><option>Selesai</option><option>Diambil</option><option>Batal</option></select></div>
 <div><label class="label">Garansi (hari)</label><input class="input" id="s_warranty" type="number" value="30"></div>
+<div style="grid-column:1/-1"><label class="label">Sparepart yang Dipakai (opsional)</label>
+<div class="row"><select id="s_partSelect"></select><input class="input" id="s_partQty" type="number" min="1" value="1" style="max-width:90px"><button type="button" class="btn btn-black btn-sm" onclick="addPartToService()">+ Part</button></div>
+<div id="s_partsList" style="margin-top:8px"></div>
+</div>
 <div style="grid-column:1/-1"><label class="label">Catatan Teknisi</label><textarea class="input" id="s_notes" rows="2" placeholder="Internal notes"></textarea></div>
 </div>
 <input type="hidden" id="s_id">
@@ -259,15 +247,21 @@ tr:hover td{background:#fafafa}
 </div>
 </div></div>
 
-<div class="modal-backdrop" id="modal-teknisi"><div class="modal" style="max-width:520px">
-<div class="modal-head"><b>Teknisi</b><button class="btn btn-ghost btn-sm" onclick="closeModal('teknisi')">✕</button></div>
+<div class="modal-backdrop" id="modal-teknisi"><div class="modal" style="max-width:560px">
+<div class="modal-head"><b>Teknisi / Karyawan</b><button class="btn btn-ghost btn-sm" onclick="closeModal('teknisi')">✕</button></div>
 <div class="modal-body">
 <form id="formTeknisi" onsubmit="saveTeknisi(event)">
 <input type="hidden" id="t_id">
 <div style="display:grid;gap:12px">
 <div><label class="label">Nama Teknisi *</label><input class="input" id="t_name" required></div>
-<div><label class="label">No HP</label><input class="input" id="t_phone"></div>
-<div><label class="label">Keahlian</label><input class="input" id="t_skill" placeholder="HP, Laptop, Hardware"></div>
+<div class="row"><div><label class="label">No HP</label><input class="input" id="t_phone"></div><div><label class="label">Keahlian</label><input class="input" id="t_skill" placeholder="HP, Laptop, Hardware"></div></div>
+<div style="border:1px solid var(--border);border-radius:12px;padding:12px;background:#fafafa">
+<h3 style="margin-bottom:8px">💰 Sistem Upah Jelas</h3>
+<div><label class="label">Tipe Upah</label><select id="t_wageType"><option value="komisi">Komisi per Servis</option><option value="persen">Komisi % dari Biaya</option><option value="bulanan">Gaji Bulanan + Komisi</option><option value="harian">Harian</option></select></div>
+<div class="row" style="margin-top:8px"><div><label class="label">Gaji Pokok (Rp)</label><input class="input" id="t_baseSalary" type="number" value="0"></div><div><label class="label">Komisi per Servis (Rp)</label><input class="input" id="t_commPerService" type="number" value="15000"></div></div>
+<div style="margin-top:8px"><label class="label">Komisi Persen (%) dari Biaya Servis</label><input class="input" id="t_commPercent" type="number" min="0" max="100" value="0" placeholder="0 = tidak pakai %"></div>
+<p style="font-size:11px;color:var(--muted);margin-top:6px">Contoh: Komisi Rp15.000 + 10% dari biaya servis yang Diambil. Gaji pokok dibayar terpisah via menu Bayar Upah.</p>
+</div>
 </div>
 <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end"><button type="button" class="btn btn-ghost" onclick="closeModal('teknisi')">Batal</button><button class="btn btn-primary" type="submit">Simpan</button></div>
 </form>
@@ -290,24 +284,64 @@ tr:hover td{background:#fafafa}
 </div></div>
 
 <div class="modal-backdrop" id="modal-expense"><div class="modal" style="max-width:520px">
-<div class="modal-head"><b>Pengeluaran</b><button class="btn btn-ghost btn-sm" onclick="closeModal('expense')">✕</button></div>
+<div class="modal-head"><b>Pengeluaran / Upah</b><button class="btn btn-ghost btn-sm" onclick="closeModal('expense')">✕</button></div>
 <div class="modal-body">
 <form id="formExpense" onsubmit="saveExpense(event)">
 <input type="hidden" id="e_id">
 <div style="display:grid;gap:12px">
 <div><label class="label">Tanggal</label><input class="input" id="e_date" type="date" required></div>
-<div><label class="label">Kategori</label><select id="e_cat"><option>Sparepart</option><option>Sewa</option><option>Listrik</option><option>Gaji</option><option>Transport</option><option>Lainnya</option></select></div>
+<div><label class="label">Kategori</label><select id="e_cat"><option>Sparepart</option><option>Gaji / Upah</option><option>Sewa</option><option>Listrik</option><option>Transport</option><option>Lainnya</option></select></div>
 <div><label class="label">Jumlah *</label><input class="input" id="e_amount" type="number" min="0" required></div>
-<div><label class="label">Keterangan</label><input class="input" id="e_desc" placeholder="Beli timah solder"></div>
+<div><label class="label">Keterangan</label><input class="input" id="e_desc" placeholder="Beli timah solder / Bayar gaji Andi"></div>
+<div><label class="label">Teknisi Terkait (jika upah)</label><select id="e_tech"><option value="">- Umum -</option></select></div>
 </div>
 <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end"><button type="button" class="btn btn-ghost" onclick="closeModal('expense')">Batal</button><button class="btn btn-primary" type="submit">Simpan</button></div>
 </form>
 </div>
 </div></div>
 
-<div class="modal-backdrop" id="modal-detail"><div class="modal" style="max-width:820px">
-<div class="modal-head"><b>Detail Servis</b><div style="display:flex;gap:8px"><button class="btn btn-black btn-sm" onclick="printNota()">🖨 Print Nota</button><button class="btn btn-ghost btn-sm" onclick="closeModal('detail')">✕</button></div></div>
+<div class="modal-backdrop" id="modal-sale"><div class="modal" style="max-width:720px">
+<div class="modal-head"><b>Penjualan Sparepart - Stok Berkurang Otomatis</b><button class="btn btn-ghost btn-sm" onclick="closeModal('sale')">✕</button></div>
+<div class="modal-body">
+<form id="formSale" onsubmit="saveSale(event)">
+<div class="form-grid">
+<div><label class="label">Pelanggan</label><select id="sale_customer"></select></div>
+<div><label class="label">Tanggal</label><input class="input" id="sale_date" type="date" required></div>
+<div style="grid-column:1/-1"><label class="label">Pilih Sparepart</label>
+<div class="row"><select id="sale_partSelect"></select><input class="input" id="sale_qty" type="number" min="1" value="1" style="max-width:90px"><button type="button" class="btn btn-black btn-sm" onclick="addPartToSale()">+ Keranjang</button></div>
+<div id="sale_partsInfo" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
+<div id="sale_cart" style="margin-top:12px"></div>
+</div>
+<div><label class="label">Total Bayar (otomatis)</label><input class="input" id="sale_total" type="number" readonly></div>
+<div><label class="label">Laba Penjualan</label><input class="input" id="sale_profit" type="number" readonly></div>
+<div style="grid-column:1/-1"><label class="label">Catatan</label><input class="input" id="sale_notes" placeholder="Tunai, transfer, dll"></div>
+</div>
+<input type="hidden" id="sale_id">
+<div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
+<button type="button" class="btn btn-ghost" onclick="closeModal('sale')">Batal</button>
+<button type="submit" class="btn btn-green">Simpan Penjualan & Kurangi Stok</button>
+</div>
+</form>
+</div>
+</div></div>
+
+<div class="modal-backdrop" id="modal-detail"><div class="modal" style="max-width:860px">
+<div class="modal-head"><b>Detail Servis + WA</b><div style="display:flex;gap:8px"><button class="btn btn-black btn-sm" onclick="printNota()">🖨 Print Nota</button><button class="btn btn-ghost btn-sm" onclick="closeModal('detail')">✕</button></div></div>
 <div class="modal-body" id="detailBody"></div>
+</div></div>
+
+<div class="modal-backdrop" id="modal-sale-detail"><div class="modal" style="max-width:700px">
+<div class="modal-head"><b>Detail Penjualan</b><button class="btn btn-ghost btn-sm" onclick="closeModal('sale-detail')">✕</button></div>
+<div class="modal-body" id="saleDetailBody"></div>
+</div></div>
+
+<div class="modal-backdrop" id="modal-wa-templates"><div class="modal" style="max-width:720px">
+<div class="modal-head"><b>Pesan WA per Status</b><button class="btn btn-ghost btn-sm" onclick="closeModal('wa-templates')">✕</button></div>
+<div class="modal-body">
+<p style="font-size:13px;color:var(--muted);margin-bottom:12px">Gunakan placeholder: {customer} {device} {brand} {invoice} {complaint} {estCost} {finalCost} {sisa} {technician} {notes} {warranty} {shopName} {address} {shopPhone} {dateIn}</p>
+<div id="waTemplatesForm" style="display:grid;gap:14px"></div>
+<div style="margin-top:16px;display:flex;gap:8px;justify-content:flex-end"><button class="btn btn-ghost" onclick="closeModal('wa-templates')">Tutup</button><button class="btn btn-primary" onclick="saveWATemplates()">Simpan Template WA</button></div>
+</div>
 </div></div>
 
 <div class="modal-backdrop" id="modal-backup"><div class="modal" style="max-width:560px">
@@ -316,11 +350,12 @@ tr:hover td{background:#fafafa}
 <div class="grid" style="gap:14px">
 <div class="card"><h3>Backup Data</h3><p style="font-size:13px;color:var(--muted);margin-top:6px">Export semua data ke file JSON. Simpan di Google Drive / Flashdisk.</p><div class="row" style="margin-top:12px"><button class="btn btn-primary btn-sm" onclick="exportJSON()">Export JSON</button><button class="btn btn-ghost btn-sm" onclick="exportCSV()">Export CSV Servis</button></div></div>
 <div class="card"><h3>Restore Data</h3><input type="file" id="importFile" accept=".json" style="margin-top:8px"><button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="importJSON()">Import & Timpa Data</button><p style="font-size:11px;color:var(--muted);margin-top:8px">Import akan mengganti semua data sekarang.</p></div>
-<div class="card"><h3>Pengaturan Toko</h3><div style="display:grid;gap:10px;margin-top:10px">
+<div class="card"><h3>Pengaturan Toko & WA</h3><div style="display:grid;gap:10px;margin-top:10px">
 <div><label class="label">Nama Toko</label><input class="input" id="cfg_shop" placeholder="Servis HP Cirebon"></div>
 <div><label class="label">Alamat Toko</label><input class="input" id="cfg_addr" placeholder="Jl. ..."></div>
 <div><label class="label">No HP Toko</label><input class="input" id="cfg_phone" placeholder="08..."></div>
 <button class="btn btn-primary btn-sm" onclick="saveConfig()">Simpan Pengaturan</button>
+<button class="btn btn-green btn-sm" onclick="openWATemplates()">✏️ Edit Template Pesan WA per Status</button>
 </div></div>
 <div class="card" style="border-color:#fecaca"><h3 style="color:var(--danger)">Zona Bahaya</h3><button class="btn btn-ghost btn-sm" style="border-color:var(--danger);color:var(--danger);margin-top:8px" onclick="resetAll()">Hapus Semua Data</button></div>
 </div>
@@ -330,33 +365,83 @@ tr:hover td{background:#fafafa}
 <div id="printArea" style="display:none"></div>
 
 <script>
-const LS_KEY="pembukuan_servis_v2";
-const defaultDB={services:[],customers:[{id:"CUST-1",name:"Pelanggan Umum",phone:"-",address:"-"}],technicians:[{id:"TECH-1",name:"Teknisi Utama",phone:"",skill:"All Rounder"}],parts:[],expenses:[],config:{shopName:"SERVIS.ID PRO - Cirebon",address:"Jl. Contoh No.123, Cirebon",phone:"0812-3456-7890",invoicePrefix:"SRV"},seq:1001};
-function loadDB(){try{const raw=localStorage.getItem(LS_KEY);if(!raw)return structuredClone(defaultDB);return JSON.parse(raw)}catch(e){return structuredClone(defaultDB)}}
+const LS_KEY="pembukuan_servis_v3_pro";
+const defaultDB={
+services:[],
+customers:[{id:"CUST-1",name:"Pelanggan Umum",phone:"-",address:"-"}],
+technicians:[{id:"TECH-1",name:"Teknisi Utama",phone:"",skill:"All Rounder",wageType:"komisi",baseSalary:0,commPerService:15000,commPercent:0}],
+parts:[],
+expenses:[],
+sales:[],
+payrolls:[],
+config:{
+shopName:"SERVIS.ID PRO - Cirebon",
+address:"Jl. Contoh No.123, Cirebon",
+phone:"0812-3456-7890",
+invoicePrefix:"SRV",
+salesPrefix:"JUAL",
+payrollPrefix:"UPAH",
+waTemplates:{
+"Masuk":"Halo {customer} 👋\nDevice {device} {brand} (Invoice: {invoice}) sudah kami terima.\nKeluhan: {complaint}\nEstimasi biaya: Rp {estCost}\nTerima kasih sudah percayakan ke {shopName}",
+"Diagnosis":"Halo {customer}, device {device} {brand} [{invoice}] sedang DIAGNOSA oleh teknisi {technician}. Update: {notes}. Kami infokan lagi ya.",
+"Menunggu Sparepart":"Halo {customer}, device {brand} [{invoice}] MENUNGGU SPAREPART. Mohon tunggu, kami usahakan secepatnya. - {shopName}",
+"Dikerjakan":"Halo {customer} 🔧, device {brand} [{invoice}] sedang DIKERJAKAN teknisi {technician}. Estimasi selesai segera.",
+"Selesai":"Halo {customer} ✅\nDevice {device} {brand} [{invoice}] SUDAH SELESAI!\nBiaya akhir: Rp {finalCost}\nSisa bayar: Rp {sisa}\nSilakan ambil di {shopName}\nAlamat: {address}\nGaransi {warranty} hari. Terima kasih 🙏",
+"Diambil":"Terima kasih {customer} sudah mengambil {device} {brand} [{invoice}] di {shopName}. Ditunggu lagi servicenya! ⭐⭐⭐⭐⭐",
+"Batal":"Mohon maaf {customer}, servis {device} {brand} [{invoice}] kami BATALKAN. Keterangan: {notes}. Hubungi {shopPhone} untuk info."
+}
+},
+seq:1001,
+salesSeq:1001,
+payrollSeq:1001
+};
+
+function loadDB(){
+try{
+const raw=localStorage.getItem(LS_KEY);
+if(!raw) {
+  // migrasi dari v2
+  const old=localStorage.getItem("pembukuan_servis_v2");
+  if(old){ const parsed=JSON.parse(old); return {...structuredClone(defaultDB), ...parsed, config:{...defaultDB.config, ...(parsed.config||{})}, sales:parsed.sales||[], payrolls:parsed.payrolls||[]}; }
+  return structuredClone(defaultDB);
+}
+const parsed=JSON.parse(raw);
+return {...structuredClone(defaultDB), ...parsed, config:{...defaultDB.config, ...(parsed.config||{}), waTemplates:{...defaultDB.config.waTemplates, ...(parsed.config?.waTemplates||{})}}, technicians:parsed.technicians?.map(t=>({...defaultDB.technicians[0], ...t}))||defaultDB.technicians, sales:parsed.sales||[], payrolls:parsed.payrolls||[]};
+}catch(e){return structuredClone(defaultDB)}
+}
 function saveDB(){localStorage.setItem(LS_KEY,JSON.stringify(db));render();updateStorageInfo()}
 let db=loadDB();
 let currentPage="dashboard";
-let filters={servisSearch:"",servisStatus:"Semua"};
+let filters={servisSearch:"",servisStatus:"Semua",salesSearch:""};
+let tempServiceParts=[]; // untuk form servis
+let tempSaleCart=[];
+
 const menu=[
 {id:"dashboard",label:"Dashboard",icon:"📊"},
 {id:"servis",label:"Transaksi Servis",icon:"🔧"},
+{id:"penjualan",label:"Penjualan Sparepart",icon:"🛒"},
 {id:"pelanggan",label:"Pelanggan",icon:"👥"},
-{id:"teknisi",label:"Teknisi",icon:"🧑‍🔧"},
+{id:"teknisi",label:"Teknisi & Upah",icon:"🧑‍🔧"},
 {id:"sparepart",label:"Sparepart / Stok",icon:"📦"},
 {id:"keuangan",label:"Keuangan",icon:"💰"},
 {id:"laporan",label:"Laporan",icon:"📈"},
-{id:"backup",label:"Backup & Setting",icon:"⚙️",action:()=>openBackup()},
+{id:"backup",label:"Backup & WA",icon:"⚙️",action:()=>openBackup()},
 ];
+
 function init(){
-document.getElementById("s_dateIn").valueAsDate=new Date();
-if(document.getElementById("e_date")) document.getElementById("e_date").valueAsDate=new Date();
+const sDate=document.getElementById("s_dateIn");
+if(sDate) sDate.valueAsDate=new Date();
+const saleDate=document.getElementById("sale_date");
+if(saleDate) saleDate.valueAsDate=new Date();
+const eDate=document.getElementById("e_date");
+if(eDate) eDate.valueAsDate=new Date();
 buildNav();render();updateStorageInfo();loadConfigToForm();
 if(!localStorage.getItem(LS_KEY)){saveDB();}
 }
 function buildNav(){
 const nav=document.getElementById("nav");
 nav.innerHTML=menu.map(m=>{
-const count=m.id==="servis"?db.services.filter(s=>s.status!=="Diambil"&&s.status!=="Batal"&&s.status!=="Selesai").length:"";
+const count=m.id==="servis"?db.services.filter(s=>s.status!=="Diambil"&&s.status!=="Batal"&&s.status!=="Selesai").length: m.id==="penjualan"?db.sales.length: "";
 return `<button class="${currentPage===m.id?"active":""}" onclick="goPage('${m.id}')"><span>${m.icon}</span> ${m.label} ${count?`<span class=badge>${count}</span>`:""}</button>`
 }).join("");
 }
@@ -373,6 +458,7 @@ function render(){
 const c=document.getElementById("content");
 if(currentPage==="dashboard") c.innerHTML=renderDashboard();
 else if(currentPage==="servis") c.innerHTML=renderServis();
+else if(currentPage==="penjualan") c.innerHTML=renderPenjualan();
 else if(currentPage==="pelanggan") c.innerHTML=renderPelanggan();
 else if(currentPage==="teknisi") c.innerHTML=renderTeknisi();
 else if(currentPage==="sparepart") c.innerHTML=renderSparepart();
@@ -380,41 +466,118 @@ else if(currentPage==="keuangan") c.innerHTML=renderKeuangan();
 else if(currentPage==="laporan") c.innerHTML=renderLaporan();
 buildNav();
 }
+
+// HELPER WA
+function normalizePhone(phone){
+let p=(phone||"").toString().replace(/[^0-9+]/g,"");
+if(!p || p=="-") return "";
+if(p.startsWith("0")) return "62"+p.slice(1);
+if(p.startsWith("+62")) return p.slice(1);
+if(p.startsWith("62")) return p;
+if(p.startsWith("8")) return "62"+p;
+return p;
+}
+function getWAMessage(status, service){
+const cfg=db.config;
+const cust=db.customers.find(c=>c.id===service.customerId)||{name:"Pelanggan",phone:""};
+const tech=db.technicians.find(t=>t.id===service.technicianId)||{name:"Teknisi"};
+const sisa=Number(service.finalCost||service.estCost||0)-Number(service.dp||0);
+let template=cfg.waTemplates[status]||cfg.waTemplates["Masuk"];
+const map={
+customer:cust.name,
+device:service.deviceType||"",
+brand:service.brand||"",
+invoice:service.invoiceNo||"",
+complaint:service.complaint||"",
+estCost:Number(service.estCost||0).toLocaleString("id-ID"),
+finalCost:Number(service.finalCost||service.estCost||0).toLocaleString("id-ID"),
+dp:Number(service.dp||0).toLocaleString("id-ID"),
+sisa:sisa.toLocaleString("id-ID"),
+technician:tech.name,
+notes:service.notes||"-",
+warranty:service.warranty||0,
+shopName:cfg.shopName,
+address:cfg.address,
+shopPhone:cfg.phone,
+dateIn:service.dateIn
+};
+let msg=template;
+for(const k in map){ msg=msg.replaceAll(`{${k}}`, map[k]); }
+return msg;
+}
+function openWA(serviceId, status){
+const service=db.services.find(s=>s.id===serviceId);
+if(!service){alert("Servis tidak ditemukan");return}
+const cust=db.customers.find(c=>c.id===service.customerId);
+if(!cust || !cust.phone || cust.phone=="-"){alert("No HP pelanggan tidak ada");return}
+const waPhone=normalizePhone(cust.phone);
+if(!waPhone){alert("No HP tidak valid");return}
+const message=getWAMessage(status||service.status, service);
+const url=`https://wa.me/${waPhone}?text=${encodeURIComponent(message)}`;
+window.open(url,"_blank");
+}
+function openWASale(saleId){
+const sale=db.sales.find(s=>s.id===saleId);
+if(!sale) return;
+const cust=db.customers.find(c=>c.id===sale.customerId)||{name:"Pelanggan",phone:""};
+const waPhone=normalizePhone(cust.phone);
+if(!waPhone){alert("No HP pelanggan tidak ada");return}
+const items=sale.items.map(i=>{
+const part=db.parts.find(p=>p.id===i.partId)?.name||i.partId;
+return `- ${part} x${i.qty} = Rp ${Number(i.total).toLocaleString("id-ID")}`;
+}).join("\n");
+const msg=`Halo ${cust.name} 👋\nTerima kasih sudah belanja di ${db.config.shopName}\nInvoice: ${sale.invoiceNo}\nTanggal: ${sale.date}\n\nDetail:\n${items}\n\nTotal: Rp ${Number(sale.total).toLocaleString("id-ID")}\n\n${sale.notes||""}\nTerima kasih 🙏`;
+window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`,"_blank");
+}
+
+// DASHBOARD
 function renderDashboard(){
 const today=new Date().toISOString().slice(0,10);
 const thisMonth=new Date().toISOString().slice(0,7);
 const pending=db.services.filter(s=>["Masuk","Diagnosis","Menunggu Sparepart","Dikerjakan"].includes(s.status)).length;
 const selesai=db.services.filter(s=>s.status==="Selesai").length;
-// LOGIKA BARU: hanya status Diambil yang jadi pendapatan real
 const omsetBulanReal=db.services.filter(s=>s.dateIn.startsWith(thisMonth)&&s.status==="Diambil").reduce((a,b)=>a+(Number(b.finalCost)||Number(b.estCost)||0),0);
+const salesBulan=db.sales.filter(s=>s.date.startsWith(thisMonth)).reduce((a,b)=>a+Number(b.total||0),0);
+const omsetBulanRealTotal=omsetBulanReal+salesBulan;
 const omsetBulanEstimasi=db.services.filter(s=>s.dateIn.startsWith(thisMonth)&&s.status!=="Diambil"&&s.status!=="Batal").reduce((a,b)=>a+(Number(b.estCost||b.finalCost||0)),0);
-const omsetBulan=omsetBulanReal; // untuk kompatibilitas
 const pengeluaranBulan=db.expenses.filter(e=>e.date.startsWith(thisMonth)).reduce((a,b)=>a+Number(b.amount),0);
-const laba=omsetBulanReal-pengeluaranBulan;
+const laba=omsetBulanRealTotal-pengeluaranBulan;
 const todayServis=db.services.filter(s=>s.dateIn===today).length;
+const todaySales=db.sales.filter(s=>s.date===today).reduce((a,b)=>a+Number(b.total),0);
+const lowStock=db.parts.filter(p=>Number(p.stock)<=3).length;
 return `
 <div class="grid grid-4">
-<div class="card"><h3>Servis Hari Ini</h3><div class="stat">${todayServis} <small>unit</small></div><div style="font-size:12px;color:var(--muted);margin-top:6px">${today}</div></div>
-<div class="card" style="border-left:4px solid var(--yellow)"><h3>Perlu Dikerjakan</h3><div class="stat" style="color:#000">${pending}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">${selesai} menunggu diambil</div></div>
-<div class="card" style="border-left:4px solid #16a34a"><h3>Pendapatan Real (Diambil)</h3><div class="stat" style="color:#16a34a">Rp ${omsetBulanReal.toLocaleString("id-ID")}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">Estimasi tertahan: Rp ${omsetBulanEstimasi.toLocaleString("id-ID")}</div></div>
-<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Laba Bersih Real</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:12px;color:#71717a;margin-top:6px">${thisMonth} • Hanya yg Diambil</div></div>
+<div class="card"><h3>Servis Hari Ini</h3><div class="stat">${todayServis} <small>unit</small></div><div style="font-size:12px;color:var(--muted);margin-top:6px">${today} • Jual hari ini Rp ${todaySales.toLocaleString("id-ID")}</div></div>
+<div class="card" style="border-left:4px solid var(--yellow)"><h3>Perlu Dikerjakan</h3><div class="stat" style="color:#000">${pending}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">${selesai} menunggu diambil • Stok menipis ${lowStock}</div></div>
+<div class="card" style="border-left:4px solid #16a34a"><h3>Pendapatan Real (Diambil+Jual)</h3><div class="stat" style="color:#16a34a">Rp ${omsetBulanRealTotal.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:6px">Servis: Rp ${omsetBulanReal.toLocaleString("id-ID")} + Jual: Rp ${salesBulan.toLocaleString("id-ID")}<br>Estimasi tertahan: Rp ${omsetBulanEstimasi.toLocaleString("id-ID")}</div></div>
+<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Laba Bersih Real</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:12px;color:#71717a;margin-top:6px">${thisMonth} • Pengeluaran Rp ${pengeluaranBulan.toLocaleString("id-ID")}</div></div>
 </div>
 <div class="grid grid-2" style="margin-top:16px">
 <div class="card"><h3>Servis Terbaru</h3><div style="margin-top:12px">${renderMiniTable(db.services.slice(-5).reverse())}</div></div>
-<div class="card"><h3>Status Servis</h3><div style="margin-top:12px">${renderStatusChart()}</div>
+<div class="card"><h3>Status Servis + WA</h3><div style="margin-top:12px">${renderStatusChart()}</div>
 <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
 <button class="btn btn-ghost btn-sm" onclick="goPage('servis')">Lihat Semua Servis</button>
 <button class="btn btn-primary btn-sm" onclick="openModal('servis')">+ Servis Baru</button>
 </div></div>
 </div>
-<div class="card" style="margin-top:16px"><h3>Ringkasan Stok Menipis</h3><div style="margin-top:10px">${renderLowStock()}</div></div>
+<div class="grid grid-2" style="margin-top:16px">
+<div class="card"><h3>Ringkasan Stok Menipis</h3><div style="margin-top:10px">${renderLowStock()}</div></div>
+<div class="card"><h3>Penjualan Terbaru</h3><div style="margin-top:10px">${renderMiniSales()}</div></div>
+</div>
 `;
 }
 function renderMiniTable(list){
 if(!list.length) return `<div class=empty>Belum ada servis</div>`;
-return `<div class=table-wrap style="border:0"><table style="min-width:0"><thead><tr><th>Invoice</th><th>Pelanggan</th><th>Device</th><th>Status</th></tr></thead><tbody>${list.map(s=>{
+return `<div class=table-wrap style="border:0"><table style="min-width:0"><thead><tr><th>Invoice</th><th>Pelanggan</th><th>Device</th><th>Status</th><th>WA</th></tr></thead><tbody>${list.map(s=>{
 const cust=db.customers.find(c=>c.id===s.customerId)?.name||"-";
-return `<tr style="cursor:pointer" onclick="openDetail('${s.id}')"><td><b>${s.invoiceNo}</b></td><td>${cust}</td><td>${s.deviceType}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td></tr>`
+return `<tr style="cursor:pointer"><td><b>${s.invoiceNo}</b></td><td>${cust}</td><td>${s.deviceType}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td><td><button class="btn btn-green btn-sm" onclick="openWA('${s.id}')">WA</button></td></tr>`
+}).join("")}</tbody></table></div>`;
+}
+function renderMiniSales(){
+if(!db.sales.length) return `<div class=empty>Belum ada penjualan</div>`;
+return `<div class=table-wrap style="border:0"><table style="min-width:0"><thead><tr><th>Invoice</th><th>Pelanggan</th><th>Total</th><th></th></tr></thead><tbody>${db.sales.slice(-5).reverse().map(s=>{
+const cust=db.customers.find(c=>c.id===s.customerId)?.name||"-";
+return `<tr><td>${s.invoiceNo}</td><td>${cust}</td><td>Rp ${Number(s.total).toLocaleString("id-ID")}</td><td><button class="btn btn-green btn-sm" onclick="openWASale('${s.id}')">WA</button></td></tr>`
 }).join("")}</tbody></table></div>`;
 }
 function renderStatusChart(){
@@ -432,6 +595,8 @@ const low=db.parts.filter(p=>Number(p.stock)<=3);
 if(!low.length) return `<div style="font-size:13px;color:var(--muted)">Semua stok aman 👍</div>`;
 return `<div style="display:flex;gap:8px;flex-wrap:wrap">${low.map(p=>`<span style="border:1px solid #facc15;background:#fefce8;color:#713f12;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700">${p.name} • ${p.stock}</span>`).join("")}</div>`;
 }
+
+// SERVIS
 function renderServis(){
 const filtered=db.services.filter(s=>{
 const q=filters.servisSearch.toLowerCase();
@@ -454,134 +619,320 @@ const tech=db.technicians.find(t=>t.id===s.technicianId)?.name||"-";
 const biaya=Number(s.finalCost||s.estCost||0);
 const isReal=s.status==="Diambil";
 const biayaDisplay=isReal?`Rp ${biaya.toLocaleString("id-ID")}`:`<span style="color:#71717a">Est: Rp ${biaya.toLocaleString("id-ID")}</span><div style="font-size:10px;color:#a1a1aa">belum pendapatan</div>`;
-return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.dateIn}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td><b>${s.deviceType} ${s.brand}</b><div style="font-size:12px;color:var(--muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.complaint}</div></td><td style="font-size:13px">${tech}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td><td>${biayaDisplay}</td><td><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="openDetail('${s.id}')">Detail</button><button class="btn btn-black btn-sm" onclick="editServis('${s.id}')">Edit</button></div></td></tr>`
+return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.dateIn}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td><b>${s.deviceType} ${s.brand}</b><div style="font-size:12px;color:var(--muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.complaint}</div></td><td style="font-size:13px">${tech}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td><td>${biayaDisplay}</td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" onclick="openDetail('${s.id}')">Detail</button><button class="btn btn-green btn-sm" onclick="openWA('${s.id}')">WA</button></div></td></tr>`
 }).join(""):`<tr><td colspan=7><div class=empty><b>Tidak ada data</b><br>Belum ada transaksi servis</div></td></tr>`}
 </tbody></table>
 </div>`;
 }
+
+// PENJUALAN
+function renderPenjualan(){
+const filtered=db.sales.filter(s=>{
+const q=filters.salesSearch.toLowerCase();
+const cust=db.customers.find(c=>c.id===s.customerId);
+return !q|| s.invoiceNo.toLowerCase().includes(q)|| (cust?.name.toLowerCase().includes(q));
+}).sort((a,b)=>b.date.localeCompare(a.date));
+const totalPenjualan=db.sales.reduce((a,b)=>a+Number(b.total),0);
+const totalProfit=db.sales.reduce((a,b)=>a+Number(b.profit||0),0);
+return `
+<div class="grid grid-3">
+<div class="card"><h3>Total Penjualan</h3><div class="stat">Rp ${totalPenjualan.toLocaleString("id-ID")}</div><div style="font-size:12px;color:var(--muted);margin-top:4px">${db.sales.length} transaksi</div></div>
+<div class="card"><h3>Laba Penjualan</h3><div class="stat" style="color:var(--success)">Rp ${totalProfit.toLocaleString("id-ID")}</div><div style="font-size:12px;color:var(--muted);margin-top:4px">Dari selisih jual-beli</div></div>
+<div class="card" style="background:#070707;color:#fff"><h3 style="color:#a1a1aa">Stok Menipis</h3><div class="stat" style="color:var(--yellow)">${db.parts.filter(p=>p.stock<=3).length} item</div><button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="openModal('sale')">+ Jual Sparepart</button></div>
+</div>
+<div class="card" style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+<div class="search" style="flex:1;min-width:200px"><span>🔍</span><input class="input" placeholder="Cari invoice penjualan, pelanggan..." value="${filters.salesSearch}" oninput="filters.salesSearch=this.value;render()"></div>
+<button class="btn btn-primary btn-sm" onclick="openModal('sale')">+ Jual Sparepart (Stok Auto Kurang)</button>
+</div>
+<div class="table-wrap" style="margin-top:12px">
+<table><thead><tr><th>Invoice / Tgl</th><th>Pelanggan</th><th>Item</th><th>Total</th><th>Laba</th><th>Aksi</th></tr></thead><tbody>
+${filtered.length?filtered.map(s=>{
+const cust=db.customers.find(c=>c.id===s.customerId);
+const items=s.items.map(i=>{
+const part=db.parts.find(p=>p.id===i.partId)?.name||i.partId;
+return `${part} x${i.qty}`;
+}).join(", ");
+return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.date}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td style="max-width:260px"><div style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${items}</div></td><td><b>Rp ${Number(s.total).toLocaleString("id-ID")}</b></td><td style="color:var(--success);font-weight:700">Rp ${Number(s.profit||0).toLocaleString("id-ID")}</td><td><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="openSaleDetail('${s.id}')">Detail</button><button class="btn btn-green btn-sm" onclick="openWASale('${s.id}')">WA</button><button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteSale('${s.id}')">Hapus</button></div></td></tr>`
+}).join(""):`<tr><td colspan=6><div class=empty>Belum ada penjualan. Stok akan otomatis berkurang saat terjual.</div></td></tr>`}
+</tbody></table>
+</div>`;
+}
+
+// PELANGGAN
 function renderPelanggan(){
 return `
 <div class="card" style="display:flex;justify-content:space-between;align-items:center"><h3>Daftar Pelanggan • ${db.customers.length}</h3><button class="btn btn-primary btn-sm" onclick="openModal('pelanggan')">+ Pelanggan</button></div>
-<div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Nama</th><th>HP</th><th>Alamat</th><th>Total Servis</th><th>Aksi</th></tr></thead><tbody>
+<div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Nama</th><th>HP</th><th>Alamat</th><th>Total Servis</th><th>Total Belanja</th><th>Aksi</th></tr></thead><tbody>
 ${db.customers.map(c=>{
 const total=db.services.filter(s=>s.customerId===c.id).length;
-return `<tr><td><b>${c.name}</b></td><td>${c.phone}</td><td>${c.address}</td><td><span style="background:var(--yellow);color:#000;padding:2px 8px;border-radius:999px;font-weight:800;font-size:12px">${total}</span></td><td><button class="btn btn-ghost btn-sm" onclick="editPelanggan('${c.id}')">Edit</button> <button class="btn btn-ghost btn-sm" onclick="deletePelanggan('${c.id}')">Hapus</button></td></tr>`
+const belanja=db.sales.filter(s=>s.customerId===c.id).reduce((a,b)=>a+Number(b.total),0);
+return `<tr><td><b>${c.name}</b></td><td>${c.phone}</td><td>${c.address}</td><td><span style="background:var(--yellow);color:#000;padding:2px 8px;border-radius:999px;font-weight:800;font-size:12px">${total}</span></td><td>Rp ${belanja.toLocaleString("id-ID")}</td><td><button class="btn btn-ghost btn-sm" onclick="editPelanggan('${c.id}')">Edit</button> <button class="btn btn-ghost btn-sm" onclick="deletePelanggan('${c.id}')">Hapus</button></td></tr>`
 }).join("")}
 </tbody></table></div>`;
+}
+
+// TEKNISI & UPAH JELAS
+function calcTechnicianEarnings(techId){
+const services=db.services.filter(s=>s.technicianId===techId&&s.status==="Diambil");
+let totalComm=0;
+const tech=db.technicians.find(t=>t.id===techId);
+if(!tech) return {count:0,totalComm:0,services};
+services.forEach(s=>{
+const biaya=Number(s.finalCost||s.estCost||0);
+let comm=0;
+if(tech.wageType==="komisi"||tech.wageType==="bulanan"||tech.wageType==="harian"){
+comm+=Number(tech.commPerService||0);
+}
+if(Number(tech.commPercent||0)>0){
+comm+=biaya*Number(tech.commPercent||0)/100;
+}
+totalComm+=comm;
+});
+return {count:services.length,totalComm,services};
 }
 function renderTeknisi(){
 return `
-<div class="card" style="display:flex;justify-content:space-between;align-items:center"><h3>Teknisi • ${db.technicians.length}</h3><button class="btn btn-primary btn-sm" onclick="openModal('teknisi')">+ Teknisi</button></div>
-<div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Nama</th><th>HP</th><th>Keahlian</th><th>Job Aktif</th><th>Aksi</th></tr></thead><tbody>
+<div class="grid grid-2">
+<div class="card" style="display:flex;justify-content:space-between;align-items:center"><h3>Teknisi & Karyawan • ${db.technicians.length}</h3><button class="btn btn-primary btn-sm" onclick="openModal('teknisi')">+ Teknisi</button></div>
+<div class="card" style="background:#070707;color:#fff"><h3 style="color:#a1a1aa">Total Upah Dibayar Bulan Ini</h3><div class="stat" style="color:var(--yellow)">Rp ${db.expenses.filter(e=>e.category==="Gaji / Upah"&&e.date.startsWith(new Date().toISOString().slice(0,7))).reduce((a,b)=>a+Number(b.amount),0).toLocaleString("id-ID")}</div></div>
+</div>
+<div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Nama</th><th>HP / Skill</th><th>Tipe Upah</th><th>Gaji Pokok</th><th>Komisi Setting</th><th>Job Diambil</th><th>Total Komisi</th><th>Aksi</th></tr></thead><tbody>
 ${db.technicians.map(t=>{
-const active=db.services.filter(s=>s.technicianId===t.id&&["Masuk","Diagnosis","Menunggu Sparepart","Dikerjakan"].includes(s.status)).length;
-return `<tr><td><b>${t.name}</b></td><td>${t.phone}</td><td>${t.skill}</td><td>${active}</td><td><button class="btn btn-ghost btn-sm" onclick="editTeknisi('${t.id}')">Edit</button> <button class="btn btn-ghost btn-sm" onclick="deleteTeknisi('${t.id}')">Hapus</button></td></tr>`
+const earn=calcTechnicianEarnings(t.id);
+const wageDesc=`${t.wageType} • Pokok Rp ${Number(t.baseSalary||0).toLocaleString("id-ID")}`;
+const commDesc=`${Number(t.commPerService||0)>0?`Rp ${Number(t.commPerService).toLocaleString("id-ID")}/servis`:""} ${Number(t.commPercent||0)>0?`+ ${t.commPercent}%`:""}`;
+return `<tr><td><b>${t.name}</b></td><td>${t.phone}<div style="font-size:12px;color:var(--muted)">${t.skill}</div></td><td><span class="status s-Masuk">${t.wageType}</span></td><td>Rp ${Number(t.baseSalary||0).toLocaleString("id-ID")}</td><td>${commDesc||"-"}</td><td><b>${earn.count}</b> job</td><td style="color:var(--success);font-weight:800">Rp ${earn.totalComm.toLocaleString("id-ID")}</td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" onclick="editTeknisi('${t.id}')">Edit</button><button class="btn btn-green btn-sm" onclick="payWage('${t.id}')">Bayar Upah</button><button class="btn btn-ghost btn-sm" onclick="deleteTeknisi('${t.id}')">Hapus</button></div></td></tr>`
 }).join("")}
-</tbody></table></div>`;
+</tbody></table></div>
+<div class="card" style="margin-top:16px"><h3>Riwayat Pembayaran Upah (Payroll)</h3>
+<div class="table-wrap" style="margin-top:12px;border:0"><table style="min-width:0"><thead><tr><th>Tgl</th><th>Teknisi</th><th>Jumlah</th><th>Keterangan</th><th></th></tr></thead><tbody>
+${db.payrolls.slice().reverse().map(p=>{
+const tech=db.technicians.find(t=>t.id===p.technicianId)?.name||"-";
+return `<tr><td>${p.date}</td><td>${tech}</td><td>Rp ${Number(p.amount).toLocaleString("id-ID")}</td><td>${p.note}</td><td><button class="btn btn-ghost btn-sm" onclick="deletePayroll('${p.id}')">✕</button></td></tr>`
+}).join("")||`<tr><td colspan=5><div class=empty>Belum ada pembayaran upah</div></td></tr>`}
+</tbody></table></div></div>
+`;
 }
+
+// SPAREPART
 function renderSparepart(){
 return `
 <div class="card" style="display:flex;justify-content:space-between;align-items:center"><h3>Sparepart & Stok • ${db.parts.length} item</h3><button class="btn btn-primary btn-sm" onclick="openModal('part')">+ Part Baru</button></div>
-<div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Nama Part</th><th>Stok</th><th>Beli</th><th>Jual</th><th>Margin</th><th>Aksi</th></tr></thead><tbody>
+<div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Nama Part</th><th>Stok</th><th>Beli</th><th>Jual</th><th>Margin</th><th>Terjual</th><th>Aksi</th></tr></thead><tbody>
 ${db.parts.length?db.parts.map(p=>{
 const margin=Number(p.sellPrice)-Number(p.buyPrice);
-return `<tr><td><b>${p.name}</b></td><td>${p.stock} ${Number(p.stock)<=3?'<span style="color:#dc2626;font-weight:800">• menipis</span>':''}</td><td>Rp ${Number(p.buyPrice).toLocaleString("id-ID")}</td><td>Rp ${Number(p.sellPrice).toLocaleString("id-ID")}</td><td style="color:${margin>0?'var(--success)':'var(--muted)'};font-weight:800">Rp ${margin.toLocaleString("id-ID")}</td><td><button class="btn btn-ghost btn-sm" onclick="editPart('${p.id}')">Edit</button> <button class="btn btn-ghost btn-sm" onclick="deletePart('${p.id}')">Hapus</button></td></tr>`
-}).join(""):`<tr><td colspan=6><div class=empty>Belum ada sparepart</div></td></tr>`}
+const terjual=db.sales.reduce((a,s)=>a+s.items.filter(i=>i.partId===p.id).reduce((aa,bb)=>aa+Number(bb.qty),0),0);
+return `<tr><td><b>${p.name}</b></td><td>${p.stock} ${Number(p.stock)<=3?'<span style="color:#dc2626;font-weight:800">• menipis</span>':''}</td><td>Rp ${Number(p.buyPrice).toLocaleString("id-ID")}</td><td>Rp ${Number(p.sellPrice).toLocaleString("id-ID")}</td><td style="color:${margin>0?'var(--success)':'var(--muted)'};font-weight:800">Rp ${margin.toLocaleString("id-ID")}</td><td>${terjual} pcs</td><td><button class="btn btn-ghost btn-sm" onclick="editPart('${p.id}')">Edit</button> <button class="btn btn-green btn-sm" onclick="quickSale('${p.id}')">Jual</button> <button class="btn btn-ghost btn-sm" onclick="deletePart('${p.id}')">Hapus</button></td></tr>`
+}).join(""):`<tr><td colspan=7><div class=empty>Belum ada sparepart</div></td></tr>`}
 </tbody></table></div>`;
 }
+
+// KEUANGAN
 function renderKeuangan(){
-// LOGIKA BARU: pendapatan hanya yang sudah Diambil
-const totalMasukReal=db.services.filter(s=>s.status==="Diambil").reduce((a,b)=>a+(Number(b.finalCost||b.estCost||0)),0);
+const totalMasukRealServis=db.services.filter(s=>s.status==="Diambil").reduce((a,b)=>a+(Number(b.finalCost||b.estCost||0)),0);
+const totalMasukSales=db.sales.reduce((a,b)=>a+Number(b.total||0),0);
+const totalMasukReal=totalMasukRealServis+totalMasukSales;
 const totalMasukEstimasi=db.services.filter(s=>s.status!=="Diambil"&&s.status!=="Batal").reduce((a,b)=>a+(Number(b.estCost||b.finalCost||0)),0);
-const totalMasuk=totalMasukReal; // backward compat
-const totalDP=db.services.filter(s=>s.status==="Diambil").reduce((a,b)=>a+Number(b.dp||0),0);
-const totalDPAll=db.services.reduce((a,b)=>a+Number(b.dp||0),0);
+const totalDPReal=db.services.filter(s=>s.status==="Diambil").reduce((a,b)=>a+Number(b.dp||0),0);
 const totalExpense=db.expenses.reduce((a,b)=>a+Number(b.amount),0);
+const totalGaji=db.expenses.filter(e=>e.category==="Gaji / Upah").reduce((a,b)=>a+Number(b.amount),0);
 const laba=totalMasukReal-totalExpense;
+const profitSales=db.sales.reduce((a,b)=>a+Number(b.profit||0),0);
 return `
 <div class="grid grid-4">
-<div class="card" style="border-left:4px solid #16a34a"><h3>Pendapatan Real (Diambil)</h3><div class="stat" style="color:#16a34a">Rp ${totalMasukReal.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Hanya status Diambil</div></div>
+<div class="card" style="border-left:4px solid #16a34a"><h3>Pendapatan Real (Diambil+Jual)</h3><div class="stat" style="color:#16a34a">Rp ${totalMasukReal.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Servis: Rp ${totalMasukRealServis.toLocaleString("id-ID")} + Jual: Rp ${totalMasukSales.toLocaleString("id-ID")}</div></div>
 <div class="card"><h3>Estimasi Tertahan</h3><div class="stat" style="color:#a1a1aa">Rp ${totalMasukEstimasi.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Belum diambil = belum pendapatan</div></div>
-<div class="card"><h3>Total Pengeluaran</h3><div class="stat" style="color:var(--danger)">Rp ${totalExpense.toLocaleString("id-ID")}</div></div>
-<div class="card" style="background:#070707;color:#fff"><h3 style="color:#a1a1aa">Laba Kotor Real</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:11px;color:#52525b;margin-top:4px">DP Real: Rp ${totalDP.toLocaleString("id-ID")} (All DP: Rp ${totalDPAll.toLocaleString("id-ID")})</div></div>
+<div class="card"><h3>Total Pengeluaran</h3><div class="stat" style="color:var(--danger)">Rp ${totalExpense.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Gaji: Rp ${totalGaji.toLocaleString("id-ID")} • Laba jual: Rp ${profitSales.toLocaleString("id-ID")}</div></div>
+<div class="card" style="background:#070707;color:#fff"><h3 style="color:#a1a1aa">Laba Kotor Real</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:11px;color:#52525b;margin-top:4px">DP Real: Rp ${totalDPReal.toLocaleString("id-ID")}</div></div>
 </div>
 <div class="grid grid-2" style="margin-top:16px">
-<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Pengeluaran</h3><button class="btn btn-primary btn-sm" onclick="openModal('expense')">+ Pengeluaran</button></div>
-<div class="table-wrap" style="margin-top:12px;border:0"><table style="min-width:0"><thead><tr><th>Tgl</th><th>Kategori</th><th>Jumlah</th><th>Ket</th><th></th></tr></thead><tbody>
-${db.expenses.slice().reverse().map(e=>`<tr><td>${e.date}</td><td>${e.category}</td><td>Rp ${Number(e.amount).toLocaleString("id-ID")}</td><td>${e.description}</td><td><button class="btn btn-ghost btn-sm" onclick="deleteExpense('${e.id}')">✕</button></td></tr>`).join("")||`<tr><td colspan=5><div class=empty>Belum ada pengeluaran</div></td></tr>`}
+<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Pengeluaran & Gaji</h3><button class="btn btn-primary btn-sm" onclick="openModal('expense')">+ Pengeluaran / Bayar Upah</button></div>
+<div class="table-wrap" style="margin-top:12px;border:0"><table style="min-width:0"><thead><tr><th>Tgl</th><th>Kategori</th><th>Jumlah</th><th>Ket</th><th>Teknisi</th><th></th></tr></thead><tbody>
+${db.expenses.slice().reverse().map(e=>{
+const tech=db.technicians.find(t=>t.id===e.technicianId)?.name||"-";
+return `<tr><td>${e.date}</td><td><span class="status ${e.category==="Gaji / Upah"?"s-Diagnosis":"s-Diambil"}">${e.category}</span></td><td>Rp ${Number(e.amount).toLocaleString("id-ID")}</td><td>${e.description}</td><td>${tech}</td><td><button class="btn btn-ghost btn-sm" onclick="deleteExpense('${e.id}')">✕</button></td></tr>`
+}).join("")||`<tr><td colspan=6><div class=empty>Belum ada pengeluaran</div></td></tr>`}
 </tbody></table></div></div>
-<div class="card"><h3>Servis Lunas (Diambil)</h3><div class="table-wrap" style="margin-top:12px;border:0"><table style="min-width:0"><thead><tr><th>Invoice</th><th>Tgl</th><th>Biaya</th></tr></thead><tbody>
-${db.services.filter(s=>s.status==="Diambil").slice(-10).reverse().map(s=>`<tr><td>${s.invoiceNo}</td><td>${s.dateIn}</td><td>Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}</td></tr>`).join("")||`<tr><td colspan=3><div class=empty>Belum ada</div></td></tr>`}
+<div class="card"><h3>Servis & Penjualan Lunas</h3><div class="table-wrap" style="margin-top:12px;border:0"><table style="min-width:0"><thead><tr><th>Tipe</th><th>Invoice</th><th>Tgl</th><th>Biaya</th></tr></thead><tbody>
+${[...db.services.filter(s=>s.status==="Diambil").slice(-5).reverse().map(s=>`<tr><td><span class="status s-Diambil">Servis</span></td><td>${s.invoiceNo}</td><td>${s.dateIn}</td><td>Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}</td></tr>`), ...db.sales.slice(-5).reverse().map(s=>`<tr><td><span class="status s-Selesai">Jual</span></td><td>${s.invoiceNo}</td><td>${s.date}</td><td>Rp ${Number(s.total).toLocaleString("id-ID")}</td></tr>`)].join("")||`<tr><td colspan=4><div class=empty>Belum ada</div></td></tr>`}
 </tbody></table></div></div>
 </div>`;
 }
+
 function renderLaporan(){
-const months=[...new Set(db.services.map(s=>s.dateIn.slice(0,7)))].sort().reverse();
+const months=[...new Set([...db.services.map(s=>s.dateIn.slice(0,7)), ...db.sales.map(s=>s.date.slice(0,7))])].sort().reverse();
 return `
 <div class="grid grid-2">
 <div class="card"><h3>Filter Laporan</h3>
 <div style="display:grid;gap:12px;margin-top:12px">
 <div><label class="label">Bulan</label><select id="reportMonth" class="input"><option value="">Semua Bulan</option>${months.map(m=>`<option>${m}</option>`).join("")}</select></div>
-<div><label class="label">Status</label><select id="reportStatus" class="input"><option>Semua</option><option>Masuk</option><option>Diagnosis</option><option>Menunggu Sparepart</option><option>Dikerjakan</option><option>Selesai</option><option>Diambil</option><option>Batal</option></select></div>
+<div><label class="label">Status Servis</label><select id="reportStatus" class="input"><option>Semua</option><option>Masuk</option><option>Diagnosis</option><option>Menunggu Sparepart</option><option>Dikerjakan</option><option>Selesai</option><option>Diambil</option><option>Batal</option></select></div>
 <button class="btn btn-primary" onclick="applyReport()">Tampilkan Laporan</button>
 </div>
 </div>
 <div class="card" id="reportResult"><h3>Hasil Laporan</h3><div class="empty">Pilih filter lalu klik Tampilkan</div></div>
 </div>
-<div class="card" style="margin-top:16px"><h3>Export Laporan</h3><div style="margin-top:10px;display:flex;gap:10px"><button class="btn btn-black btn-sm" onclick="exportCSV()">📄 Export CSV Servis</button><button class="btn btn-primary btn-sm" onclick="exportJSON()">💾 Export JSON Lengkap</button></div></div>
+<div class="card" style="margin-top:16px"><h3>Export Laporan</h3><div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-black btn-sm" onclick="exportCSV()">📄 Export CSV Servis</button><button class="btn btn-black btn-sm" onclick="exportCSVSales()">📄 Export CSV Penjualan</button><button class="btn btn-primary btn-sm" onclick="exportJSON()">💾 Export JSON Lengkap</button></div></div>
 `;
 }
 function applyReport(){
 const month=document.getElementById("reportMonth").value;
 const status=document.getElementById("reportStatus").value;
 let list=db.services;
-if(month) list=list.filter(s=>s.dateIn.startsWith(month));
+let salesList=db.sales;
+if(month){ list=list.filter(s=>s.dateIn.startsWith(month)); salesList=salesList.filter(s=>s.date.startsWith(month)); }
 if(status!=="Semua") list=list.filter(s=>s.status===status);
-// LOGIKA BARU
-const omsetReal=list.filter(s=>s.status==="Diambil").reduce((a,b)=>a+(Number(b.finalCost||b.estCost||0)),0);
+const omsetRealServis=list.filter(s=>s.status==="Diambil").reduce((a,b)=>a+(Number(b.finalCost||b.estCost||0)),0);
+const salesTotal=salesList.reduce((a,b)=>a+Number(b.total||0),0);
+const omsetReal=omsetRealServis+salesTotal;
 const omsetEstimasi=list.filter(s=>s.status!=="Diambil"&&s.status!=="Batal").reduce((a,b)=>a+(Number(b.estCost||b.finalCost||0)),0);
-const omset=omsetReal; // untuk table
 const dp=list.filter(s=>s.status==="Diambil").reduce((a,b)=>a+Number(b.dp||0),0);
-const dpEstimasi=list.reduce((a,b)=>a+Number(b.dp||0),0);
 const el=document.getElementById("reportResult");
-el.innerHTML=`<h3>Hasil • ${list.length} transaksi ${month?`• ${month}`:""} ${status!=="Semua"?`• ${status}`:""}</h3>
+el.innerHTML=`<h3>Hasil • ${list.length} servis + ${salesList.length} penjualan ${month?`• ${month}`:""} ${status!=="Semua"?`• ${status}`:""}</h3>
 <div class="grid grid-2" style="margin-top:12px">
-<div><div style="font-size:12px;color:var(--muted)">Pendapatan Real (Diambil)</div><div style="font-size:20px;font-weight:900;color:#16a34a">Rp ${omsetReal.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted)">Estimasi tertahan: Rp ${omsetEstimasi.toLocaleString("id-ID")}</div></div>
-<div><div style="font-size:12px;color:var(--muted)">DP Real (Diambil)</div><div style="font-size:20px;font-weight:900">Rp ${dp.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted)">Total DP semua status: Rp ${dpEstimasi.toLocaleString("id-ID")}</div></div>
+<div><div style="font-size:12px;color:var(--muted)">Pendapatan Real (Diambil+Jual)</div><div style="font-size:20px;font-weight:900;color:#16a34a">Rp ${omsetReal.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted)">Servis Diambil: Rp ${omsetRealServis.toLocaleString("id-ID")} + Jual: Rp ${salesTotal.toLocaleString("id-ID")}<br>Estimasi tertahan: Rp ${omsetEstimasi.toLocaleString("id-ID")}</div></div>
+<div><div style="font-size:12px;color:var(--muted)">DP Real (Diambil)</div><div style="font-size:20px;font-weight:900">Rp ${dp.toLocaleString("id-ID")}</div></div>
 </div>
-<div style="margin-top:10px;padding:8px 12px;background:#fefce8;border:1px solid #facc15;border-radius:8px;font-size:11px;color:#713f12">ℹ️ Aturan baru: Hanya status <b>Diambil</b> yang dihitung sebagai pendapatan. Status lain hanya Estimasi.</div>
-<div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Invoice</th><th>Tgl</th><th>Pelanggan</th><th>Device</th><th>Status</th><th>Biaya</th></tr></thead><tbody>
+<div style="margin-top:10px;padding:8px 12px;background:#fefce8;border:1px solid #facc15;border-radius:8px;font-size:11px;color:#713f12">ℹ️ Hanya status <b>Diambil</b> + Penjualan yang jadi pendapatan.</div>
+<div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Tipe</th><th>Invoice</th><th>Tgl</th><th>Pelanggan</th><th>Detail</th><th>Status</th><th>Biaya</th></tr></thead><tbody>
 ${list.map(s=>{
 const cust=db.customers.find(c=>c.id===s.customerId)?.name||"-";
 const isReal=s.status==="Diambil";
 const biayaLabel=isReal?`Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}`:`<span style="color:#71717a">Est: Rp ${Number(s.estCost||s.finalCost||0).toLocaleString("id-ID")}</span>`;
-return `<tr><td>${s.invoiceNo}</td><td>${s.dateIn}</td><td>${cust}</td><td>${s.deviceType} ${s.brand}</td><td>${s.status}</td><td>${biayaLabel}</td></tr>`
+return `<tr><td>Servis</td><td>${s.invoiceNo}</td><td>${s.dateIn}</td><td>${cust}</td><td>${s.deviceType} ${s.brand}</td><td>${s.status}</td><td>${biayaLabel}</td></tr>`
+}).join("")}
+${salesList.map(s=>{
+const cust=db.customers.find(c=>c.id===s.customerId)?.name||"-";
+return `<tr><td>Jual</td><td>${s.invoiceNo}</td><td>${s.date}</td><td>${cust}</td><td>${s.items.length} item</td><td>Lunas</td><td>Rp ${Number(s.total).toLocaleString("id-ID")}</td></tr>`
 }).join("")}
 </tbody></table></div>`;
 }
+
+// MODALS
 function openModal(type){
-if(type==="servis"){populateServisSelects();document.getElementById("servisModalTitle").innerText=document.getElementById("s_id").value?"Edit Servis":"Tambah Servis Baru"}
+if(type==="servis"){populateServisSelects();tempServiceParts=[];renderServiceParts();document.getElementById("servisModalTitle").innerText=document.getElementById("s_id").value?"Edit Servis":"Tambah Servis Baru"}
+if(type==="sale"){populateSaleSelects();tempSaleCart=[];renderSaleCart();document.getElementById("sale_id").value="";document.getElementById("sale_date").valueAsDate=new Date();}
 document.getElementById(`modal-${type}`).classList.add("show");
 }
 function closeModal(type){
 document.getElementById(`modal-${type}`).classList.remove("show");
-if(type==="servis"){document.getElementById("formServis").reset();document.getElementById("s_id").value="";document.getElementById("s_dateIn").valueAsDate=new Date();}
+if(type==="servis"){document.getElementById("formServis").reset();document.getElementById("s_id").value="";document.getElementById("s_dateIn").valueAsDate=new Date();tempServiceParts=[];}
 if(type==="pelanggan"){document.getElementById("formPelanggan").reset();document.getElementById("p_id").value="";}
 if(type==="teknisi"){document.getElementById("formTeknisi").reset();document.getElementById("t_id").value="";}
 if(type==="part"){document.getElementById("formPart").reset();document.getElementById("sp_id").value="";}
-if(type==="expense"){document.getElementById("formExpense").reset();document.getElementById("e_id").value="";if(document.getElementById("e_date"))document.getElementById("e_date").valueAsDate=new Date();}
+if(type==="expense"){document.getElementById("formExpense").reset();document.getElementById("e_id").value="";document.getElementById("e_date").valueAsDate=new Date();}
+if(type==="sale"){document.getElementById("formSale").reset();document.getElementById("sale_id").value="";tempSaleCart=[];}
 }
 function openBackup(){document.getElementById("modal-backup").classList.add("show");loadConfigToForm();}
+function openWATemplates(){
+const container=document.getElementById("waTemplatesForm");
+container.innerHTML=Object.keys(db.config.waTemplates).map(status=>{
+return `<div><label class="label">Status: ${status}</label><textarea class="input wa-template" data-status="${status}" rows="4">${db.config.waTemplates[status]}</textarea></div>`;
+}).join("");
+document.getElementById("modal-wa-templates").classList.add("show");
+}
 function populateServisSelects(){
 const custSel=document.getElementById("s_customer");
 custSel.innerHTML=db.customers.map(c=>`<option value="${c.id}">${c.name} - ${c.phone}</option>`).join("");
 const techSel=document.getElementById("s_technician");
-techSel.innerHTML=`<option value="">- Pilih Teknisi -</option>`+db.technicians.map(t=>`<option value="${t.id}">${t.name}</option>`).join("");
+techSel.innerHTML=`<option value="">- Pilih Teknisi -</option>`+db.technicians.map(t=>`<option value="${t.id}">${t.name} - ${t.wageType}</option>`).join("");
+const partSel=document.getElementById("s_partSelect");
+partSel.innerHTML=`<option value="">- Pilih Part untuk dipakai servis -</option>`+db.parts.map(p=>`<option value="${p.id}">${p.name} (Stok: ${p.stock}) - Rp ${Number(p.sellPrice).toLocaleString("id-ID")}</option>`).join("");
 }
+function populateSaleSelects(){
+const custSel=document.getElementById("sale_customer");
+custSel.innerHTML=db.customers.map(c=>`<option value="${c.id}">${c.name} - ${c.phone}</option>`).join("");
+const partSel=document.getElementById("sale_partSelect");
+partSel.innerHTML=`<option value="">- Pilih Part -</option>`+db.parts.map(p=>`<option value="${p.id}">${p.name} (Stok: ${p.stock}) - Jual Rp ${Number(p.sellPrice).toLocaleString("id-ID")} | Beli Rp ${Number(p.buyPrice).toLocaleString("id-ID")}</option>`).join("");
+updateSalePartInfo();
+document.getElementById("sale_partSelect").addEventListener("change",updateSalePartInfo);
+}
+function updateSalePartInfo(){
+const partId=document.getElementById("sale_partSelect")?.value;
+const info=document.getElementById("sale_partsInfo");
+if(!info) return;
+if(!partId){info.innerHTML="";return}
+const p=db.parts.find(x=>x.id===partId);
+if(!p){info.innerHTML="";return}
+info.innerHTML=`Stok tersedia: <b>${p.stock}</b> • Harga beli: Rp ${Number(p.buyPrice).toLocaleString("id-ID")} • Harga jual: <b>Rp ${Number(p.sellPrice).toLocaleString("id-ID")}</b> • Margin: Rp ${(Number(p.sellPrice)-Number(p.buyPrice)).toLocaleString("id-ID")}`;
+}
+
+// SERVICE PARTS LOGIC
+function addPartToService(){
+const partId=document.getElementById("s_partSelect").value;
+const qty=Number(document.getElementById("s_partQty").value||1);
+if(!partId){alert("Pilih part dulu");return}
+const part=db.parts.find(p=>p.id===partId);
+if(!part){alert("Part tidak ditemukan");return}
+if(Number(part.stock)<qty){alert(`Stok tidak cukup! Stok ${part.name} hanya ${part.stock}`);return}
+const existing=tempServiceParts.findIndex(x=>x.partId===partId);
+if(existing>=0){tempServiceParts[existing].qty+=qty; tempServiceParts[existing].total=tempServiceParts[existing].qty*Number(part.sellPrice);}
+else{tempServiceParts.push({partId, qty, price:Number(part.sellPrice), total:qty*Number(part.sellPrice), name:part.name});}
+renderServiceParts();
+}
+function renderServiceParts(){
+const container=document.getElementById("s_partsList");
+if(!container) return;
+if(!tempServiceParts.length){container.innerHTML=`<div style="font-size:12px;color:var(--muted)">Belum ada part yang dipakai. Stok akan berkurang saat servis disimpan.</div>`;return}
+container.innerHTML=tempServiceParts.map((item,idx)=>`
+<div class="cart-item"><div><b>${item.name}</b> x${item.qty} = Rp ${Number(item.total).toLocaleString("id-ID")}</div><button type="button" class="btn btn-ghost btn-sm" onclick="tempServiceParts.splice(${idx},1);renderServiceParts()">Hapus</button></div>
+`).join("")+`<div style="font-size:12px;font-weight:700;margin-top:6px">Total Part: Rp ${tempServiceParts.reduce((a,b)=>a+b.total,0).toLocaleString("id-ID")}</div>`;
+}
+
+// SALE CART LOGIC
+function addPartToSale(){
+const partId=document.getElementById("sale_partSelect").value;
+const qty=Number(document.getElementById("sale_qty").value||1);
+if(!partId){alert("Pilih part dulu");return}
+const part=db.parts.find(p=>p.id===partId);
+if(!part){alert("Part tidak ditemukan");return}
+if(Number(part.stock)<qty){alert(`Stok tidak cukup! Stok ${part.name} hanya ${part.stock}`);return}
+const existing=tempSaleCart.findIndex(x=>x.partId===partId);
+if(existing>=0){
+if(Number(part.stock)<tempSaleCart[existing].qty+qty){alert(`Stok tidak cukup! Sisa stok ${part.stock} sedangkan di keranjang sudah ${tempSaleCart[existing].qty}`);return}
+tempSaleCart[existing].qty+=qty;
+tempSaleCart[existing].total=tempSaleCart[existing].qty*Number(part.sellPrice);
+tempSaleCart[existing].profit=tempSaleCart[existing].qty*(Number(part.sellPrice)-Number(part.buyPrice));
+}else{
+tempSaleCart.push({partId, qty, price:Number(part.sellPrice), buyPrice:Number(part.buyPrice), total:qty*Number(part.sellPrice), profit:qty*(Number(part.sellPrice)-Number(part.buyPrice)), name:part.name});
+}
+renderSaleCart();
+}
+function renderSaleCart(){
+const container=document.getElementById("sale_cart");
+const totalInput=document.getElementById("sale_total");
+const profitInput=document.getElementById("sale_profit");
+if(!container) return;
+if(!tempSaleCart.length){
+container.innerHTML=`<div style="font-size:12px;color:var(--muted);padding:12px;border:1px dashed var(--border);border-radius:10px;text-align:center">Keranjang kosong. Pilih part dan klik + Keranjang. Stok akan otomatis berkurang saat disimpan.</div>`;
+if(totalInput) totalInput.value=0;
+if(profitInput) profitInput.value=0;
+return
+}
+container.innerHTML=tempSaleCart.map((item,idx)=>`
+<div class="cart-item"><div><b>${item.name}</b><div style="font-size:12px;color:var(--muted)">${item.qty} x Rp ${Number(item.price).toLocaleString("id-ID")} = Rp ${Number(item.total).toLocaleString("id-ID")} • Laba Rp ${Number(item.profit).toLocaleString("id-ID")}</div></div><button type="button" class="btn btn-ghost btn-sm" onclick="tempSaleCart.splice(${idx},1);renderSaleCart()">Hapus</button></div>
+`).join("");
+const total=tempSaleCart.reduce((a,b)=>a+b.total,0);
+const profit=tempSaleCart.reduce((a,b)=>a+b.profit,0);
+if(totalInput) totalInput.value=total;
+if(profitInput) profitInput.value=profit;
+}
+
+// SAVE LOGIC
 function saveServis(e){
 e.preventDefault();
 const id=document.getElementById("s_id").value||`SRV-${Date.now()}`;
 const isNew=!document.getElementById("s_id").value;
+const oldService=db.services.find(s=>s.id===id);
+// kembalikan stok lama jika edit
+if(!isNew && oldService && oldService.partsUsed){
+oldService.partsUsed.forEach(pu=>{
+const part=db.parts.find(pp=>pp.id===pu.partId);
+if(part) part.stock+=Number(pu.qty||0);
+});
+}
+const partTotal=tempServiceParts.reduce((a,b)=>a+b.total,0);
+const estCost=Number(document.getElementById("s_estCost").value||0);
 const data={
 id,
 invoiceNo:isNew?`${db.config.invoicePrefix || "SRV"}-${db.seq++}`:db.services.find(s=>s.id===id)?.invoiceNo,
@@ -593,20 +944,39 @@ serial:document.getElementById("s_serial").value,
 dateIn:document.getElementById("s_dateIn").value,
 complaint:document.getElementById("s_complaint").value,
 condition:document.getElementById("s_condition").value,
-estCost:Number(document.getElementById("s_estCost").value||0),
+estCost:estCost,
 dp:Number(document.getElementById("s_dp").value||0),
-finalCost:Number(document.getElementById("s_estCost").value||0),
+finalCost:estCost+partTotal,
+partsUsed: [...tempServiceParts],
 status:document.getElementById("s_status").value,
 warranty:Number(document.getElementById("s_warranty").value||0),
 notes:document.getElementById("s_notes").value,
 dateDone:document.getElementById("s_status").value==="Selesai"?new Date().toISOString().slice(0,10):""
 };
+// kurangi stok untuk part baru
+for(const pu of data.partsUsed){
+const part=db.parts.find(p=>p.id===pu.partId);
+if(part){
+if(Number(part.stock)<Number(pu.qty)){alert(`Stok ${part.name} tidak cukup! Sisa ${part.stock}, butuh ${pu.qty}`); // rollback stok lama yang sudah dikembalikan? sudah dikembalikan di atas, jadi aman
+// kembalikan stok yang sudah dikurangi di loop ini sebelumnya
+for(const prev of data.partsUsed){
+if(prev===pu) break;
+const pp=db.parts.find(pp=>pp.id===prev.partId);
+if(pp) pp.stock-=Number(prev.qty);
+}
+return;
+}
+part.stock-=Number(pu.qty);
+}
+}
 if(isNew) db.services.push(data);
 else{
 const idx=db.services.findIndex(s=>s.id===id);
-if(idx>=0){data.invoiceNo=db.services[idx].invoiceNo;data.finalCost=db.services[idx].finalCost||data.estCost;db.services[idx]=data}
+if(idx>=0){data.invoiceNo=db.services[idx].invoiceNo; db.services[idx]=data}
 }
 saveDB();closeModal("servis");
+// tawarkan kirim WA
+setTimeout(()=>{ if(confirm(`Servis disimpan! Kirim WA ke pelanggan untuk status ${data.status}?`)){ openWA(data.id, data.status); } },300);
 }
 function editServis(id){
 const s=db.services.find(x=>x.id===id);if(!s)return;
@@ -625,6 +995,8 @@ document.getElementById("s_dp").value=s.dp;
 document.getElementById("s_status").value=s.status;
 document.getElementById("s_warranty").value=s.warranty;
 document.getElementById("s_notes").value=s.notes;
+tempServiceParts=s.partsUsed?[...s.partsUsed]:[];
+renderServiceParts();
 openModal("servis");
 }
 function openDetail(id){
@@ -632,21 +1004,32 @@ const s=db.services.find(x=>x.id===id);if(!s)return;
 const cust=db.customers.find(c=>c.id===s.customerId)||{};
 const tech=db.technicians.find(t=>t.id===s.technicianId)||{name:"-"};
 const sisa=(Number(s.finalCost||s.estCost||0)-Number(s.dp||0));
+const partsHtml=s.partsUsed&&s.partsUsed.length?`<div style="margin-top:8px">${s.partsUsed.map(pu=>`<div style="font-size:13px">• ${pu.name} x${pu.qty} = Rp ${Number(pu.total).toLocaleString("id-ID")}</div>`).join("")}<div style="font-weight:800;margin-top:4px">Total Part: Rp ${s.partsUsed.reduce((a,b)=>a+b.total,0).toLocaleString("id-ID")}</div></div>`:"<div style='font-size:12px;color:var(--muted)'>Tidak pakai sparepart</div>";
+const waMessage=getWAMessage(s.status,s);
 document.getElementById("detailBody").innerHTML=`
 <div style="display:grid;gap:14px">
 <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
-<div><div style="font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.1em">INVOICE</div><div style="font-size:22px;font-weight:900">${s.invoiceNo}</div><div style="font-size:12px;color:var(--muted)">${s.dateIn} • <span class="status s-${s.status.split(" ")[0]}">${s.status}</span></div></div>
+<div><div style="font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.1em">INVOICE</div><div style="font-size:22px;font-weight:900">${s.invoiceNo}</div><div style="font-size:12px;color:var(--muted)">${s.dateIn} • <span class="status s-${s.status.split(" ")[0]}">${s.status}</span> ${s.status!=="Diambil"?'<span style="color:#a1a1aa">(Estimasi)</span>':'<span style="color:#16a34a">(Pendapatan Real)</span>'}</div></div>
 <div style="text-align:right"><div style="font-size:11px;color:var(--muted);font-weight:800">PELANGGAN</div><div style="font-weight:800">${cust.name}</div><div style="font-size:13px">${cust.phone}<br>${cust.address}</div></div>
 </div>
+
+<div class="card" style="background:#f0fdf4;border-color:#bbf7d0"><h3 style="color:#16a34a">📱 Pesan WA untuk Status: ${s.status}</h3>
+<div class="wa-preview" style="margin-top:8px">${waMessage}</div>
+<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+<button class="btn btn-green btn-sm" onclick="openWA('${s.id}')">📲 Kirim WA Status ${s.status}</button>
+${["Masuk","Diagnosis","Menunggu Sparepart","Dikerjakan","Selesai","Diambil","Batal"].map(st=>`<button class="btn btn-ghost btn-sm" onclick="openWA('${s.id}','${st}')">WA ${st}</button>`).join("")}
+</div>
+</div>
+
 <div class="grid grid-2">
-<div class="card"><h3>Device</h3><div style="margin-top:6px;font-weight:700">${s.deviceType} ${s.brand}</div><div style="font-size:13px;color:var(--muted)">SN: ${s.serial||"-"}<br>Kondisi: ${s.condition||"-"}</div><div style="margin-top:8px;font-size:13px"><b>Keluhan:</b> ${s.complaint}</div></div>
-<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Biaya</h3><div style="margin-top:6px"><div style="display:flex;justify-content:space-between"><span>Estimasi / Final</span><b style="color:var(--yellow)">Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}</b></div><div style="display:flex;justify-content:space-between"><span>DP</span><span>Rp ${Number(s.dp||0).toLocaleString("id-ID")}</span></div><div style="display:flex;justify-content:space-between;border-top:1px dashed #222;margin-top:8px;padding-top:8px"><span>Sisa Bayar</span><b>Rp ${sisa.toLocaleString("id-ID")}</b></div></div><div style="margin-top:8px;font-size:12px;color:#71717a">Teknisi: ${tech.name} • Garansi ${s.warranty} hari</div></div>
+<div class="card"><h3>Device</h3><div style="margin-top:6px;font-weight:700">${s.deviceType} ${s.brand}</div><div style="font-size:13px;color:var(--muted)">SN: ${s.serial||"-"}<br>Kondisi: ${s.condition||"-"}</div><div style="margin-top:8px;font-size:13px"><b>Keluhan:</b> ${s.complaint}</div>${partsHtml}</div>
+<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Biaya ${s.status!=="Diambil"?'<span style="color:#71717a">(Estimasi)</span>':'<span style="color:var(--yellow)">(Real)</span>'}</h3><div style="margin-top:6px"><div style="display:flex;justify-content:space-between"><span>Biaya Servis</span><b>Rp ${Number(s.estCost||0).toLocaleString("id-ID")}</b></div><div style="display:flex;justify-content:space-between"><span>Part</span><span>Rp ${(s.partsUsed||[]).reduce((a,b)=>a+b.total,0).toLocaleString("id-ID")}</span></div><div style="display:flex;justify-content:space-between;font-weight:800;border-top:1px solid #222;margin-top:6px;padding-top:6px"><span>Total</span><b style="color:var(--yellow)">Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}</b></div><div style="display:flex;justify-content:space-between"><span>DP</span><span>Rp ${Number(s.dp||0).toLocaleString("id-ID")}</span></div><div style="display:flex;justify-content:space-between;border-top:1px dashed #222;margin-top:8px;padding-top:8px"><span>Sisa Bayar</span><b>Rp ${sisa.toLocaleString("id-ID")}</b></div></div><div style="margin-top:8px;font-size:12px;color:#71717a">Teknisi: ${tech.name} • Garansi ${s.warranty} hari</div></div>
 </div>
 <div class="card"><h3>Catatan Teknisi</h3><div style="margin-top:6px;font-size:14px">${s.notes||"<span style=color:var(--muted)>-</span>"}</div></div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
 <button class="btn btn-primary btn-sm" onclick="editServis('${s.id}');closeModal('detail')">Edit</button>
-<button class="btn btn-ghost btn-sm" onclick="updateStatus('${s.id}','Selesai')">Tandai Selesai</button>
-<button class="btn btn-ghost btn-sm" onclick="updateStatus('${s.id}','Diambil')">Tandai Diambil</button>
+<button class="btn btn-black btn-sm" onclick="updateStatus('${s.id}','Selesai')">Tandai Selesai + WA</button>
+<button class="btn btn-green btn-sm" onclick="updateStatus('${s.id}','Diambil')">Tandai Diambil + WA</button>
 <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteServis('${s.id}')">Hapus</button>
 </div>
 </div>
@@ -657,8 +1040,19 @@ function updateStatus(id,status){
 const s=db.services.find(x=>x.id===id);if(!s)return;
 s.status=status;if(status==="Selesai") s.dateDone=new Date().toISOString().slice(0,10);
 saveDB();openDetail(id);
+setTimeout(()=>{ if(confirm(`Status diubah ke ${status}. Kirim WA ke pelanggan?`)){ openWA(id,status);} },300);
 }
-function deleteServis(id){if(!confirm("Hapus servis ini?"))return;db.services=db.services.filter(s=>s.id!==id);saveDB();closeModal("detail");}
+function deleteServis(id){
+if(!confirm("Hapus servis ini? Stok part yang dipakai akan dikembalikan."))return;
+const s=db.services.find(x=>x.id===id);
+if(s && s.partsUsed){
+s.partsUsed.forEach(pu=>{
+const part=db.parts.find(p=>p.id===pu.partId);
+if(part) part.stock+=Number(pu.qty);
+});
+}
+db.services=db.services.filter(s=>s.id!==id);saveDB();closeModal("detail");}
+
 function printNota(){
 const detail=document.getElementById("detailBody").innerHTML;
 const cfg=db.config;
@@ -678,34 +1072,222 @@ printArea.style.display="block";
 window.print();
 setTimeout(()=>printArea.style.display="none",500);
 }
+
+// PELANGGAN
 function savePelanggan(e){e.preventDefault();const id=document.getElementById("p_id").value||`CUST-${Date.now()}`;const data={id,name:document.getElementById("p_name").value,phone:document.getElementById("p_phone").value,address:document.getElementById("p_address").value};const idx=db.customers.findIndex(c=>c.id===id);if(idx>=0)db.customers[idx]=data;else db.customers.push(data);saveDB();closeModal("pelanggan");}
 function editPelanggan(id){const c=db.customers.find(x=>x.id===id);if(!c)return;document.getElementById("p_id").value=c.id;document.getElementById("p_name").value=c.name;document.getElementById("p_phone").value=c.phone;document.getElementById("p_address").value=c.address;openModal("pelanggan");}
 function deletePelanggan(id){if(db.customers.length<=1){alert("Minimal 1 pelanggan harus ada");return}if(!confirm("Hapus pelanggan?"))return;db.customers=db.customers.filter(c=>c.id!==id);saveDB();}
-function saveTeknisi(e){e.preventDefault();const id=document.getElementById("t_id").value||`TECH-${Date.now()}`;const data={id,name:document.getElementById("t_name").value,phone:document.getElementById("t_phone").value,skill:document.getElementById("t_skill").value};const idx=db.technicians.findIndex(t=>t.id===id);if(idx>=0)db.technicians[idx]=data;else db.technicians.push(data);saveDB();closeModal("teknisi");}
-function editTeknisi(id){const t=db.technicians.find(x=>x.id===id);document.getElementById("t_id").value=t.id;document.getElementById("t_name").value=t.name;document.getElementById("t_phone").value=t.phone;document.getElementById("t_skill").value=t.skill;openModal("teknisi");}
+
+// TEKNISI & UPAH
+function saveTeknisi(e){
+e.preventDefault();
+const id=document.getElementById("t_id").value||`TECH-${Date.now()}`;
+const data={
+id,
+name:document.getElementById("t_name").value,
+phone:document.getElementById("t_phone").value,
+skill:document.getElementById("t_skill").value,
+wageType:document.getElementById("t_wageType").value,
+baseSalary:Number(document.getElementById("t_baseSalary").value||0),
+commPerService:Number(document.getElementById("t_commPerService").value||0),
+commPercent:Number(document.getElementById("t_commPercent").value||0)
+};
+const idx=db.technicians.findIndex(t=>t.id===id);
+if(idx>=0)db.technicians[idx]=data;else db.technicians.push(data);
+saveDB();closeModal("teknisi");
+}
+function editTeknisi(id){const t=db.technicians.find(x=>x.id===id);if(!t)return;document.getElementById("t_id").value=t.id;document.getElementById("t_name").value=t.name;document.getElementById("t_phone").value=t.phone;document.getElementById("t_skill").value=t.skill;document.getElementById("t_wageType").value=t.wageType||"komisi";document.getElementById("t_baseSalary").value=t.baseSalary||0;document.getElementById("t_commPerService").value=t.commPerService||0;document.getElementById("t_commPercent").value=t.commPercent||0;openModal("teknisi");}
 function deleteTeknisi(id){if(!confirm("Hapus teknisi?"))return;db.technicians=db.technicians.filter(t=>t.id!==id);saveDB();}
+function payWage(techId){
+const tech=db.technicians.find(t=>t.id===techId);
+if(!tech) return;
+const earn=calcTechnicianEarnings(techId);
+const suggested=earn.totalComm+Number(tech.baseSalary||0);
+const amountStr=prompt(`Bayar upah untuk ${tech.name}\nTotal komisi tertahan: Rp ${earn.totalComm.toLocaleString("id-ID")}\nGaji pokok: Rp ${Number(tech.baseSalary||0).toLocaleString("id-ID")}\n\nMasukkan jumlah yang dibayar:`, suggested);
+if(amountStr===null) return;
+const amount=Number(amountStr);
+if(!amount||amount<=0){alert("Jumlah tidak valid");return}
+const payroll={
+id:`PAY-${Date.now()}`,
+technicianId:techId,
+date:new Date().toISOString().slice(0,10),
+amount:amount,
+note:`Pembayaran upah - Komisi ${earn.count} job`
+};
+db.payrolls.push(payroll);
+db.expenses.push({
+id:`EXP-${Date.now()}`,
+date:payroll.date,
+category:"Gaji / Upah",
+amount:amount,
+description:`Upah ${tech.name} - ${earn.count} job`,
+technicianId:techId
+});
+saveDB();
+alert(`Upah Rp ${amount.toLocaleString("id-ID")} dibayar untuk ${tech.name} dan tercatat di pengeluaran.`);
+}
+function deletePayroll(id){
+if(!confirm("Hapus riwayat pembayaran upah? Pengeluaran terkait tidak otomatis terhapus, hapus manual di keuangan jika perlu."))return;
+db.payrolls=db.payrolls.filter(p=>p.id!==id);saveDB();
+}
+
+// PART
 function savePart(e){e.preventDefault();const id=document.getElementById("sp_id").value||`PART-${Date.now()}`;const data={id,name:document.getElementById("sp_name").value,stock:Number(document.getElementById("sp_stock").value),buyPrice:Number(document.getElementById("sp_buy").value),sellPrice:Number(document.getElementById("sp_sell").value)};const idx=db.parts.findIndex(p=>p.id===id);if(idx>=0)db.parts[idx]=data;else db.parts.push(data);saveDB();closeModal("part");}
-function editPart(id){const p=db.parts.find(x=>x.id===id);document.getElementById("sp_id").value=p.id;document.getElementById("sp_name").value=p.name;document.getElementById("sp_stock").value=p.stock;document.getElementById("sp_buy").value=p.buyPrice;document.getElementById("sp_sell").value=p.sellPrice;openModal("part");}
-function deletePart(id){if(!confirm("Hapus part?"))return;db.parts=db.parts.filter(p=>p.id!==id);saveDB();}
-function saveExpense(e){e.preventDefault();const id=document.getElementById("e_id").value||`EXP-${Date.now()}`;const data={id,date:document.getElementById("e_date").value,category:document.getElementById("e_cat").value,amount:Number(document.getElementById("e_amount").value),description:document.getElementById("e_desc").value};const idx=db.expenses.findIndex(x=>x.id===id);if(idx>=0)db.expenses[idx]=data;else db.expenses.push(data);saveDB();closeModal("expense");}
+function editPart(id){const p=db.parts.find(x=>x.id===id);if(!p)return;document.getElementById("sp_id").value=p.id;document.getElementById("sp_name").value=p.name;document.getElementById("sp_stock").value=p.stock;document.getElementById("sp_buy").value=p.buyPrice;document.getElementById("sp_sell").value=p.sellPrice;openModal("part");}
+function deletePart(id){
+const usedInService=db.services.some(s=>s.partsUsed?.some(pu=>pu.partId===id));
+const usedInSales=db.sales.some(s=>s.items.some(i=>i.partId===id));
+if(usedInService||usedInSales){alert("Part ini sudah pernah dipakai di servis/penjualan. Tidak bisa dihapus agar laporan tetap valid. Set stok jadi 0 saja jika tidak dijual lagi.");return}
+if(!confirm("Hapus part?"))return;db.parts=db.parts.filter(p=>p.id!==id);saveDB();
+}
+function quickSale(partId){
+const part=db.parts.find(p=>p.id===partId);
+if(!part)return;
+document.getElementById("sale_partSelect").value=partId;
+openModal('sale');
+setTimeout(()=>{addPartToSale();},200);
+}
+
+// SALE
+function saveSale(e){
+e.preventDefault();
+const id=document.getElementById("sale_id").value||`SALE-${Date.now()}`;
+const isNew=!document.getElementById("sale_id").value;
+const oldSale=db.sales.find(s=>s.id===id);
+if(!isNew && oldSale){
+// kembalikan stok lama
+oldSale.items.forEach(i=>{
+const part=db.parts.find(p=>p.id===i.partId);
+if(part) part.stock+=Number(i.qty);
+});
+}
+if(!tempSaleCart.length){alert("Keranjang kosong! Tambah part dulu.");return}
+// cek stok lagi
+for(const item of tempSaleCart){
+const part=db.parts.find(p=>p.id===item.partId);
+if(!part || Number(part.stock)<Number(item.qty)){
+alert(`Stok ${part?.name||item.partId} tidak cukup! Sisa ${part?.stock||0}`);
+if(!isNew && oldSale){
+// kembalikan pengurangan yang sudah dilakukan? sebenarnya belum dikurangi, karena kita baru cek, tapi stok lama sudah dikembalikan di atas, jadi harus kurangi lagi oldSale? biar aman kembalikan ke semula:
+oldSale.items.forEach(ii=>{
+const pp=db.parts.find(pp=>pp.id===ii.partId);
+if(pp) pp.stock-=Number(ii.qty);
+});
+}
+return;
+}
+}
+const total=tempSaleCart.reduce((a,b)=>a+b.total,0);
+const profit=tempSaleCart.reduce((a,b)=>a+b.profit,0);
+const data={
+id,
+invoiceNo:isNew?`${db.config.salesPrefix||"JUAL"}-${db.salesSeq++}`:oldSale.invoiceNo,
+date:document.getElementById("sale_date").value,
+customerId:document.getElementById("sale_customer").value,
+items:[...tempSaleCart],
+total:total,
+profit:profit,
+notes:document.getElementById("sale_notes").value
+};
+// kurangi stok
+data.items.forEach(i=>{
+const part=db.parts.find(p=>p.id===i.partId);
+if(part) part.stock-=Number(i.qty);
+});
+if(isNew) db.sales.push(data);
+else{
+const idx=db.sales.findIndex(s=>s.id===id);
+if(idx>=0) db.sales[idx]=data;
+}
+saveDB();closeModal("sale");
+setTimeout(()=>{ if(confirm("Penjualan disimpan! Stok otomatis berkurang. Kirim WA ke pelanggan?")){ openWASale(data.id);} },300);
+}
+function openSaleDetail(id){
+const s=db.sales.find(x=>x.id===id);if(!s)return;
+const cust=db.customers.find(c=>c.id===s.customerId)||{};
+document.getElementById("saleDetailBody").innerHTML=`
+<div style="display:grid;gap:12px">
+<div style="display:flex;justify-content:space-between"><div><div style="font-size:11px;color:var(--muted);font-weight:800">INVOICE PENJUALAN</div><div style="font-size:20px;font-weight:900">${s.invoiceNo}</div><div style="font-size:12px;color:var(--muted)">${s.date}</div></div><div style="text-align:right"><div style="font-weight:800">${cust.name}</div><div style="font-size:13px">${cust.phone}</div></div></div>
+<div class="card"><h3>Item</h3><div style="margin-top:8px">${s.items.map(i=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f4f4f5"><span>${i.name} x${i.qty}</span><span>Rp ${Number(i.total).toLocaleString("id-ID")}</span></div>`).join("")}</div><div style="display:flex;justify-content:space-between;font-weight:900;margin-top:10px"><span>Total</span><span>Rp ${Number(s.total).toLocaleString("id-ID")}</span></div><div style="display:flex;justify-content:space-between;color:var(--success)"><span>Laba</span><span>Rp ${Number(s.profit).toLocaleString("id-ID")}</span></div></div>
+<div class="card"><h3>Catatan</h3><div style="margin-top:6px">${s.notes||"-"}</div></div>
+<div style="display:flex;gap:8px"><button class="btn btn-green btn-sm" onclick="openWASale('${s.id}')">📲 Kirim WA</button><button class="btn btn-black btn-sm" onclick="printSale('${s.id}')">🖨 Print Nota</button><button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="deleteSale('${s.id}')">Hapus</button></div>
+</div>
+`;
+document.getElementById("modal-sale-detail").classList.add("show");
+}
+function deleteSale(id){
+if(!confirm("Hapus penjualan ini? Stok akan dikembalikan otomatis."))return;
+const sale=db.sales.find(s=>s.id===id);
+if(sale){
+sale.items.forEach(i=>{
+const part=db.parts.find(p=>p.id===i.partId);
+if(part) part.stock+=Number(i.qty);
+});
+}
+db.sales=db.sales.filter(s=>s.id!==id);saveDB();closeModal("sale-detail");
+}
+function printSale(id){
+const s=db.sales.find(x=>x.id===id);if(!s)return;
+const cust=db.customers.find(c=>c.id===s.customerId)||{};
+const cfg=db.config;
+const printArea=document.getElementById("printArea");
+printArea.innerHTML=`
+<div style="padding:20px;font-family:sans-serif;color:#000">
+<div style="text-align:center;border-bottom:2px dashed #000;padding-bottom:12px;margin-bottom:12px">
+<div style="display:flex;align-items:center;justify-content:center;gap:10px"><img src="logo.png" style="width:40px;height:40px"><h2 style="margin:0">${cfg.shopName}</h2></div><div style="font-size:12px">${cfg.address} • ${cfg.phone}</div><div style="font-size:11px;margin-top:6px">NOTA PENJUALAN • ${s.invoiceNo} • ${s.date}</div>
+</div>
+<div style="font-size:13px">Pelanggan: <b>${cust.name}</b> (${cust.phone})</div>
+<div style="margin-top:12px">${s.items.map(i=>`<div style="display:flex;justify-content:space-between;border-bottom:1px dashed #ccc;padding:6px 0"><span>${i.name} x${i.qty}</span><span>Rp ${Number(i.total).toLocaleString("id-ID")}</span></div>`).join("")}</div>
+<div style="display:flex;justify-content:space-between;font-weight:800;margin-top:12px;border-top:2px solid #000;padding-top:8px"><span>TOTAL</span><span>Rp ${Number(s.total).toLocaleString("id-ID")}</span></div>
+<div style="margin-top:20px;text-align:center;font-size:11px">Terima kasih sudah belanja di ${cfg.shopName}</div>
+</div>`;
+printArea.style.display="block";
+window.print();
+setTimeout(()=>printArea.style.display="none",500);
+}
+
+// EXPENSE
+function saveExpense(e){e.preventDefault();const id=document.getElementById("e_id").value||`EXP-${Date.now()}`;const data={id,date:document.getElementById("e_date").value,category:document.getElementById("e_cat").value,amount:Number(document.getElementById("e_amount").value),description:document.getElementById("e_desc").value,technicianId:document.getElementById("e_tech").value||""};const idx=db.expenses.findIndex(x=>x.id===id);if(idx>=0)db.expenses[idx]=data;else db.expenses.push(data);saveDB();closeModal("expense");}
 function deleteExpense(id){if(!confirm("Hapus pengeluaran?"))return;db.expenses=db.expenses.filter(e=>e.id!==id);saveDB();}
+
+// BACKUP & WA TEMPLATES
+function saveWATemplates(){
+document.querySelectorAll(".wa-template").forEach(el=>{
+const status=el.dataset.status;
+db.config.waTemplates[status]=el.value;
+});
+saveDB();alert("Template WA disimpan!");closeModal("wa-templates");
+}
 function exportJSON(){
 const dataStr=JSON.stringify(db,null,2);
 const blob=new Blob([dataStr],{type:"application/json"});
 const url=URL.createObjectURL(blob);
-const a=document.createElement("a");a.href=url;a.download=`backup-servis-pro-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+const a=document.createElement("a");a.href=url;a.download=`backup-servis-pro-v3-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
 }
 function exportCSV(){
-const header=["Invoice","Tanggal","Pelanggan","HP","Device","Brand","Keluhan","Status","Biaya","DP","Teknisi"];
+const header=["Invoice","Tanggal","Pelanggan","HP","Device","Brand","Keluhan","Status","Biaya","DP","Teknisi","Parts"];
 const rows=db.services.map(s=>{
 const cust=db.customers.find(c=>c.id===s.customerId)||{};
 const tech=db.technicians.find(t=>t.id===s.technicianId)?.name||"";
-return [s.invoiceNo,s.dateIn,cust.name||"",cust.phone||"",s.deviceType,s.brand,`"${(s.complaint||"").replace(/"/g,'""')}"`,s.status,s.finalCost||s.estCost,s.dp,tech];
+const parts=(s.partsUsed||[]).map(p=>`${p.name} x${p.qty}`).join("; ");
+return [s.invoiceNo,s.dateIn,cust.name||"",cust.phone||"",s.deviceType,s.brand,`"${(s.complaint||"").replace(/"/g,'""')}"`,s.status,s.finalCost||s.estCost,s.dp,tech,parts];
 });
 const csv=[header,...rows].map(r=>r.join(",")).join("\n");
 const blob=new Blob([csv],{type:"text/csv"});
 const url=URL.createObjectURL(blob);
-const a=document.createElement("a");a.href=url;a.download=`laporan-servis-pro-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
+const a=document.createElement("a");a.href=url;a.download=`laporan-servis-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
+}
+function exportCSVSales(){
+const header=["Invoice","Tanggal","Pelanggan","HP","Items","Total","Laba"];
+const rows=db.sales.map(s=>{
+const cust=db.customers.find(c=>c.id===s.customerId)||{};
+const items=s.items.map(i=>`${i.name} x${i.qty}`).join("; ");
+return [s.invoiceNo,s.date,cust.name||"",cust.phone||"",`"${items}"`,s.total,s.profit];
+});
+const csv=[header,...rows].map(r=>r.join(",")).join("\n");
+const blob=new Blob([csv],{type:"text/csv"});
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");a.href=url;a.download=`laporan-penjualan-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
 }
 function importJSON(){
 const file=document.getElementById("importFile").files[0];if(!file){alert("Pilih file JSON dulu");return}
@@ -713,7 +1295,7 @@ const reader=new FileReader();
 reader.onload=e=>{
 try{
 const imported=JSON.parse(e.target.result);
-if(!confirm(`Import ${imported.services?.length||0} servis? Data sekarang akan tertimpa!`))return;
+if(!confirm(`Import ${imported.services?.length||0} servis & ${imported.sales?.length||0} penjualan? Data sekarang akan tertimpa!`))return;
 db=imported;saveDB();alert("Import berhasil!");closeModal("backup");
 }catch(err){alert("File tidak valid: "+err.message)}
 };
@@ -730,11 +1312,13 @@ function loadConfigToForm(){
 document.getElementById("cfg_shop").value=db.config.shopName||"";
 document.getElementById("cfg_addr").value=db.config.address||"";
 document.getElementById("cfg_phone").value=db.config.phone||"";
+const eTech=document.getElementById("e_tech");
+if(eTech){ eTech.innerHTML=`<option value="">- Umum -</option>`+db.technicians.map(t=>`<option value="${t.id}">${t.name}</option>`).join(""); }
 }
 function updateStorageInfo(){
 try{
 const size=new Blob([localStorage.getItem(LS_KEY)||""]).size;
-document.getElementById("storageInfo").innerText=`${db.services.length} servis • ${(size/1024).toFixed(1)} KB`;
+document.getElementById("storageInfo").innerText=`${db.services.length} servis • ${db.sales.length} jual • ${(size/1024).toFixed(1)} KB`;
 const bar=document.getElementById("storageBar");
 if(bar){bar.style.width=Math.min(100,(size/51200*100))+"%"}
 }catch{}
