@@ -435,14 +435,16 @@ let tempSaleCart=[];
 
 const menu=[
 {id:"dashboard",label:"Dashboard",icon:"📊"},
-{id:"servis",label:"Transaksi Servis",icon:"🔧"},
-{id:"penjualan",label:"Penjualan Sparepart",icon:"🛒"},
+{id:"tambah_servis",label:"Tambah Servis",icon:"➕",action:()=>openModal('servis')},
+{id:"servis",label:"Data Servis",icon:"🔧"},
+{id:"tambah_penjualan",label:"Tambah Penjualan",icon:"➕",action:()=>openModal('sale')},
+{id:"penjualan",label:"Data Penjualan",icon:"🛒"},
+{id:"sparepart",label:"Stok Sparepart",icon:"📦"},
 {id:"pelanggan",label:"Pelanggan",icon:"👥"},
 {id:"teknisi",label:"Teknisi & Upah",icon:"🧑‍🔧"},
-{id:"sparepart",label:"Sparepart / Stok",icon:"📦"},
 {id:"keuangan",label:"Keuangan",icon:"💰"},
 {id:"laporan",label:"Laporan",icon:"📈"},
-{id:"backup",label:"Backup & WA",icon:"⚙️",action:()=>openBackup()},
+{id:"backup",label:"Pengaturan & WA",icon:"⚙️",action:()=>openBackup()},
 ];
 
 function init(){
@@ -458,12 +460,16 @@ if(!localStorage.getItem(LS_KEY)){saveDB();}
 function buildNav(){
 const nav=document.getElementById("nav");
 nav.innerHTML=menu.map(m=>{
-const count=m.id==="servis"?db.services.filter(s=>s.status!=="Diambil"&&s.status!=="Batal"&&s.status!=="Selesai").length: m.id==="penjualan"?db.sales.length: "";
-return `<button class="${currentPage===m.id?"active":""}" onclick="goPage('${m.id}')"><span>${m.icon}</span> ${m.label} ${count?`<span class=badge>${count}</span>`:""}</button>`
+const isAction=!!m.action;
+const count=m.id==="servis"?db.services.filter(s=>s.status!=="Diambil"&&s.status!=="Batal"&&s.status!=="Selesai").length: m.id==="penjualan"?db.sales.filter(s=>s.paymentMethod==="Tempo"&&Number(s.sisa)>0).length||db.sales.length: "";
+const activeClass=currentPage===m.id && !isAction ?"active":"";
+const style=isAction?'style="background:#111;border:1px dashed #2a2a2a"' : '';
+return `<button class="${activeClass}" ${style} onclick="goPage('${m.id}')"><span>${m.icon}</span> ${m.label} ${count?`<span class=badge>${count}</span>`:""}</button>`
 }).join("");
 }
 function goPage(id){
-if(id==="backup"){openBackup();return}
+const m=menu.find(x=>x.id===id);
+if(m && m.action){ m.action(); return; }
 currentPage=id;
 document.getElementById("pageTitle").innerHTML=(menu.find(m=>m.id===id)?.label||id)+` <span>PRO</span>`;
 buildNav();render();
@@ -652,10 +658,19 @@ const matchStatus=filters.servisStatus==="Semua"||s.status===filters.servisStatu
 return matchSearch&&matchStatus;
 }).sort((a,b)=>b.dateIn.localeCompare(a.dateIn));
 return `
-<div class="card" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+<div class="card" style="background:linear-gradient(135deg,#070707,#1a1a1a);color:#fff;border-color:#222">
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:center">
+<div>
+<div style="font-size:11px;letter-spacing:.15em;color:#a1a1aa;font-weight:800">MENU DATA SERVIS</div>
+<h2 style="font-size:18px;font-weight:900;margin-top:4px">📋 Data Servis Masuk <span style="color:var(--yellow)">(${filtered.length})</span></h2>
+<p style="font-size:12px;color:#a1a1aa;margin-top:6px;line-height:1.4">Ini adalah <b style="color:#fff">daftar semua servis</b>. Untuk input servis baru, klik menu <b style="color:var(--yellow)">➕ Tambah Servis</b> di sidebar.<br>Di sini kamu bisa ubah status, kirim WA per-status, lihat rincian diskon/DP/sisa, dan print nota.</p>
+</div>
+<button class="btn btn-primary" onclick="openModal('servis')">➕ Tambah Servis Baru</button>
+</div>
+</div>
+<div class="card" style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
 <div class="search" style="flex:1;min-width:200px"><span>🔍</span><input class="input" placeholder="Cari invoice, pelanggan, device..." value="${filters.servisSearch}" oninput="filters.servisSearch=this.value;render()"></div>
 <select style="min-width:180px" onchange="filters.servisStatus=this.value;render()"><option ${filters.servisStatus==="Semua"?"selected":""}>Semua</option><option>Masuk</option><option>Diagnosis</option><option>Menunggu Sparepart</option><option>Dikerjakan</option><option>Selesai</option><option>Diambil</option><option>Batal</option></select>
-<button class="btn btn-primary btn-sm" onclick="openModal('servis')">+ Servis Baru</button>
 </div>
 <div class="table-wrap" style="margin-top:12px">
 <table><thead><tr><th>Invoice / Tgl</th><th>Pelanggan</th><th>Device & Keluhan</th><th>Teknisi</th><th>Status</th><th>Biaya</th><th>Aksi</th></tr></thead><tbody>
@@ -665,13 +680,13 @@ const tech=db.technicians.find(t=>t.id===s.technicianId)?.name||"-";
 const biaya=Number(s.finalCost||s.estCost||0);
 const isReal=s.status==="Diambil";
 const biayaDisplay=isReal?`Rp ${biaya.toLocaleString("id-ID")}`:`<span style="color:#71717a">Est: Rp ${biaya.toLocaleString("id-ID")}</span><div style="font-size:10px;color:#a1a1aa">belum pendapatan</div>`;
-return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.dateIn}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td><b>${s.deviceType} ${s.brand}</b><div style="font-size:12px;color:var(--muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.complaint}</div></td><td style="font-size:13px">${tech}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td><td>${biayaDisplay}</td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" onclick="openDetail('${s.id}')">Detail</button><button class="btn btn-green btn-sm" onclick="openWA('${s.id}')">WA</button></div></td></tr>`
-}).join(""):`<tr><td colspan=7><div class=empty><b>Tidak ada data</b><br>Belum ada transaksi servis</div></td></tr>`}
+return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.dateIn}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td><div style="font-weight:700">${s.deviceType} ${s.brand}</div><div style="font-size:12px;color:var(--muted)">${s.complaint}</div>${s.diskon?`<div style="font-size:11px;color:#ef4444">Diskon Rp ${Number(s.diskon).toLocaleString("id-ID")}</div>`:''}${s.dp?`<div style="font-size:11px;color:#16a34a">DP Rp ${Number(s.dp).toLocaleString("id-ID")}</div>`:''}</td><td>${tech}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td><td>${biayaDisplay}</td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" onclick="openDetail('${s.id}')">Detail</button><button class="btn btn-green btn-sm" onclick="openWA('${s.id}')">WA</button></div></td></tr>`
+}).join(""):`<tr><td colspan=7><div class=empty>Belum ada data servis. Klik <b>Tambah Servis Baru</b> untuk input pertama.</div></td></tr>`}
 </tbody></table>
 </div>`;
 }
 
-// PENJUALAN
+
 function renderPenjualan(){
 const filtered=db.sales.filter(s=>{
 const q=filters.salesSearch.toLowerCase();
@@ -684,7 +699,17 @@ const totalPiutang=db.sales.filter(s=>s.paymentMethod==="Tempo").reduce((a,b)=>a
 const totalDPTempo=db.sales.filter(s=>s.paymentMethod==="Tempo").reduce((a,b)=>a+Number(b.dp||0),0);
 const totalTunai=db.sales.filter(s=>s.paymentMethod!=="Tempo").reduce((a,b)=>a+Number(b.total||0),0);
 return `
-<div class="grid grid-4">
+<div class="card" style="background:linear-gradient(135deg,#fef08a,#facc15);border-color:#eab308">
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;align-items:center">
+<div>
+<div style="font-size:11px;letter-spacing:.15em;color:#713f12;font-weight:800">MENU DATA PENJUALAN</div>
+<h2 style="font-size:18px;font-weight:900;margin-top:4px;color:#000">📦 Data Penjualan Sparepart</h2>
+<p style="font-size:12px;color:#713f12;margin-top:6px">Ini riwayat penjualan. Untuk jual baru klik <b>➕ Tambah Penjualan</b>. Pilih Tunai atau Tempo + Tanggal Jatuh Tempo.</p>
+</div>
+<button class="btn btn-black" onclick="openModal('sale')">➕ Tambah Penjualan Baru</button>
+</div>
+</div>
+<div class="grid grid-4" style="margin-top:12px">
 <div class="card"><h3>Total Penjualan</h3><div class="stat">Rp ${totalPenjualan.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">${db.sales.length} transaksi • Tunai Rp ${totalTunai.toLocaleString("id-ID")}</div></div>
 <div class="card"><h3>Laba Penjualan</h3><div class="stat" style="color:var(--success)">Rp ${totalProfit.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Dari selisih jual-beli</div></div>
 <div class="card" style="border-left:4px solid #ef4444"><h3>Piutang Tempo</h3><div class="stat" style="color:#ef4444">Rp ${totalPiutang.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">DP Tempo masuk: Rp ${totalDPTempo.toLocaleString("id-ID")}</div></div>
