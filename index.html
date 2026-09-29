@@ -24,67 +24,139 @@
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pembukuan Servis Offline - Lengkap</title>
+<title>SERVIS.ID PRO - Pembukuan Servis Offline</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070707">
 <style>
-:root{--bg:#f8fafc;--card:#ffffff;--text:#0f172a;--muted:#64748b;--border:#e2e8f0;--primary:#0f172a;--primary2:#1e293b;--accent:#3b82f6;--success:#16a34a;--warning:#f59e0b;--danger:#ef4444;--radius:16px}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto}
-body{background:var(--bg);color:var(--text);display:flex;min-height:100vh}
-.sidebar{width:270px;background:var(--primary);color:#fff;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:20;transition:.3s}
-.sidebar-header{padding:24px 20px;border-bottom:1px solid #1e293b}
-.sidebar-header h1{font-size:18px;font-weight:800;letter-spacing:-.02em}
-.sidebar-header p{font-size:12px;color:#94a3b8;margin-top:4px}
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html){font-family:"Optimistic",system-ui,sans-serif}
+:where(code,pre,kbd,samp){font-family:"Optimistic Mono",ui-monospace,monospace}
+
+:root{
+--bg:#f6f6f7;--card:#ffffff;--text:#0a0a0a;--muted:#71717a;--border:#e4e4e7;
+--black:#070707;--black2:#111111;--black3:#1a1a1a;
+--yellow:#FFD400;--yellow2:#FFCC00;--yellow-dark:#EAB308;
+--primary:#070707;--primary2:#1a1a1a;--accent:#FFD400;
+--success:#16a34a;--warning:#f59e0b;--danger:#ef4444;--radius:16px
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);min-height:100vh}
+
+/* PRO HEADER HITAM KUNING */
+.pro-header{
+position:fixed;top:0;left:0;right:0;height:64px;
+background:linear-gradient(90deg,#070707 0%,#111111 100%);
+border-bottom:4px solid var(--yellow);
+z-index:100;display:flex;align-items:center;justify-content:space-between;
+padding:0 18px;box-shadow:0 4px 20px rgba(0,0,0,.4)
+}
+.pro-header-left{display:flex;align-items:center;gap:14px}
+.logo-box{width:44px;height:44px;background:#111;border:1px solid #222;border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 0 0 2px rgba(255,212,0,.15)}
+.logo-box img{width:32px;height:32px;object-fit:contain}
+.brand-title{display:flex;flex-direction:column;line-height:1}
+.brand-title h1{font-size:18px;font-weight:900;letter-spacing:-.03em;color:#fff}
+.brand-title h1 span{color:var(--yellow)}
+.brand-title p{font-size:10px;letter-spacing:.18em;color:#a1a1aa;font-weight:700;margin-top:2px}
+.pro-header-right{display:flex;align-items:center;gap:10px}
+.pro-badge{background:var(--yellow);color:#000;font-size:10px;font-weight:900;padding:4px 10px;border-radius:999px;letter-spacing:.08em}
+
+.sidebar{
+width:280px;background:var(--black);color:#fff;display:flex;flex-direction:column;
+position:fixed;top:64px;bottom:0;left:0;z-index:20;transition:.3s;border-right:1px solid #1e1e1e
+}
+.sidebar-header{padding:20px 18px;border-bottom:1px solid #1e1e1e;display:flex;align-items:center;gap:12px}
+.sidebar-header .mini-logo{width:36px;height:36px;background:var(--yellow);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.sidebar-header .mini-logo img{width:24px;height:24px}
+.sidebar-header h2{font-size:14px;font-weight:800;color:#fff}
+.sidebar-header p{font-size:11px;color:#71717a;margin-top:2px}
+
 .nav{padding:12px;flex:1;overflow:auto}
-.nav button{width:100%;text-align:left;padding:12px 14px;border-radius:12px;border:0;background:transparent;color:#cbd5e1;display:flex;gap:10px;align-items:center;font-size:14px;cursor:pointer;margin-bottom:4px;transition:.2s}
-.nav button.active{background:#fff;color:var(--primary);font-weight:600}
-.nav button:hover{background:#1e293b;color:#fff}
-.nav button.active:hover{background:#fff}
-.badge{margin-left:auto;background:#1e293b;color:#e2e8f0;font-size:11px;padding:2px 8px;border-radius:999px}
-.nav button.active .badge{background:var(--bg);color:var(--primary)}
-.main{margin-left:270px;flex:1;min-width:0}
-.topbar{position:sticky;top:0;z-index:10;background:rgba(248,250,252,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px}
-.topbar h2{font-size:20px;font-weight:800;letter-spacing:-.03em}
+.nav button{
+width:100%;text-align:left;padding:12px 14px;border-radius:12px;border:0;background:transparent;
+color:#a1a1aa;display:flex;gap:11px;align-items:center;font-size:14px;cursor:pointer;margin-bottom:4px;transition:.2s;font-weight:600
+}
+.nav button:hover{background:#151515;color:#fff}
+.nav button.active{background:var(--yellow);color:#000;font-weight:800;box-shadow:0 4px 12px rgba(255,212,0,.25)}
+.badge{margin-left:auto;background:#1e1e1e;color:#e4e4e7;font-size:11px;padding:2px 8px;border-radius:999px}
+.nav button.active .badge{background:#000;color:var(--yellow)}
+
+.main{margin-left:280px;margin-top:64px;flex:1;min-width:0}
+.topbar{
+position:sticky;top:64px;z-index:10;background:rgba(10,10,10,.92);backdrop-filter:blur(12px);
+border-bottom:1px solid #1f1f1f;padding:14px 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#fff
+}
+.topbar h2{font-size:18px;font-weight:800;letter-spacing:-.02em;color:#fff}
+.topbar h2 span{color:var(--yellow)}
 .topbar-right{display:flex;gap:10px;align-items:center}
-.btn{border:0;border-radius:12px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.2s}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:var(--primary2)}
-.btn-ghost{background:var(--card);border:1px solid var(--border);color:var(--text)}
-.btn-ghost:hover{background:var(--bg)}
+.btn{border:0;border-radius:12px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.2s}
+.btn-primary{background:var(--yellow);color:#000;font-weight:800;box-shadow:0 2px 0 #c9a600}
+.btn-primary:hover{background:var(--yellow2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,212,0,.35),0 2px 0 #c9a600}
+.btn-ghost{background:#fff;border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{background:#f4f4f5}
+.btn-black{background:#111;color:#fff;border:1px solid #222}
+.btn-black:hover{background:#1a1a1a;border-color:var(--yellow)}
 .btn-sm{padding:7px 12px;font-size:13px;border-radius:10px}
-.content{padding:24px 28px 40px}
+.content{padding:24px 28px 40px;background:var(--bg);min-height:calc(100vh - 128px)}
 .grid{display:grid;gap:16px}
 .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
 .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-@media(max-width:1100px){.grid-4{grid-template-columns:repeat(2,1fr)} .sidebar{transform:translateX(-100%)} .sidebar.open{transform:translateX(0)} .main{margin-left:0} .topbar{padding:14px 16px} .content{padding:16px}}
+@media(max-width:1100px){
+.grid-4{grid-template-columns:repeat(2,1fr)} 
+.sidebar{transform:translateX(-100%);top:64px} 
+.sidebar.open{transform:translateX(0)} 
+.main{margin-left:0} 
+.topbar{padding:14px 16px} 
+.content{padding:16px}
+.pro-header{padding:0 12px}
+}
 @media(max-width:640px){.grid-4,.grid-2{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-.card h3{font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.02em;text-transform:uppercase}
-.stat{font-size:28px;font-weight:800;margin-top:8px;letter-spacing:-.04em}
-.stat small{font-size:13px;color:var(--muted);font-weight:500}
+.card{
+background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;
+box-shadow:0 1px 2px rgba(0,0,0,.05);position:relative;overflow:hidden;transition:.2s
+}
+.card:hover{box-shadow:0 8px 24px rgba(0,0,0,.06);border-color:#d4d4d8}
+.card::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:transparent;transition:.2s}
+.card:hover::after{background:var(--yellow)}
+.card h3{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.stat{font-size:28px;font-weight:900;margin-top:8px;letter-spacing:-.04em}
+.stat small{font-size:13px;color:var(--muted);font-weight:600}
 .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px;background:var(--card)}
 table{width:100%;border-collapse:collapse;min-width:720px}
-th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:12px 14px;background:#f8fafc;border-bottom:1px solid var(--border);font-weight:700}
-td{padding:12px 14px;font-size:14px;border-bottom:1px solid #f1f5f9}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:12px 14px;background:#fafafa;border-bottom:1px solid var(--border);font-weight:800}
+td{padding:12px 14px;font-size:14px;border-bottom:1px solid #f4f4f5}
 tr:last-child td{border-bottom:0}
-.status{font-size:12px;padding:4px 10px;border-radius:999px;font-weight:700;display:inline-block}
-.s-Masuk{background:#dbeafe;color:#1d4ed8}
+tr:hover td{background:#fafafa}
+.status{font-size:12px;padding:4px 10px;border-radius:999px;font-weight:800;display:inline-block;border:1px solid transparent}
+.s-Masuk{background:#fef08a;border-color:#facc15;color:#713f12}
 .s-Diagnosis{background:#fef3c7;color:#92400e}
 .s-Menunggu{background:#fee2e2;color:#991b1b}
-.s-Dikerjakan{background:#e0e7ff;color:#3730a3}
+.s-Dikerjakan{background:#fef08a;color:#000;border-color:var(--yellow)}
 .s-Selesai{background:#dcfce7;color:#166534}
-.s-Diambil{background:#f1f5f9;color:#334155}
-.s-Batal{background:#f1f5f9;color:#94a3b8;text-decoration:line-through}
-.input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:12px;font-size:14px;background:#fff;outline:none}
-.input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px #dbeafe}
+.s-Diambil{background:#f4f4f5;color:#3f3f46;border-color:#e4e4e7}
+.s-Batal{background:#f4f4f5;color:#a1a1aa;text-decoration:line-through}
+.input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:12px;font-size:14px;background:#fff;outline:none;transition:.2s}
+.input:focus,select:focus,textarea:focus{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(255,212,0,.25)}
 .row{display:flex;gap:12px}
 .row> *{flex:1}
-.label{font-size:13px;font-weight:600;margin-bottom:6px;display:block}
+.label{font-size:13px;font-weight:700;margin-bottom:6px;display:block}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:700px){.form-grid{grid-template-columns:1fr} .row{flex-direction:column}}
-.modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
 .modal-backdrop.show{display:flex}
-.modal{background:#fff;border-radius:20px;max-width:760px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal{background:#fff;border-radius:20px;max-width:760px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 24px 80px rgba(0,0,0,.45);border-top:4px solid var(--yellow)}
 .modal-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;z-index:1}
 .modal-body{padding:20px}
 .search{position:relative}
@@ -92,25 +164,38 @@ tr:last-child td{border-bottom:0}
 .search span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
 .empty{padding:36px;text-align:center;color:var(--muted)}
 .empty b{color:var(--text)}
-.kbd{font-size:11px;border:1px solid var(--border);border-bottom-width:2px;padding:2px 6px;border-radius:6px;background:#fff}
-.nota{font-family:ui-monospace,monospace}
 @media print{body *{visibility:hidden} #printArea,#printArea *{visibility:visible} #printArea{position:absolute;left:0;top:0;width:100%}}
 .menu-toggle{display:none}
 @media(max-width:1100px){.menu-toggle{display:inline-flex}}
+.yellow-line{height:4px;background:var(--yellow);width:100%}
 </style>
 </head>
 <body>
+
+<!-- PRO HEADER HITAM KUNING DENGAN LOGO.PNG -->
+<header class="pro-header">
+<div class="pro-header-left">
+<div class="logo-box"><img src="logo.png" alt="logo"></div>
+<div class="brand-title"><h1>SERVIS<span>.ID</span></h1><p>OFFLINE • PRO EDITION • CIREBON</p></div>
+</div>
+<div class="pro-header-right">
+<div class="pro-badge">100% OFFLINE</div>
+<button class="btn btn-black btn-sm" onclick="toggleSidebar()" style="display:none" id="mobileMenuBtn">☰</button>
+</div>
+</header>
+
 <aside class="sidebar" id="sidebar">
 <div class="sidebar-header">
-<h1>SERVIS.ID OFFLINE</h1>
-<p>Pembukuan Lengkap • v1.0 • 100% Offline</p>
+<div class="mini-logo"><img src="logo.png" alt="logo"></div>
+<div><h2>SERVIS.ID PRO</h2><p>Pembukuan Lengkap v2.0</p></div>
 </div>
 <div class="nav" id="nav"></div>
-<div style="padding:14px;border-top:1px solid #1e293b">
-<div style="background:#1e293b;border-radius:12px;padding:12px">
-<div style="font-size:12px;color:#94a3b8">Penyimpanan</div>
-<div id="storageInfo" style="font-size:13px;font-weight:600;margin-top:4px">Menghitung...</div>
-<div style="font-size:11px;color:#64748b;margin-top:4px">Data tersimpan di browser (localStorage). Backup rutin!</div>
+<div style="padding:14px;border-top:1px solid #1e1e1e">
+<div style="background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:12px">
+<div style="font-size:11px;color:#71717a;font-weight:700;letter-spacing:.1em">PENYIMPANAN LOKAL</div>
+<div id="storageInfo" style="font-size:13px;font-weight:700;margin-top:6px;color:#fff">Menghitung...</div>
+<div style="font-size:11px;color:#52525b;margin-top:6px;line-height:1.4">Data di browser. Backup rutin biar aman!</div>
+<div style="margin-top:10px;height:4px;background:#1e1e1e;border-radius:999px;overflow:hidden"><div id="storageBar" style="height:100%;background:var(--yellow);width:20%"></div></div>
 </div>
 </div>
 </aside>
@@ -118,11 +203,11 @@ tr:last-child td{border-bottom:0}
 <div class="main">
 <div class="topbar">
 <div style="display:flex;gap:12px;align-items:center">
-<button class="btn btn-ghost btn-sm menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
-<h2 id="pageTitle">Dashboard</h2>
+<button class="btn btn-black btn-sm menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
+<h2 id="pageTitle">Dashboard <span>PRO</span></h2>
 </div>
 <div class="topbar-right">
-<button class="btn btn-ghost btn-sm" onclick="openBackup()">⬇ Backup</button>
+<button class="btn btn-black btn-sm" onclick="openBackup()">⬇ Backup</button>
 <button class="btn btn-primary btn-sm" onclick="openModal('servis')">+ Servis Baru</button>
 </div>
 </div>
@@ -130,7 +215,7 @@ tr:last-child td{border-bottom:0}
 <div class="content" id="content"></div>
 </div>
 
-<!-- MODALS -->
+<!-- MODALS (sama logic) -->
 <div class="modal-backdrop" id="modal-servis"><div class="modal">
 <div class="modal-head"><b id="servisModalTitle">Tambah Servis Baru</b><button class="btn btn-ghost btn-sm" onclick="closeModal('servis')">✕</button></div>
 <div class="modal-body">
@@ -221,7 +306,7 @@ tr:last-child td{border-bottom:0}
 </div></div>
 
 <div class="modal-backdrop" id="modal-detail"><div class="modal" style="max-width:820px">
-<div class="modal-head"><b>Detail Servis</b><div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="printNota()">🖨 Print Nota</button><button class="btn btn-ghost btn-sm" onclick="closeModal('detail')">✕</button></div></div>
+<div class="modal-head"><b>Detail Servis</b><div style="display:flex;gap:8px"><button class="btn btn-black btn-sm" onclick="printNota()">🖨 Print Nota</button><button class="btn btn-ghost btn-sm" onclick="closeModal('detail')">✕</button></div></div>
 <div class="modal-body" id="detailBody"></div>
 </div></div>
 
@@ -246,14 +331,12 @@ tr:last-child td{border-bottom:0}
 
 <script>
 const LS_KEY="pembukuan_servis_v2";
-const defaultDB={services:[],customers:[{id:"CUST-1",name:"Pelanggan Umum",phone:"-",address:"-"}],technicians:[{id:"TECH-1",name:"Teknisi Utama",phone:"",skill:"All Rounder"}],parts:[],expenses:[],config:{shopName:"Servis HP & Laptop Cirebon",address:"Jl. Contoh No.123, Cirebon",phone:"0812-3456-7890",invoicePrefix:"SRV"},seq:1001};
-
+const defaultDB={services:[],customers:[{id:"CUST-1",name:"Pelanggan Umum",phone:"-",address:"-"}],technicians:[{id:"TECH-1",name:"Teknisi Utama",phone:"",skill:"All Rounder"}],parts:[],expenses:[],config:{shopName:"SERVIS.ID PRO - Cirebon",address:"Jl. Contoh No.123, Cirebon",phone:"0812-3456-7890",invoicePrefix:"SRV"},seq:1001};
 function loadDB(){try{const raw=localStorage.getItem(LS_KEY);if(!raw)return structuredClone(defaultDB);return JSON.parse(raw)}catch(e){return structuredClone(defaultDB)}}
 function saveDB(){localStorage.setItem(LS_KEY,JSON.stringify(db));render();updateStorageInfo()}
 let db=loadDB();
 let currentPage="dashboard";
 let filters={servisSearch:"",servisStatus:"Semua"};
-
 const menu=[
 {id:"dashboard",label:"Dashboard",icon:"📊"},
 {id:"servis",label:"Transaksi Servis",icon:"🔧"},
@@ -264,13 +347,10 @@ const menu=[
 {id:"laporan",label:"Laporan",icon:"📈"},
 {id:"backup",label:"Backup & Setting",icon:"⚙️",action:()=>openBackup()},
 ];
-
 function init(){
 document.getElementById("s_dateIn").valueAsDate=new Date();
-buildNav();
-render();
-updateStorageInfo();
-loadConfigToForm();
+if(document.getElementById("e_date")) document.getElementById("e_date").valueAsDate=new Date();
+buildNav();render();updateStorageInfo();loadConfigToForm();
 if(!localStorage.getItem(LS_KEY)){saveDB();}
 }
 function buildNav(){
@@ -283,9 +363,8 @@ return `<button class="${currentPage===m.id?"active":""}" onclick="goPage('${m.i
 function goPage(id){
 if(id==="backup"){openBackup();return}
 currentPage=id;
-document.getElementById("pageTitle").innerText=menu.find(m=>m.id===id)?.label||id;
-buildNav();
-render();
+document.getElementById("pageTitle").innerHTML=(menu.find(m=>m.id===id)?.label||id)+` <span>PRO</span>`;
+buildNav();render();
 document.getElementById("sidebar").classList.remove("open");
 }
 function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
@@ -301,14 +380,11 @@ else if(currentPage==="keuangan") c.innerHTML=renderKeuangan();
 else if(currentPage==="laporan") c.innerHTML=renderLaporan();
 buildNav();
 }
-
 function renderDashboard(){
 const today=new Date().toISOString().slice(0,10);
 const thisMonth=new Date().toISOString().slice(0,7);
-const totalServis=db.services.length;
 const pending=db.services.filter(s=>["Masuk","Diagnosis","Menunggu Sparepart","Dikerjakan"].includes(s.status)).length;
 const selesai=db.services.filter(s=>s.status==="Selesai").length;
-const diambil=db.services.filter(s=>s.status==="Diambil").length;
 const omsetBulan=db.services.filter(s=>s.dateIn.startsWith(thisMonth)&&s.status!=="Batal").reduce((a,b)=>a+(Number(b.finalCost)||Number(b.estCost)||0),0);
 const pengeluaranBulan=db.expenses.filter(e=>e.date.startsWith(thisMonth)).reduce((a,b)=>a+Number(b.amount),0);
 const laba=omsetBulan-pengeluaranBulan;
@@ -316,9 +392,9 @@ const todayServis=db.services.filter(s=>s.dateIn===today).length;
 return `
 <div class="grid grid-4">
 <div class="card"><h3>Servis Hari Ini</h3><div class="stat">${todayServis} <small>unit</small></div><div style="font-size:12px;color:var(--muted);margin-top:6px">${today}</div></div>
-<div class="card"><h3>Perlu Dikerjakan</h3><div class="stat" style="color:var(--warning)">${pending}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">${selesai} menunggu diambil</div></div>
+<div class="card" style="border-left:4px solid var(--yellow)"><h3>Perlu Dikerjakan</h3><div class="stat" style="color:#000">${pending}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">${selesai} menunggu diambil</div></div>
 <div class="card"><h3>Omset Bulan Ini</h3><div class="stat">Rp ${omsetBulan.toLocaleString("id-ID")}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">Pengeluaran Rp ${pengeluaranBulan.toLocaleString("id-ID")}</div></div>
-<div class="card"><h3>Laba Bersih Bulan Ini</h3><div class="stat" style="color:${laba>=0?'var(--success)':'var(--danger)'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">${thisMonth}</div></div>
+<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Laba Bersih Bulan Ini</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:12px;color:#71717a;margin-top:6px">${thisMonth} • PRO</div></div>
 </div>
 <div class="grid grid-2" style="margin-top:16px">
 <div class="card"><h3>Servis Terbaru</h3><div style="margin-top:12px">${renderMiniTable(db.services.slice(-5).reverse())}</div></div>
@@ -345,15 +421,14 @@ db.services.forEach(s=>counts[s.status]=(counts[s.status]||0)+1);
 const max=Math.max(...Object.values(counts),1);
 return Object.entries(counts).map(([k,v])=>{
 const pct=(v/max*100).toFixed(0);
-return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:110px;font-size:13px">${k}</div><div style="flex:1;background:#f1f5f9;border-radius:999px;height:10px;overflow:hidden"><div style="width:${pct}%;height:100%;background:var(--primary)"></div></div><div style="width:30px;text-align:right;font-size:13px;font-weight:700">${v}</div></div>`
+return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:110px;font-size:13px;font-weight:700">${k}</div><div style="flex:1;background:#f4f4f5;border-radius:999px;height:10px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${k==="Masuk"||k==="Dikerjakan"?"var(--yellow)":"#0a0a0a"}"></div></div><div style="width:30px;text-align:right;font-size:13px;font-weight:800">${v}</div></div>`
 }).join("");
 }
 function renderLowStock(){
 const low=db.parts.filter(p=>Number(p.stock)<=3);
 if(!low.length) return `<div style="font-size:13px;color:var(--muted)">Semua stok aman 👍</div>`;
-return `<div style="display:flex;gap:8px;flex-wrap:wrap">${low.map(p=>`<span style="border:1px solid #fecaca;background:#fef2f2;color:#991b1b;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600">${p.name} • ${p.stock}</span>`).join("")}</div>`;
+return `<div style="display:flex;gap:8px;flex-wrap:wrap">${low.map(p=>`<span style="border:1px solid #facc15;background:#fefce8;color:#713f12;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700">${p.name} • ${p.stock}</span>`).join("")}</div>`;
 }
-
 function renderServis(){
 const filtered=db.services.filter(s=>{
 const q=filters.servisSearch.toLowerCase();
@@ -374,19 +449,18 @@ ${filtered.length?filtered.map(s=>{
 const cust=db.customers.find(c=>c.id===s.customerId);
 const tech=db.technicians.find(t=>t.id===s.technicianId)?.name||"-";
 const biaya=Number(s.finalCost||s.estCost||0);
-return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.dateIn}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td><b>${s.deviceType} ${s.brand}</b><div style="font-size:12px;color:var(--muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.complaint}</div></td><td style="font-size:13px">${tech}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td><td>Rp ${biaya.toLocaleString("id-ID")}</td><td><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="openDetail('${s.id}')">Detail</button><button class="btn btn-ghost btn-sm" onclick="editServis('${s.id}')">Edit</button></div></td></tr>`
+return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.dateIn}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td><b>${s.deviceType} ${s.brand}</b><div style="font-size:12px;color:var(--muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.complaint}</div></td><td style="font-size:13px">${tech}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td><td>Rp ${biaya.toLocaleString("id-ID")}</td><td><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="openDetail('${s.id}')">Detail</button><button class="btn btn-black btn-sm" onclick="editServis('${s.id}')">Edit</button></div></td></tr>`
 }).join(""):`<tr><td colspan=7><div class=empty><b>Tidak ada data</b><br>Belum ada transaksi servis</div></td></tr>`}
 </tbody></table>
 </div>`;
 }
-
 function renderPelanggan(){
 return `
 <div class="card" style="display:flex;justify-content:space-between;align-items:center"><h3>Daftar Pelanggan • ${db.customers.length}</h3><button class="btn btn-primary btn-sm" onclick="openModal('pelanggan')">+ Pelanggan</button></div>
 <div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Nama</th><th>HP</th><th>Alamat</th><th>Total Servis</th><th>Aksi</th></tr></thead><tbody>
 ${db.customers.map(c=>{
 const total=db.services.filter(s=>s.customerId===c.id).length;
-return `<tr><td><b>${c.name}</b></td><td>${c.phone}</td><td>${c.address}</td><td>${total}</td><td><button class="btn btn-ghost btn-sm" onclick="editPelanggan('${c.id}')">Edit</button> <button class="btn btn-ghost btn-sm" onclick="deletePelanggan('${c.id}')">Hapus</button></td></tr>`
+return `<tr><td><b>${c.name}</b></td><td>${c.phone}</td><td>${c.address}</td><td><span style="background:var(--yellow);color:#000;padding:2px 8px;border-radius:999px;font-weight:800;font-size:12px">${total}</span></td><td><button class="btn btn-ghost btn-sm" onclick="editPelanggan('${c.id}')">Edit</button> <button class="btn btn-ghost btn-sm" onclick="deletePelanggan('${c.id}')">Hapus</button></td></tr>`
 }).join("")}
 </tbody></table></div>`;
 }
@@ -406,7 +480,7 @@ return `
 <div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Nama Part</th><th>Stok</th><th>Beli</th><th>Jual</th><th>Margin</th><th>Aksi</th></tr></thead><tbody>
 ${db.parts.length?db.parts.map(p=>{
 const margin=Number(p.sellPrice)-Number(p.buyPrice);
-return `<tr><td><b>${p.name}</b></td><td>${p.stock} ${Number(p.stock)<=3?'<span style="color:var(--danger);font-weight:700">• menipis</span>':''}</td><td>Rp ${Number(p.buyPrice).toLocaleString("id-ID")}</td><td>Rp ${Number(p.sellPrice).toLocaleString("id-ID")}</td><td style="color:${margin>0?'var(--success)':'var(--muted)'}">Rp ${margin.toLocaleString("id-ID")}</td><td><button class="btn btn-ghost btn-sm" onclick="editPart('${p.id}')">Edit</button> <button class="btn btn-ghost btn-sm" onclick="deletePart('${p.id}')">Hapus</button></td></tr>`
+return `<tr><td><b>${p.name}</b></td><td>${p.stock} ${Number(p.stock)<=3?'<span style="color:#dc2626;font-weight:800">• menipis</span>':''}</td><td>Rp ${Number(p.buyPrice).toLocaleString("id-ID")}</td><td>Rp ${Number(p.sellPrice).toLocaleString("id-ID")}</td><td style="color:${margin>0?'var(--success)':'var(--muted)'};font-weight:800">Rp ${margin.toLocaleString("id-ID")}</td><td><button class="btn btn-ghost btn-sm" onclick="editPart('${p.id}')">Edit</button> <button class="btn btn-ghost btn-sm" onclick="deletePart('${p.id}')">Hapus</button></td></tr>`
 }).join(""):`<tr><td colspan=6><div class=empty>Belum ada sparepart</div></td></tr>`}
 </tbody></table></div>`;
 }
@@ -420,7 +494,7 @@ return `
 <div class="card"><h3>Total Omset</h3><div class="stat">Rp ${totalMasuk.toLocaleString("id-ID")}</div></div>
 <div class="card"><h3>Total DP Masuk</h3><div class="stat">Rp ${totalDP.toLocaleString("id-ID")}</div></div>
 <div class="card"><h3>Total Pengeluaran</h3><div class="stat" style="color:var(--danger)">Rp ${totalExpense.toLocaleString("id-ID")}</div></div>
-<div class="card"><h3>Laba Kotor</h3><div class="stat" style="color:${laba>=0?'var(--success)':'var(--danger)'}">Rp ${laba.toLocaleString("id-ID")}</div></div>
+<div class="card" style="background:#070707;color:#fff"><h3 style="color:#a1a1aa">Laba Kotor</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div></div>
 </div>
 <div class="grid grid-2" style="margin-top:16px">
 <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Pengeluaran</h3><button class="btn btn-primary btn-sm" onclick="openModal('expense')">+ Pengeluaran</button></div>
@@ -445,10 +519,9 @@ return `
 </div>
 <div class="card" id="reportResult"><h3>Hasil Laporan</h3><div class="empty">Pilih filter lalu klik Tampilkan</div></div>
 </div>
-<div class="card" style="margin-top:16px"><h3>Export Laporan</h3><div style="margin-top:10px;display:flex;gap:10px"><button class="btn btn-ghost btn-sm" onclick="exportCSV()">📄 Export CSV Servis</button><button class="btn btn-ghost btn-sm" onclick="exportJSON()">💾 Export JSON Lengkap</button></div></div>
+<div class="card" style="margin-top:16px"><h3>Export Laporan</h3><div style="margin-top:10px;display:flex;gap:10px"><button class="btn btn-black btn-sm" onclick="exportCSV()">📄 Export CSV Servis</button><button class="btn btn-primary btn-sm" onclick="exportJSON()">💾 Export JSON Lengkap</button></div></div>
 `;
 }
-
 function applyReport(){
 const month=document.getElementById("reportMonth").value;
 const status=document.getElementById("reportStatus").value;
@@ -460,8 +533,8 @@ const dp=list.reduce((a,b)=>a+Number(b.dp||0),0);
 const el=document.getElementById("reportResult");
 el.innerHTML=`<h3>Hasil • ${list.length} transaksi ${month?`• ${month}`:""} ${status!=="Semua"?`• ${status}`:""}</h3>
 <div class="grid grid-2" style="margin-top:12px">
-<div><div style="font-size:12px;color:var(--muted)">Omset</div><div style="font-size:20px;font-weight:800">Rp ${omset.toLocaleString("id-ID")}</div></div>
-<div><div style="font-size:12px;color:var(--muted)">Total DP</div><div style="font-size:20px;font-weight:800">Rp ${dp.toLocaleString("id-ID")}</div></div>
+<div><div style="font-size:12px;color:var(--muted)">Omset</div><div style="font-size:20px;font-weight:900">Rp ${omset.toLocaleString("id-ID")}</div></div>
+<div><div style="font-size:12px;color:var(--muted)">Total DP</div><div style="font-size:20px;font-weight:900">Rp ${dp.toLocaleString("id-ID")}</div></div>
 </div>
 <div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Invoice</th><th>Tgl</th><th>Pelanggan</th><th>Device</th><th>Status</th><th>Biaya</th></tr></thead><tbody>
 ${list.map(s=>{
@@ -470,8 +543,6 @@ return `<tr><td>${s.invoiceNo}</td><td>${s.dateIn}</td><td>${cust}</td><td>${s.d
 }).join("")}
 </tbody></table></div>`;
 }
-
-// MODAL LOGIC
 function openModal(type){
 if(type==="servis"){populateServisSelects();document.getElementById("servisModalTitle").innerText=document.getElementById("s_id").value?"Edit Servis":"Tambah Servis Baru"}
 document.getElementById(`modal-${type}`).classList.add("show");
@@ -482,7 +553,7 @@ if(type==="servis"){document.getElementById("formServis").reset();document.getEl
 if(type==="pelanggan"){document.getElementById("formPelanggan").reset();document.getElementById("p_id").value="";}
 if(type==="teknisi"){document.getElementById("formTeknisi").reset();document.getElementById("t_id").value="";}
 if(type==="part"){document.getElementById("formPart").reset();document.getElementById("sp_id").value="";}
-if(type==="expense"){document.getElementById("formExpense").reset();document.getElementById("e_id").value="";document.getElementById("e_date").valueAsDate=new Date();}
+if(type==="expense"){document.getElementById("formExpense").reset();document.getElementById("e_id").value="";if(document.getElementById("e_date"))document.getElementById("e_date").valueAsDate=new Date();}
 }
 function openBackup(){document.getElementById("modal-backup").classList.add("show");loadConfigToForm();}
 function populateServisSelects(){
@@ -491,8 +562,6 @@ custSel.innerHTML=db.customers.map(c=>`<option value="${c.id}">${c.name} - ${c.p
 const techSel=document.getElementById("s_technician");
 techSel.innerHTML=`<option value="">- Pilih Teknisi -</option>`+db.technicians.map(t=>`<option value="${t.id}">${t.name}</option>`).join("");
 }
-
-// CRUD SERVIS
 function saveServis(e){
 e.preventDefault();
 const id=document.getElementById("s_id").value||`SRV-${Date.now()}`;
@@ -521,8 +590,7 @@ else{
 const idx=db.services.findIndex(s=>s.id===id);
 if(idx>=0){data.invoiceNo=db.services[idx].invoiceNo;data.finalCost=db.services[idx].finalCost||data.estCost;db.services[idx]=data}
 }
-saveDB();
-closeModal("servis");
+saveDB();closeModal("servis");
 }
 function editServis(id){
 const s=db.services.find(x=>x.id===id);if(!s)return;
@@ -551,12 +619,12 @@ const sisa=(Number(s.finalCost||s.estCost||0)-Number(s.dp||0));
 document.getElementById("detailBody").innerHTML=`
 <div style="display:grid;gap:14px">
 <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
-<div><div style="font-size:12px;color:var(--muted)">INVOICE</div><div style="font-size:22px;font-weight:800">${s.invoiceNo}</div><div style="font-size:12px;color:var(--muted)">${s.dateIn} • <span class="status s-${s.status.split(" ")[0]}">${s.status}</span></div></div>
-<div style="text-align:right"><div style="font-size:12px;color:var(--muted)">Pelanggan</div><div style="font-weight:700">${cust.name}</div><div style="font-size:13px">${cust.phone}<br>${cust.address}</div></div>
+<div><div style="font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.1em">INVOICE</div><div style="font-size:22px;font-weight:900">${s.invoiceNo}</div><div style="font-size:12px;color:var(--muted)">${s.dateIn} • <span class="status s-${s.status.split(" ")[0]}">${s.status}</span></div></div>
+<div style="text-align:right"><div style="font-size:11px;color:var(--muted);font-weight:800">PELANGGAN</div><div style="font-weight:800">${cust.name}</div><div style="font-size:13px">${cust.phone}<br>${cust.address}</div></div>
 </div>
 <div class="grid grid-2">
-<div class="card"><h3>Device</h3><div style="margin-top:6px;font-weight:600">${s.deviceType} ${s.brand}</div><div style="font-size:13px;color:var(--muted)">SN: ${s.serial||"-"}<br>Kondisi: ${s.condition||"-"}</div><div style="margin-top:8px;font-size:13px"><b>Keluhan:</b> ${s.complaint}</div></div>
-<div class="card"><h3>Biaya</h3><div style="margin-top:6px"><div style="display:flex;justify-content:space-between"><span>Estimasi / Final</span><b>Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}</b></div><div style="display:flex;justify-content:space-between"><span>DP</span><span>Rp ${Number(s.dp||0).toLocaleString("id-ID")}</span></div><div style="display:flex;justify-content:space-between;border-top:1px dashed var(--border);margin-top:8px;padding-top:8px"><span>Sisa Bayar</span><b>Rp ${sisa.toLocaleString("id-ID")}</b></div></div><div style="margin-top:8px;font-size:12px;color:var(--muted)">Teknisi: ${tech.name} • Garansi ${s.warranty} hari</div></div>
+<div class="card"><h3>Device</h3><div style="margin-top:6px;font-weight:700">${s.deviceType} ${s.brand}</div><div style="font-size:13px;color:var(--muted)">SN: ${s.serial||"-"}<br>Kondisi: ${s.condition||"-"}</div><div style="margin-top:8px;font-size:13px"><b>Keluhan:</b> ${s.complaint}</div></div>
+<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Biaya</h3><div style="margin-top:6px"><div style="display:flex;justify-content:space-between"><span>Estimasi / Final</span><b style="color:var(--yellow)">Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}</b></div><div style="display:flex;justify-content:space-between"><span>DP</span><span>Rp ${Number(s.dp||0).toLocaleString("id-ID")}</span></div><div style="display:flex;justify-content:space-between;border-top:1px dashed #222;margin-top:8px;padding-top:8px"><span>Sisa Bayar</span><b>Rp ${sisa.toLocaleString("id-ID")}</b></div></div><div style="margin-top:8px;font-size:12px;color:#71717a">Teknisi: ${tech.name} • Garansi ${s.warranty} hari</div></div>
 </div>
 <div class="card"><h3>Catatan Teknisi</h3><div style="margin-top:6px;font-size:14px">${s.notes||"<span style=color:var(--muted)>-</span>"}</div></div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -575,7 +643,6 @@ s.status=status;if(status==="Selesai") s.dateDone=new Date().toISOString().slice
 saveDB();openDetail(id);
 }
 function deleteServis(id){if(!confirm("Hapus servis ini?"))return;db.services=db.services.filter(s=>s.id!==id);saveDB();closeModal("detail");}
-
 function printNota(){
 const detail=document.getElementById("detailBody").innerHTML;
 const cfg=db.config;
@@ -583,7 +650,7 @@ const printArea=document.getElementById("printArea");
 printArea.innerHTML=`
 <div style="padding:20px;font-family:sans-serif;color:#000">
 <div style="text-align:center;border-bottom:2px dashed #000;padding-bottom:12px;margin-bottom:12px">
-<h2 style="margin:0">${cfg.shopName}</h2><div style="font-size:12px">${cfg.address} • ${cfg.phone}</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:10px"><img src="logo.png" style="width:40px;height:40px"><h2 style="margin:0">${cfg.shopName}</h2></div><div style="font-size:12px">${cfg.address} • ${cfg.phone}</div>
 <div style="font-size:11px;margin-top:6px">NOTA SERVIS • ${new Date().toLocaleString("id-ID")}</div>
 </div>
 ${detail}
@@ -595,32 +662,22 @@ printArea.style.display="block";
 window.print();
 setTimeout(()=>printArea.style.display="none",500);
 }
-
-// PELANGGAN
 function savePelanggan(e){e.preventDefault();const id=document.getElementById("p_id").value||`CUST-${Date.now()}`;const data={id,name:document.getElementById("p_name").value,phone:document.getElementById("p_phone").value,address:document.getElementById("p_address").value};const idx=db.customers.findIndex(c=>c.id===id);if(idx>=0)db.customers[idx]=data;else db.customers.push(data);saveDB();closeModal("pelanggan");}
 function editPelanggan(id){const c=db.customers.find(x=>x.id===id);if(!c)return;document.getElementById("p_id").value=c.id;document.getElementById("p_name").value=c.name;document.getElementById("p_phone").value=c.phone;document.getElementById("p_address").value=c.address;openModal("pelanggan");}
-function deletePelanggan(id){if(db.customers.length<=1){alert("Minimal 1 pelanggan harus ada");return}if(!confirm("Hapus pelanggan? Servis terkait tidak akan terhapus tapi jadi tanpa nama."))return;db.customers=db.customers.filter(c=>c.id!==id);saveDB();}
-
-// TEKNISI
+function deletePelanggan(id){if(db.customers.length<=1){alert("Minimal 1 pelanggan harus ada");return}if(!confirm("Hapus pelanggan?"))return;db.customers=db.customers.filter(c=>c.id!==id);saveDB();}
 function saveTeknisi(e){e.preventDefault();const id=document.getElementById("t_id").value||`TECH-${Date.now()}`;const data={id,name:document.getElementById("t_name").value,phone:document.getElementById("t_phone").value,skill:document.getElementById("t_skill").value};const idx=db.technicians.findIndex(t=>t.id===id);if(idx>=0)db.technicians[idx]=data;else db.technicians.push(data);saveDB();closeModal("teknisi");}
 function editTeknisi(id){const t=db.technicians.find(x=>x.id===id);document.getElementById("t_id").value=t.id;document.getElementById("t_name").value=t.name;document.getElementById("t_phone").value=t.phone;document.getElementById("t_skill").value=t.skill;openModal("teknisi");}
 function deleteTeknisi(id){if(!confirm("Hapus teknisi?"))return;db.technicians=db.technicians.filter(t=>t.id!==id);saveDB();}
-
-// PART
 function savePart(e){e.preventDefault();const id=document.getElementById("sp_id").value||`PART-${Date.now()}`;const data={id,name:document.getElementById("sp_name").value,stock:Number(document.getElementById("sp_stock").value),buyPrice:Number(document.getElementById("sp_buy").value),sellPrice:Number(document.getElementById("sp_sell").value)};const idx=db.parts.findIndex(p=>p.id===id);if(idx>=0)db.parts[idx]=data;else db.parts.push(data);saveDB();closeModal("part");}
 function editPart(id){const p=db.parts.find(x=>x.id===id);document.getElementById("sp_id").value=p.id;document.getElementById("sp_name").value=p.name;document.getElementById("sp_stock").value=p.stock;document.getElementById("sp_buy").value=p.buyPrice;document.getElementById("sp_sell").value=p.sellPrice;openModal("part");}
 function deletePart(id){if(!confirm("Hapus part?"))return;db.parts=db.parts.filter(p=>p.id!==id);saveDB();}
-
-// EXPENSE
 function saveExpense(e){e.preventDefault();const id=document.getElementById("e_id").value||`EXP-${Date.now()}`;const data={id,date:document.getElementById("e_date").value,category:document.getElementById("e_cat").value,amount:Number(document.getElementById("e_amount").value),description:document.getElementById("e_desc").value};const idx=db.expenses.findIndex(x=>x.id===id);if(idx>=0)db.expenses[idx]=data;else db.expenses.push(data);saveDB();closeModal("expense");}
 function deleteExpense(id){if(!confirm("Hapus pengeluaran?"))return;db.expenses=db.expenses.filter(e=>e.id!==id);saveDB();}
-
-// BACKUP
 function exportJSON(){
 const dataStr=JSON.stringify(db,null,2);
 const blob=new Blob([dataStr],{type:"application/json"});
 const url=URL.createObjectURL(blob);
-const a=document.createElement("a");a.href=url;a.download=`backup-servis-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+const a=document.createElement("a");a.href=url;a.download=`backup-servis-pro-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
 }
 function exportCSV(){
 const header=["Invoice","Tanggal","Pelanggan","HP","Device","Brand","Keluhan","Status","Biaya","DP","Teknisi"];
@@ -632,7 +689,7 @@ return [s.invoiceNo,s.dateIn,cust.name||"",cust.phone||"",s.deviceType,s.brand,`
 const csv=[header,...rows].map(r=>r.join(",")).join("\n");
 const blob=new Blob([csv],{type:"text/csv"});
 const url=URL.createObjectURL(blob);
-const a=document.createElement("a");a.href=url;a.download=`laporan-servis-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
+const a=document.createElement("a");a.href=url;a.download=`laporan-servis-pro-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
 }
 function importJSON(){
 const file=document.getElementById("importFile").files[0];if(!file){alert("Pilih file JSON dulu");return}
@@ -646,8 +703,7 @@ db=imported;saveDB();alert("Import berhasil!");closeModal("backup");
 };
 reader.readAsText(file);
 }
-function resetAll(){if(!confirm("YAKIN hapus SEMUA data? Tidak bisa dikembalikan!"))return;if(!confirm("Konfirmasi kedua: Hapus permanen?"))return;localStorage.removeItem(LS_KEY);db=structuredClone(defaultDB);saveDB();closeModal("backup");alert("Data dihapus");}
-
+function resetAll(){if(!confirm("YAKIN hapus SEMUA data?"))return;if(!confirm("Konfirmasi kedua: Hapus permanen?"))return;localStorage.removeItem(LS_KEY);db=structuredClone(defaultDB);saveDB();closeModal("backup");alert("Data dihapus");}
 function saveConfig(){
 db.config.shopName=document.getElementById("cfg_shop").value;
 db.config.address=document.getElementById("cfg_addr").value;
@@ -663,12 +719,11 @@ function updateStorageInfo(){
 try{
 const size=new Blob([localStorage.getItem(LS_KEY)||""]).size;
 document.getElementById("storageInfo").innerText=`${db.services.length} servis • ${(size/1024).toFixed(1)} KB`;
+const bar=document.getElementById("storageBar");
+if(bar){bar.style.width=Math.min(100,(size/51200*100))+"%"}
 }catch{}
 }
-
-// Close modal on backdrop click
 document.querySelectorAll(".modal-backdrop").forEach(b=>b.addEventListener("click",e=>{if(e.target===b)b.classList.remove("show")}));
-
 init();
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
