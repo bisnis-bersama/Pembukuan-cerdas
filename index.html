@@ -214,6 +214,7 @@ tr:hover td{background:#fafafa}
 <div style="grid-column:1/-1"><label class="label">Keluhan / Kerusakan *</label><textarea class="input" id="s_complaint" rows="2" required placeholder="Mati total, tidak bisa cas, dll"></textarea></div>
 <div style="grid-column:1/-1"><label class="label">Kondisi Fisik</label><input class="input" id="s_condition" placeholder="Lecet pemakaian, segel utuh, dll"></div>
 <div><label class="label">Estimasi Biaya</label><input class="input" id="s_estCost" type="number" min="0" placeholder="0"></div>
+<div><label class="label">Diskon (Rp)</label><input class="input" id="s_diskon" type="number" min="0" placeholder="0" value="0"></div>
 <div><label class="label">DP / Uang Muka</label><input class="input" id="s_dp" type="number" min="0" placeholder="0"></div>
 <div><label class="label">Status</label><select id="s_status"><option>Masuk</option><option>Diagnosis</option><option>Menunggu Sparepart</option><option>Dikerjakan</option><option>Selesai</option><option>Diambil</option><option>Batal</option></select></div>
 <div><label class="label">Garansi (hari)</label><input class="input" id="s_warranty" type="number" value="30"></div>
@@ -338,7 +339,7 @@ tr:hover td{background:#fafafa}
 <div class="modal-backdrop" id="modal-wa-templates"><div class="modal" style="max-width:720px">
 <div class="modal-head"><b>Pesan WA per Status</b><button class="btn btn-ghost btn-sm" onclick="closeModal('wa-templates')">✕</button></div>
 <div class="modal-body">
-<p style="font-size:13px;color:var(--muted);margin-bottom:12px">Gunakan placeholder: {customer} {device} {brand} {invoice} {complaint} {estCost} {finalCost} {sisa} {technician} {notes} {warranty} {shopName} {address} {shopPhone} {dateIn}</p>
+<p style="font-size:13px;color:var(--muted);margin-bottom:12px">Gunakan placeholder: {customer} {device} {brand} {invoice} {complaint} {estCost} {partsCost} {diskon} {finalCost} {dp} {sisa} {technician} {notes} {warranty} {shopName} {address} {shopPhone} {dateIn}</p>
 <div id="waTemplatesForm" style="display:grid;gap:14px"></div>
 <div style="margin-top:16px;display:flex;gap:8px;justify-content:flex-end"><button class="btn btn-ghost" onclick="closeModal('wa-templates')">Tutup</button><button class="btn btn-primary" onclick="saveWATemplates()">Simpan Template WA</button></div>
 </div>
@@ -375,20 +376,20 @@ expenses:[],
 sales:[],
 payrolls:[],
 config:{
-shopName:"SERVIS.ID PRO - Cirebon",
-address:"Jl. Contoh No.123, Cirebon",
+shopName:"A YUDI THEA",
+address:"Depan pasar hewan blok Jum'at Maja utara Majalengka",
 phone:"0812-3456-7890",
 invoicePrefix:"SRV",
 salesPrefix:"JUAL",
 payrollPrefix:"UPAH",
 waTemplates:{
-"Masuk":"Halo {customer} 👋\nDevice {device} {brand} (Invoice: {invoice}) sudah kami terima.\nKeluhan: {complaint}\nEstimasi biaya: Rp {estCost}\nTerima kasih sudah percayakan ke {shopName}",
-"Diagnosis":"Halo {customer}, device {device} {brand} [{invoice}] sedang DIAGNOSA oleh teknisi {technician}. Update: {notes}. Kami infokan lagi ya.",
-"Menunggu Sparepart":"Halo {customer}, device {brand} [{invoice}] MENUNGGU SPAREPART. Mohon tunggu, kami usahakan secepatnya. - {shopName}",
-"Dikerjakan":"Halo {customer} 🔧, device {brand} [{invoice}] sedang DIKERJAKAN teknisi {technician}. Estimasi selesai segera.",
-"Selesai":"Halo {customer} ✅\nDevice {device} {brand} [{invoice}] SUDAH SELESAI!\nBiaya akhir: Rp {finalCost}\nSisa bayar: Rp {sisa}\nSilakan ambil di {shopName}\nAlamat: {address}\nGaransi {warranty} hari. Terima kasih 🙏",
-"Diambil":"Terima kasih {customer} sudah mengambil {device} {brand} [{invoice}] di {shopName}. Ditunggu lagi servicenya! ⭐⭐⭐⭐⭐",
-"Batal":"Mohon maaf {customer}, servis {device} {brand} [{invoice}] kami BATALKAN. Keterangan: {notes}. Hubungi {shopPhone} untuk info."
+"Masuk":"Halo {customer} 👋\nDevice {device} {brand} (Invoice: {invoice}) sudah kami terima di {shopName}.\n\nRincian Awal:\n- Keluhan: {complaint}\n- Estimasi Biaya: Rp {estCost}\n- Diskon: Rp {diskon}\n- DP Masuk: Rp {dp}\n- Estimasi Sisa: Rp {sisa}\n\nAlamat: {address}\nKami akan infokan perkembangannya. Terima kasih 🙏",
+"Diagnosis":"Halo {customer}, device {device} {brand} [{invoice}] sedang DIAGNOSA oleh teknisi {technician}.\n\nRincian:\n- Estimasi Awal: Rp {estCost}\n- Diskon: Rp {diskon}\n- DP: Rp {dp}\n- Part: Rp {partsCost}\nCatatan teknisi: {notes}\n\nKami update lagi ya - {shopName}",
+"Menunggu Sparepart":"Halo {customer}, device {brand} [{invoice}] MENUNGGU SPAREPART.\nEstimasi: Rp {estCost} | Diskon Rp {diskon} | DP Rp {dp} | Sisa Rp {sisa}\nMohon tunggu, kami usahakan secepatnya. - {shopName}",
+"Dikerjakan":"Halo {customer} 🔧, device {brand} [{invoice}] sedang DIKERJAKAN teknisi {technician}.\nRincian Biaya:\n- Estimasi: Rp {estCost}\n- Part: Rp {partsCost}\n- Diskon: Rp {diskon}\n- Total Sementara: Rp {finalCost}\n- DP: Rp {dp}\n- Sisa: Rp {sisa}\nEstimasi selesai segera.",
+"Selesai":"Halo {customer} ✅\nDevice {device} {brand} [{invoice}] SUDAH SELESAI!\n\nRINCIAN BIAYA LENGKAP:\n- Estimasi Awal: Rp {estCost}\n- Biaya Part: Rp {partsCost}\n- Diskon: Rp {diskon}\n- Total Akhir: Rp {finalCost}\n- DP Masuk: Rp {dp}\n- SISA BAYAR: Rp {sisa}\n\nSilakan ambil di {shopName}\nAlamat: {address}\nGaransi {warranty} hari.\nHub: {shopPhone}\nTerima kasih 🙏",
+"Diambil":"Terima kasih {customer} sudah mengambil {device} {brand} [{invoice}] di {shopName}.\n\nRincian Akhir:\n- Total: Rp {finalCost}\n- Diskon: Rp {diskon}\n- DP: Rp {dp}\n- Lunas: Rp {finalCost}\n\nDitunggu lagi servicenya! ⭐⭐⭐⭐⭐",
+"Batal":"Mohon maaf {customer}, servis {device} {brand} [{invoice}] kami BATALKAN.\nRincian:\n- Estimasi: Rp {estCost}\n- DP yang masuk: Rp {dp} (akan dikembalikan/diperhitungkan)\nKeterangan: {notes}.\nHubungi {shopPhone} untuk info - {shopName}"
 }
 },
 seq:1001,
@@ -481,7 +482,12 @@ function getWAMessage(status, service){
 const cfg=db.config;
 const cust=db.customers.find(c=>c.id===service.customerId)||{name:"Pelanggan",phone:""};
 const tech=db.technicians.find(t=>t.id===service.technicianId)||{name:"Teknisi"};
-const sisa=Number(service.finalCost||service.estCost||0)-Number(service.dp||0);
+const partsCost=(service.partsUsed||[]).reduce((a,b)=>a+Number(b.total||0),0);
+const diskon=Number(service.diskon||0);
+const estCost=Number(service.estCost||0);
+const finalCost=Number(service.finalCost||0)||(estCost+partsCost-diskon);
+const dp=Number(service.dp||0);
+const sisa=Math.max(0,finalCost-dp);
 let template=cfg.waTemplates[status]||cfg.waTemplates["Masuk"];
 const map={
 customer:cust.name,
@@ -489,9 +495,11 @@ device:service.deviceType||"",
 brand:service.brand||"",
 invoice:service.invoiceNo||"",
 complaint:service.complaint||"",
-estCost:Number(service.estCost||0).toLocaleString("id-ID"),
-finalCost:Number(service.finalCost||service.estCost||0).toLocaleString("id-ID"),
-dp:Number(service.dp||0).toLocaleString("id-ID"),
+estCost:estCost.toLocaleString("id-ID"),
+partsCost:partsCost.toLocaleString("id-ID"),
+diskon:diskon.toLocaleString("id-ID"),
+finalCost:finalCost.toLocaleString("id-ID"),
+dp:dp.toLocaleString("id-ID"),
 sisa:sisa.toLocaleString("id-ID"),
 technician:tech.name,
 notes:service.notes||"-",
@@ -502,7 +510,10 @@ shopPhone:cfg.phone,
 dateIn:service.dateIn
 };
 let msg=template;
+// replace all placeholders
 for(const k in map){ msg=msg.replaceAll(`{${k}}`, map[k]); }
+// tambahan: kalau DP 0, tetap tampilkan tapi kasih note lunas? user minta kalau ada DP cantumkan, jadi kita sudah cantumkan semua. 
+// Jika diskon 0, ganti jadi Rp 0 tetap tampil biar detail.
 return msg;
 }
 function openWA(serviceId, status){
@@ -933,6 +944,9 @@ if(part) part.stock+=Number(pu.qty||0);
 }
 const partTotal=tempServiceParts.reduce((a,b)=>a+b.total,0);
 const estCost=Number(document.getElementById("s_estCost").value||0);
+const diskon=Number(document.getElementById("s_diskon")?.value||0);
+const dpVal=Number(document.getElementById("s_dp").value||0);
+const finalCalc=Math.max(0, estCost+partTotal-diskon);
 const data={
 id,
 invoiceNo:isNew?`${db.config.invoicePrefix || "SRV"}-${db.seq++}`:db.services.find(s=>s.id===id)?.invoiceNo,
@@ -945,8 +959,9 @@ dateIn:document.getElementById("s_dateIn").value,
 complaint:document.getElementById("s_complaint").value,
 condition:document.getElementById("s_condition").value,
 estCost:estCost,
-dp:Number(document.getElementById("s_dp").value||0),
-finalCost:estCost+partTotal,
+diskon:diskon,
+dp:dpVal,
+finalCost:finalCalc,
 partsUsed: [...tempServiceParts],
 status:document.getElementById("s_status").value,
 warranty:Number(document.getElementById("s_warranty").value||0),
@@ -991,6 +1006,7 @@ document.getElementById("s_dateIn").value=s.dateIn;
 document.getElementById("s_complaint").value=s.complaint;
 document.getElementById("s_condition").value=s.condition;
 document.getElementById("s_estCost").value=s.estCost;
+document.getElementById("s_diskon").value=s.diskon||0;
 document.getElementById("s_dp").value=s.dp;
 document.getElementById("s_status").value=s.status;
 document.getElementById("s_warranty").value=s.warranty;
@@ -1023,7 +1039,16 @@ ${["Masuk","Diagnosis","Menunggu Sparepart","Dikerjakan","Selesai","Diambil","Ba
 
 <div class="grid grid-2">
 <div class="card"><h3>Device</h3><div style="margin-top:6px;font-weight:700">${s.deviceType} ${s.brand}</div><div style="font-size:13px;color:var(--muted)">SN: ${s.serial||"-"}<br>Kondisi: ${s.condition||"-"}</div><div style="margin-top:8px;font-size:13px"><b>Keluhan:</b> ${s.complaint}</div>${partsHtml}</div>
-<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Biaya ${s.status!=="Diambil"?'<span style="color:#71717a">(Estimasi)</span>':'<span style="color:var(--yellow)">(Real)</span>'}</h3><div style="margin-top:6px"><div style="display:flex;justify-content:space-between"><span>Biaya Servis</span><b>Rp ${Number(s.estCost||0).toLocaleString("id-ID")}</b></div><div style="display:flex;justify-content:space-between"><span>Part</span><span>Rp ${(s.partsUsed||[]).reduce((a,b)=>a+b.total,0).toLocaleString("id-ID")}</span></div><div style="display:flex;justify-content:space-between;font-weight:800;border-top:1px solid #222;margin-top:6px;padding-top:6px"><span>Total</span><b style="color:var(--yellow)">Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}</b></div><div style="display:flex;justify-content:space-between"><span>DP</span><span>Rp ${Number(s.dp||0).toLocaleString("id-ID")}</span></div><div style="display:flex;justify-content:space-between;border-top:1px dashed #222;margin-top:8px;padding-top:8px"><span>Sisa Bayar</span><b>Rp ${sisa.toLocaleString("id-ID")}</b></div></div><div style="margin-top:8px;font-size:12px;color:#71717a">Teknisi: ${tech.name} • Garansi ${s.warranty} hari</div></div>
+<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Biaya ${s.status!=="Diambil"?'<span style="color:#71717a">(Estimasi)</span>':'<span style="color:var(--yellow)">(Real)</span>'}</h3><div style="margin-top:6px">
+<div style="display:flex;justify-content:space-between"><span>Estimasi Awal</span><span>Rp ${Number(s.estCost||0).toLocaleString("id-ID")}</span></div>
+<div style="display:flex;justify-content:space-between"><span>Part</span><span>Rp ${(s.partsUsed||[]).reduce((a,b)=>a+b.total,0).toLocaleString("id-ID")}</span></div>
+<div style="display:flex;justify-content:space-between;color:#ef4444"><span>Diskon</span><span>- Rp ${Number(s.diskon||0).toLocaleString("id-ID")}</span></div>
+<div style="display:flex;justify-content:space-between;font-weight:800;border-top:1px solid #222;margin-top:6px;padding-top:6px"><span>Total Akhir</span><b style="color:var(--yellow)">Rp ${Number(s.finalCost||0).toLocaleString("id-ID")}</b></div>
+<div style="display:flex;justify-content:space-between"><span>DP Masuk</span><span>Rp ${Number(s.dp||0).toLocaleString("id-ID")}</span></div>
+<div style="display:flex;justify-content:space-between;border-top:1px dashed #222;margin-top:8px;padding-top:8px;background:#111;padding:8px;border-radius:8px"><span>Sisa Bayar</span><b style="color:${sisa>0?'#facc15':'#22c55e'}">Rp ${sisa.toLocaleString("id-ID")} ${sisa===0?'(LUNAS)':''}</b></div>
+${Number(s.dp||0)>0?`<div style="font-size:11px;color:#a1a1aa;margin-top:6px">✓ DP Rp ${Number(s.dp).toLocaleString("id-ID")} sudah diterima</div>`:''}
+${Number(s.diskon||0)>0?`<div style="font-size:11px;color:#22c55e;margin-top:2px">✓ Diskon Rp ${Number(s.diskon).toLocaleString("id-ID")} diterapkan</div>`:''}
+</div><div style="margin-top:8px;font-size:12px;color:#71717a">Teknisi: ${tech.name} • Garansi ${s.warranty} hari</div></div>
 </div>
 <div class="card"><h3>Catatan Teknisi</h3><div style="margin-top:6px;font-size:14px">${s.notes||"<span style=color:var(--muted)>-</span>"}</div></div>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
