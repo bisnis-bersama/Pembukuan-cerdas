@@ -385,16 +385,19 @@ const today=new Date().toISOString().slice(0,10);
 const thisMonth=new Date().toISOString().slice(0,7);
 const pending=db.services.filter(s=>["Masuk","Diagnosis","Menunggu Sparepart","Dikerjakan"].includes(s.status)).length;
 const selesai=db.services.filter(s=>s.status==="Selesai").length;
-const omsetBulan=db.services.filter(s=>s.dateIn.startsWith(thisMonth)&&s.status!=="Batal").reduce((a,b)=>a+(Number(b.finalCost)||Number(b.estCost)||0),0);
+// LOGIKA BARU: hanya status Diambil yang jadi pendapatan real
+const omsetBulanReal=db.services.filter(s=>s.dateIn.startsWith(thisMonth)&&s.status==="Diambil").reduce((a,b)=>a+(Number(b.finalCost)||Number(b.estCost)||0),0);
+const omsetBulanEstimasi=db.services.filter(s=>s.dateIn.startsWith(thisMonth)&&s.status!=="Diambil"&&s.status!=="Batal").reduce((a,b)=>a+(Number(b.estCost||b.finalCost||0)),0);
+const omsetBulan=omsetBulanReal; // untuk kompatibilitas
 const pengeluaranBulan=db.expenses.filter(e=>e.date.startsWith(thisMonth)).reduce((a,b)=>a+Number(b.amount),0);
-const laba=omsetBulan-pengeluaranBulan;
+const laba=omsetBulanReal-pengeluaranBulan;
 const todayServis=db.services.filter(s=>s.dateIn===today).length;
 return `
 <div class="grid grid-4">
 <div class="card"><h3>Servis Hari Ini</h3><div class="stat">${todayServis} <small>unit</small></div><div style="font-size:12px;color:var(--muted);margin-top:6px">${today}</div></div>
 <div class="card" style="border-left:4px solid var(--yellow)"><h3>Perlu Dikerjakan</h3><div class="stat" style="color:#000">${pending}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">${selesai} menunggu diambil</div></div>
-<div class="card"><h3>Omset Bulan Ini</h3><div class="stat">Rp ${omsetBulan.toLocaleString("id-ID")}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">Pengeluaran Rp ${pengeluaranBulan.toLocaleString("id-ID")}</div></div>
-<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Laba Bersih Bulan Ini</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:12px;color:#71717a;margin-top:6px">${thisMonth} • PRO</div></div>
+<div class="card" style="border-left:4px solid #16a34a"><h3>Pendapatan Real (Diambil)</h3><div class="stat" style="color:#16a34a">Rp ${omsetBulanReal.toLocaleString("id-ID")}</div><div style="font-size:12px;color:var(--muted);margin-top:6px">Estimasi tertahan: Rp ${omsetBulanEstimasi.toLocaleString("id-ID")}</div></div>
+<div class="card" style="background:#070707;color:#fff;border-color:#1a1a1a"><h3 style="color:#a1a1aa">Laba Bersih Real</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:12px;color:#71717a;margin-top:6px">${thisMonth} • Hanya yg Diambil</div></div>
 </div>
 <div class="grid grid-2" style="margin-top:16px">
 <div class="card"><h3>Servis Terbaru</h3><div style="margin-top:12px">${renderMiniTable(db.services.slice(-5).reverse())}</div></div>
@@ -449,7 +452,9 @@ ${filtered.length?filtered.map(s=>{
 const cust=db.customers.find(c=>c.id===s.customerId);
 const tech=db.technicians.find(t=>t.id===s.technicianId)?.name||"-";
 const biaya=Number(s.finalCost||s.estCost||0);
-return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.dateIn}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td><b>${s.deviceType} ${s.brand}</b><div style="font-size:12px;color:var(--muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.complaint}</div></td><td style="font-size:13px">${tech}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td><td>Rp ${biaya.toLocaleString("id-ID")}</td><td><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="openDetail('${s.id}')">Detail</button><button class="btn btn-black btn-sm" onclick="editServis('${s.id}')">Edit</button></div></td></tr>`
+const isReal=s.status==="Diambil";
+const biayaDisplay=isReal?`Rp ${biaya.toLocaleString("id-ID")}`:`<span style="color:#71717a">Est: Rp ${biaya.toLocaleString("id-ID")}</span><div style="font-size:10px;color:#a1a1aa">belum pendapatan</div>`;
+return `<tr><td><b>${s.invoiceNo}</b><div style="font-size:12px;color:var(--muted)">${s.dateIn}</div></td><td>${cust?.name||"-"}<div style="font-size:12px;color:var(--muted)">${cust?.phone||""}</div></td><td><b>${s.deviceType} ${s.brand}</b><div style="font-size:12px;color:var(--muted);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.complaint}</div></td><td style="font-size:13px">${tech}</td><td><span class="status s-${s.status.split(" ")[0]}">${s.status}</span></td><td>${biayaDisplay}</td><td><div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="openDetail('${s.id}')">Detail</button><button class="btn btn-black btn-sm" onclick="editServis('${s.id}')">Edit</button></div></td></tr>`
 }).join(""):`<tr><td colspan=7><div class=empty><b>Tidak ada data</b><br>Belum ada transaksi servis</div></td></tr>`}
 </tbody></table>
 </div>`;
@@ -485,16 +490,20 @@ return `<tr><td><b>${p.name}</b></td><td>${p.stock} ${Number(p.stock)<=3?'<span 
 </tbody></table></div>`;
 }
 function renderKeuangan(){
-const totalMasuk=db.services.filter(s=>s.status!=="Batal").reduce((a,b)=>a+(Number(b.finalCost||b.estCost||0)),0);
-const totalDP=db.services.reduce((a,b)=>a+Number(b.dp||0),0);
+// LOGIKA BARU: pendapatan hanya yang sudah Diambil
+const totalMasukReal=db.services.filter(s=>s.status==="Diambil").reduce((a,b)=>a+(Number(b.finalCost||b.estCost||0)),0);
+const totalMasukEstimasi=db.services.filter(s=>s.status!=="Diambil"&&s.status!=="Batal").reduce((a,b)=>a+(Number(b.estCost||b.finalCost||0)),0);
+const totalMasuk=totalMasukReal; // backward compat
+const totalDP=db.services.filter(s=>s.status==="Diambil").reduce((a,b)=>a+Number(b.dp||0),0);
+const totalDPAll=db.services.reduce((a,b)=>a+Number(b.dp||0),0);
 const totalExpense=db.expenses.reduce((a,b)=>a+Number(b.amount),0);
-const laba=totalMasuk-totalExpense;
+const laba=totalMasukReal-totalExpense;
 return `
 <div class="grid grid-4">
-<div class="card"><h3>Total Omset</h3><div class="stat">Rp ${totalMasuk.toLocaleString("id-ID")}</div></div>
-<div class="card"><h3>Total DP Masuk</h3><div class="stat">Rp ${totalDP.toLocaleString("id-ID")}</div></div>
+<div class="card" style="border-left:4px solid #16a34a"><h3>Pendapatan Real (Diambil)</h3><div class="stat" style="color:#16a34a">Rp ${totalMasukReal.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Hanya status Diambil</div></div>
+<div class="card"><h3>Estimasi Tertahan</h3><div class="stat" style="color:#a1a1aa">Rp ${totalMasukEstimasi.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Belum diambil = belum pendapatan</div></div>
 <div class="card"><h3>Total Pengeluaran</h3><div class="stat" style="color:var(--danger)">Rp ${totalExpense.toLocaleString("id-ID")}</div></div>
-<div class="card" style="background:#070707;color:#fff"><h3 style="color:#a1a1aa">Laba Kotor</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div></div>
+<div class="card" style="background:#070707;color:#fff"><h3 style="color:#a1a1aa">Laba Kotor Real</h3><div class="stat" style="color:${laba>=0?'var(--yellow)':'#ef4444'}">Rp ${laba.toLocaleString("id-ID")}</div><div style="font-size:11px;color:#52525b;margin-top:4px">DP Real: Rp ${totalDP.toLocaleString("id-ID")} (All DP: Rp ${totalDPAll.toLocaleString("id-ID")})</div></div>
 </div>
 <div class="grid grid-2" style="margin-top:16px">
 <div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3>Pengeluaran</h3><button class="btn btn-primary btn-sm" onclick="openModal('expense')">+ Pengeluaran</button></div>
@@ -528,18 +537,25 @@ const status=document.getElementById("reportStatus").value;
 let list=db.services;
 if(month) list=list.filter(s=>s.dateIn.startsWith(month));
 if(status!=="Semua") list=list.filter(s=>s.status===status);
-const omset=list.reduce((a,b)=>a+(Number(b.finalCost||b.estCost||0)),0);
-const dp=list.reduce((a,b)=>a+Number(b.dp||0),0);
+// LOGIKA BARU
+const omsetReal=list.filter(s=>s.status==="Diambil").reduce((a,b)=>a+(Number(b.finalCost||b.estCost||0)),0);
+const omsetEstimasi=list.filter(s=>s.status!=="Diambil"&&s.status!=="Batal").reduce((a,b)=>a+(Number(b.estCost||b.finalCost||0)),0);
+const omset=omsetReal; // untuk table
+const dp=list.filter(s=>s.status==="Diambil").reduce((a,b)=>a+Number(b.dp||0),0);
+const dpEstimasi=list.reduce((a,b)=>a+Number(b.dp||0),0);
 const el=document.getElementById("reportResult");
 el.innerHTML=`<h3>Hasil • ${list.length} transaksi ${month?`• ${month}`:""} ${status!=="Semua"?`• ${status}`:""}</h3>
 <div class="grid grid-2" style="margin-top:12px">
-<div><div style="font-size:12px;color:var(--muted)">Omset</div><div style="font-size:20px;font-weight:900">Rp ${omset.toLocaleString("id-ID")}</div></div>
-<div><div style="font-size:12px;color:var(--muted)">Total DP</div><div style="font-size:20px;font-weight:900">Rp ${dp.toLocaleString("id-ID")}</div></div>
+<div><div style="font-size:12px;color:var(--muted)">Pendapatan Real (Diambil)</div><div style="font-size:20px;font-weight:900;color:#16a34a">Rp ${omsetReal.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted)">Estimasi tertahan: Rp ${omsetEstimasi.toLocaleString("id-ID")}</div></div>
+<div><div style="font-size:12px;color:var(--muted)">DP Real (Diambil)</div><div style="font-size:20px;font-weight:900">Rp ${dp.toLocaleString("id-ID")}</div><div style="font-size:11px;color:var(--muted)">Total DP semua status: Rp ${dpEstimasi.toLocaleString("id-ID")}</div></div>
 </div>
+<div style="margin-top:10px;padding:8px 12px;background:#fefce8;border:1px solid #facc15;border-radius:8px;font-size:11px;color:#713f12">ℹ️ Aturan baru: Hanya status <b>Diambil</b> yang dihitung sebagai pendapatan. Status lain hanya Estimasi.</div>
 <div class="table-wrap" style="margin-top:14px"><table><thead><tr><th>Invoice</th><th>Tgl</th><th>Pelanggan</th><th>Device</th><th>Status</th><th>Biaya</th></tr></thead><tbody>
 ${list.map(s=>{
 const cust=db.customers.find(c=>c.id===s.customerId)?.name||"-";
-return `<tr><td>${s.invoiceNo}</td><td>${s.dateIn}</td><td>${cust}</td><td>${s.deviceType} ${s.brand}</td><td>${s.status}</td><td>Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}</td></tr>`
+const isReal=s.status==="Diambil";
+const biayaLabel=isReal?`Rp ${Number(s.finalCost||s.estCost||0).toLocaleString("id-ID")}`:`<span style="color:#71717a">Est: Rp ${Number(s.estCost||s.finalCost||0).toLocaleString("id-ID")}</span>`;
+return `<tr><td>${s.invoiceNo}</td><td>${s.dateIn}</td><td>${cust}</td><td>${s.deviceType} ${s.brand}</td><td>${s.status}</td><td>${biayaLabel}</td></tr>`
 }).join("")}
 </tbody></table></div>`;
 }
