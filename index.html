@@ -2,1144 +2,1613 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Toko Siap Antar</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>TOKO SIAP ANTAR</title>
 
 <style>
-:root{
-  --yellow:#ffc400;
-  --yellow2:#ffdb4d;
-  --black:#111;
-  --bg:#f6f7f9;
-  --card:#fff;
-  --text:#171717;
-  --muted:#8b8b8b;
-  --line:#ededed;
-}
+
+/* =====================================================
+   RESET
+===================================================== */
 
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
 }
 
 body{
-  font-family:Inter,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  padding-bottom:80px;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background:#f4f5f7;
+    color:#171717;
+
+    padding-bottom:76px;
+}
+
+button,
+input{
+    font-family:inherit;
 }
 
 button{
-  font-family:inherit;
+    cursor:pointer;
 }
+
+
+/* =====================================================
+   APP
+===================================================== */
 
 .app{
-  max-width:600px;
-  margin:auto;
-  min-height:100vh;
+    width:100%;
+    max-width:700px;
+    margin:0 auto;
+    min-height:100vh;
+    background:#f4f5f7;
 }
 
-/* ================= HEADER ================= */
+
+/* =====================================================
+   HEADER
+===================================================== */
 
 .header{
-  background:var(--black);
-  padding:18px 18px 20px;
-  color:#fff;
+    width:100%;
+    background:#111;
+    padding:12px 14px 14px;
 }
 
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:17px;
+.header-top{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:11px;
 }
+
+
+/* LOGO */
 
 .brand{
-  font-size:20px;
-  font-weight:800;
-  letter-spacing:-.5px;
-}
-
-.brand span{
-  color:var(--yellow);
-}
-
-.header-icons{
-  display:flex;
-  gap:9px;
-}
-
-.icon-btn{
-  width:38px;
-  height:38px;
-  border:1px solid #333;
-  background:#1d1d1d;
-  border-radius:12px;
-  color:#fff;
-  font-size:18px;
-  cursor:pointer;
-}
-
-.search{
-  height:46px;
-  background:#fff;
-  border-radius:13px;
-  display:flex;
-  align-items:center;
-  padding:0 14px;
-  gap:10px;
-}
-
-.search span{
-  font-size:18px;
-  color:#777;
-}
-
-.search input{
-  flex:1;
-  border:0;
-  outline:0;
-  font-size:14px;
-}
-
-/* ================= CONTENT ================= */
-
-.content{
-  padding:15px;
-}
-
-/* ================= SALDO ================= */
-
-.wallet{
-  background:linear-gradient(135deg,#151515,#292929);
-  color:white;
-  border-radius:20px;
-  padding:19px;
-  box-shadow:0 8px 25px rgba(0,0,0,.12);
-}
-
-.wallet-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.wallet-title{
-  color:#aaa;
-  font-size:12px;
-}
-
-.wallet-balance{
-  font-size:28px;
-  font-weight:800;
-  margin-top:4px;
-  letter-spacing:-.7px;
-}
-
-.eye{
-  background:#222;
-  border:0;
-  color:white;
-  width:35px;
-  height:35px;
-  border-radius:10px;
-}
-
-.wallet-bottom{
-  display:flex;
-  gap:9px;
-  margin-top:18px;
-}
-
-.wallet-btn{
-  flex:1;
-  height:39px;
-  border:0;
-  border-radius:10px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.topup{
-  background:var(--yellow);
-}
-
-.history{
-  background:#383838;
-  color:#fff;
-}
-
-/* ================= QUICK MENU ================= */
-
-.quick{
-  background:white;
-  border-radius:18px;
-  margin-top:14px;
-  padding:16px 8px;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  box-shadow:0 3px 15px rgba(0,0,0,.04);
-}
-
-.quick-item{
-  border:0;
-  background:none;
-  text-align:center;
-  cursor:pointer;
-}
-
-.quick-icon{
-  width:44px;
-  height:44px;
-  margin:auto;
-  border-radius:14px;
-  background:#fff7d8;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:21px;
-}
-
-.quick-item:nth-child(2) .quick-icon{
-  background:#eef7ff;
-}
-
-.quick-item:nth-child(3) .quick-icon{
-  background:#f1edff;
-}
-
-.quick-item:nth-child(4) .quick-icon{
-  background:#eafff0;
-}
-
-.quick-item:nth-child(5) .quick-icon{
-  background:#fff0ec;
-}
-
-.quick-item small{
-  display:block;
-  margin-top:7px;
-  font-size:10px;
-  font-weight:600;
-}
-
-/* ================= BANNER ================= */
-
-.banner{
-  margin-top:15px;
-  height:150px;
-  border-radius:19px;
-  overflow:hidden;
-  position:relative;
-  background:linear-gradient(120deg,#171717,#343434);
-  color:#fff;
-  padding:22px;
-}
-
-.banner::after{
-  content:"📱";
-  position:absolute;
-  right:15px;
-  bottom:-15px;
-  font-size:110px;
-  opacity:.12;
-}
-
-.banner h2{
-  font-size:23px;
-  line-height:1.15;
-  max-width:260px;
-}
-
-.banner p{
-  color:#c9c9c9;
-  font-size:12px;
-  margin-top:8px;
-}
-
-.banner button{
-  margin-top:13px;
-  background:var(--yellow);
-  border:0;
-  padding:8px 14px;
-  border-radius:8px;
-  font-size:11px;
-  font-weight:800;
-}
-
-/* ================= SECTION ================= */
-
-.section{
-  margin-top:23px;
-}
-
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-}
-
-.section-head h2{
-  font-size:17px;
-}
-
-.section-head button{
-  background:none;
-  border:0;
-  color:#a07800;
-  font-size:11px;
-  font-weight:700;
-}
-
-/* ================= PRODUCT ================= */
-
-.products{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:11px;
-}
-
-.product{
-  background:#fff;
-  border-radius:15px;
-  overflow:hidden;
-  box-shadow:0 2px 10px rgba(0,0,0,.04);
-}
-
-.product-img{
-  height:170px;
-  background:#f0f1f3;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  position:relative;
-}
-
-.product-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.product-placeholder{
-  font-size:58px;
-  opacity:.3;
-}
-
-.stock{
-  position:absolute;
-  top:9px;
-  left:9px;
-  background:#111;
-  color:#fff;
-  font-size:9px;
-  padding:5px 7px;
-  border-radius:6px;
-}
-
-.product-info{
-  padding:11px;
-}
-
-.product-name{
-  font-size:13px;
-  line-height:1.35;
-  height:35px;
-  overflow:hidden;
-}
-
-.price{
-  font-size:17px;
-  font-weight:800;
-  margin-top:7px;
-}
-
-.product-footer{
-  margin-top:9px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.product-stock{
-  font-size:10px;
-  color:#888;
-}
-
-.add{
-  width:31px;
-  height:31px;
-  border-radius:9px;
-  background:var(--yellow);
-  border:0;
-  font-size:20px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* ================= BOTTOM NAV ================= */
-
-.bottom{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:67px;
-  background:rgba(255,255,255,.96);
-  border-top:1px solid var(--line);
-  display:flex;
-  justify-content:center;
-  z-index:50;
-  backdrop-filter:blur(12px);
-}
-
-.bottom-inner{
-  width:100%;
-  max-width:600px;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-}
-
-.nav{
-  border:0;
-  background:none;
-  color:#888;
-  font-size:10px;
-  cursor:pointer;
-}
-
-.nav div{
-  font-size:19px;
-  margin-bottom:3px;
-}
-
-.nav.active{
-  color:#111;
-  font-weight:800;
-}
-
-.nav.active div{
-  color:#d49e00;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(min-width:601px){
-
-  body{
-    background:#e9eaec;
-  }
-
-  .app{
-    background:var(--bg);
-  }
-
-  .header{
-    border-radius:0 0 22px 22px;
-  }
-.brand{
-  display:flex;
-  align-items:center;
-  width:150px;
-  height:40px;
+    height:38px;
+    max-width:150px;
+    display:flex;
+    align-items:center;
 }
 
 .brand img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:left center;
+    display:block;
+    width:auto;
+    max-width:150px;
+    height:36px;
+    object-fit:contain;
 }
+
+
+/* HEADER BUTTON */
+
+.header-actions{
+    display:flex;
+    gap:7px;
 }
+
+.header-button{
+    width:37px;
+    height:37px;
+
+    border:1px solid #333;
+    border-radius:11px;
+
+    background:#1d1d1d;
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:17px;
+}
+
+
+/* SEARCH */
+
+.search-box{
+    width:100%;
+    height:43px;
+
+    background:#fff;
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 12px;
+    gap:8px;
+}
+
+.search-icon{
+    color:#777;
+    font-size:17px;
+}
+
+.search-box input{
+    flex:1;
+
+    width:100%;
+
+    border:0;
+    outline:none;
+
+    background:transparent;
+
+    font-size:13px;
+    color:#222;
+}
+
+.search-box input::placeholder{
+    color:#999;
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+    width:100%;
+    padding:12px;
+}
+
+
+/* =====================================================
+   HERO LOGO / BANNER
+===================================================== */
+
+.hero{
+    width:100%;
+
+    background:#0d0d0d;
+
+    border-radius:17px;
+
+    overflow:hidden;
+
+    position:relative;
+}
+
+.hero img{
+    display:block;
+
+    width:100%;
+    height:auto;
+
+    max-height:270px;
+
+    object-fit:contain;
+
+    object-position:center;
+
+    background:#0d0d0d;
+}
+
+
+/* =====================================================
+   SALDO
+===================================================== */
+
+.wallet{
+    width:100%;
+
+    margin-top:12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #161616,
+            #292929
+        );
+
+    color:#fff;
+
+    border-radius:17px;
+
+    padding:16px;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,.09);
+}
+
+.wallet-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.wallet-label{
+    font-size:10px;
+    color:#aaa;
+    letter-spacing:.3px;
+}
+
+.wallet-value{
+    margin-top:3px;
+
+    font-size:25px;
+    font-weight:800;
+}
+
+.eye{
+    width:32px;
+    height:32px;
+
+    border:0;
+    border-radius:9px;
+
+    background:#303030;
+    color:#fff;
+}
+
+.wallet-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+
+    margin-top:13px;
+}
+
+.wallet-action{
+    height:37px;
+
+    border:0;
+    border-radius:9px;
+
+    font-size:11px;
+    font-weight:700;
+}
+
+.wallet-topup{
+    background:#ffc400;
+    color:#111;
+}
+
+.wallet-history{
+    background:#3a3a3a;
+    color:#fff;
+}
+
+
+/* =====================================================
+   QUICK MENU
+===================================================== */
+
+.quick-menu{
+    width:100%;
+
+    margin-top:12px;
+
+    background:#fff;
+
+    border-radius:16px;
+
+    padding:14px 7px;
+
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,.035);
+}
+
+.quick-item{
+    border:0;
+    background:transparent;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    gap:6px;
+}
+
+.quick-icon{
+    width:43px;
+    height:43px;
+
+    border-radius:13px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:20px;
+
+    background:#fff4c9;
+}
+
+.quick-item:nth-child(2) .quick-icon{
+    background:#eaf5ff;
+}
+
+.quick-item:nth-child(3) .quick-icon{
+    background:#f0ebff;
+}
+
+.quick-item:nth-child(4) .quick-icon{
+    background:#eaffef;
+}
+
+.quick-item:nth-child(5) .quick-icon{
+    background:#ffeded;
+}
+
+.quick-item span{
+    font-size:9px;
+    font-weight:600;
+}
+
+
+/* =====================================================
+   PROMO
+===================================================== */
+
+.promo{
+    width:100%;
+
+    margin-top:12px;
+
+    min-height:125px;
+
+    padding:18px;
+
+    border-radius:17px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            #151515,
+            #303030
+        );
+
+    color:#fff;
+}
+
+.promo::after{
+    content:"📱";
+
+    position:absolute;
+
+    right:18px;
+    bottom:-10px;
+
+    font-size:90px;
+
+    opacity:.10;
+}
+
+.promo-title{
+    position:relative;
+    z-index:2;
+
+    font-size:18px;
+    font-weight:800;
+
+    line-height:1.2;
+
+    max-width:250px;
+}
+
+.promo-text{
+    position:relative;
+    z-index:2;
+
+    margin-top:6px;
+
+    color:#bbb;
+
+    font-size:10px;
+}
+
+.promo-button{
+    position:relative;
+    z-index:2;
+
+    margin-top:11px;
+
+    border:0;
+
+    background:#ffc400;
+
+    color:#111;
+
+    border-radius:8px;
+
+    padding:8px 12px;
+
+    font-size:9px;
+    font-weight:800;
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section{
+    width:100%;
+    margin-top:20px;
+}
+
+.section-header{
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:10px;
+}
+
+.section-title{
+    font-size:16px;
+    font-weight:800;
+}
+
+.section-link{
+    border:0;
+    background:transparent;
+
+    color:#a57900;
+
+    font-size:10px;
+    font-weight:700;
+}
+
+
+/* =====================================================
+   PRODUCTS
+===================================================== */
+
+.products{
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:10px;
+}
+
+.product{
+    min-width:0;
+
+    background:#fff;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 2px 9px rgba(0,0,0,.035);
+}
+
+.product-image{
+    width:100%;
+
+    aspect-ratio:1 / 1;
+
+    background:#f0f1f3;
+
+    position:relative;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+}
+
+.product-image img{
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+.product-placeholder{
+    font-size:50px;
+    opacity:.25;
+}
+
+.product-status{
+    position:absolute;
+
+    left:7px;
+    top:7px;
+
+    background:#111;
+    color:#fff;
+
+    border-radius:5px;
+
+    padding:4px 6px;
+
+    font-size:8px;
+    font-weight:700;
+}
+
+.product-info{
+    padding:10px;
+}
+
+.product-name{
+    font-size:12px;
+    line-height:1.35;
+
+    height:33px;
+
+    overflow:hidden;
+}
+
+.product-price{
+    margin-top:6px;
+
+    font-size:16px;
+    font-weight:800;
+}
+
+.product-bottom{
+    margin-top:8px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+}
+
+.product-stock{
+    color:#999;
+    font-size:9px;
+}
+
+.add-cart{
+    width:30px;
+    height:30px;
+
+    border:0;
+
+    border-radius:9px;
+
+    background:#ffc400;
+
+    color:#111;
+
+    font-size:19px;
+    font-weight:700;
+}
+
+
+/* =====================================================
+   BOTTOM NAVIGATION
+===================================================== */
+
+.bottom-nav{
+    position:fixed;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    width:100%;
+
+    height:67px;
+
+    background:
+        rgba(255,255,255,.97);
+
+    border-top:1px solid #e7e7e7;
+
+    z-index:100;
+
+    backdrop-filter:blur(12px);
+}
+
+.bottom-inner{
+    width:100%;
+    max-width:700px;
+
+    height:100%;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+}
+
+.nav-item{
+    border:0;
+    background:transparent;
+
+    color:#999;
+
+    font-size:9px;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:3px;
+}
+
+.nav-icon{
+    font-size:18px;
+}
+
+.nav-item.active{
+    color:#c38f00;
+    font-weight:800;
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast{
+    position:fixed;
+
+    left:50%;
+    bottom:82px;
+
+    transform:
+        translateX(-50%)
+        translateY(20px);
+
+    background:#111;
+    color:#fff;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+
+    font-size:11px;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.25s;
+
+    z-index:200;
+
+    white-space:nowrap;
+}
+
+.toast.show{
+    opacity:1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+
+/* =====================================================
+   DESKTOP
+===================================================== */
+
+@media(min-width:701px){
+
+    body{
+        background:#e5e6e8;
+    }
+
+    .app{
+        background:#f4f5f7;
+    }
+
+    .header{
+        border-radius:0;
+    }
+
+    .products{
+        grid-template-columns:
+            repeat(4,minmax(0,1fr));
+    }
+
+}
+
+
+/* =====================================================
+   SMALL PHONE
+===================================================== */
+
+@media(max-width:360px){
+
+    .main{
+        padding:9px;
+    }
+
+    .quick-icon{
+        width:39px;
+        height:39px;
+    }
+
+    .quick-item span{
+        font-size:8px;
+    }
+
+    .product-price{
+        font-size:14px;
+    }
+
+}
+
 </style>
 </head>
 
+
 <body>
+
 
 <div class="app">
 
-<!-- HEADER -->
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header class="header">
 
-  <div class="topbar">
+    <div class="header-top">
 
-    <div class="brand">
-  <img src="logo2.png" alt="Toko Siap Antar">
-</div>
+        <div class="brand">
 
-    <div class="header-icons">
+            <!-- LOGO -->
+            <img
+                src="logo2.png"
+                alt="Toko Siap Antar">
 
-      <button class="icon-btn"
-        onclick="showMessage('Notifikasi')">
-        🔔
-      </button>
+        </div>
 
-      <button class="icon-btn"
-        onclick="showMessage('Keranjang')">
-        🛒
-      </button>
+
+        <div class="header-actions">
+
+            <button
+                class="header-button"
+                onclick="showToast('Belum ada notifikasi')">
+
+                🔔
+
+            </button>
+
+
+            <button
+                class="header-button"
+                onclick="showToast('Keranjang masih kosong')">
+
+                🛒
+
+            </button>
+
+        </div>
 
     </div>
 
-  </div>
 
-  <div class="search">
+    <div class="search-box">
 
-    <span>⌕</span>
+        <span class="search-icon">⌕</span>
 
-    <input
-      id="searchInput"
-      type="text"
-      placeholder="Cari LCD, baterai, sparepart..."
-      oninput="searchProduct()"
-    >
+        <input
+            id="searchInput"
+            type="search"
+            placeholder="Cari LCD, baterai, sparepart..."
+            oninput="searchProducts()">
 
-  </div>
+    </div>
 
 </header>
 
 
-<main class="content">
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-<!-- SALDO -->
+<main class="main">
 
-<section class="wallet">
 
-  <div class="wallet-head">
+    <!-- HERO -->
 
-    <div>
+    <section class="hero">
 
-      <div class="wallet-title">
-        SALDO BELANJA
-      </div>
+        <img
+            src="logo2.png"
+            alt="Toko Siap Antar">
 
-      <div
-        class="wallet-balance"
-        id="balance">
-        Rp0
-      </div>
+    </section>
 
-    </div>
 
-    <button
-      class="eye"
-      onclick="toggleBalance()">
-      👁
-    </button>
+    <!-- SALDO -->
 
-  </div>
+    <section class="wallet">
 
+        <div class="wallet-row">
 
-  <div class="wallet-bottom">
+            <div>
 
-    <button
-      class="wallet-btn topup"
-      onclick="topup()">
-      + Top Up
-    </button>
+                <div class="wallet-label">
+                    SALDO BELANJA
+                </div>
 
-    <button
-      class="wallet-btn history"
-      onclick="historyPage()">
-      Riwayat
-    </button>
+                <div
+                    class="wallet-value"
+                    id="balance">
 
-  </div>
+                    Rp0
 
-</section>
+                </div>
 
+            </div>
 
-<!-- QUICK MENU -->
 
-<section class="quick">
+            <button
+                class="eye"
+                onclick="toggleBalance()">
 
-  <button
-    class="quick-item"
-    onclick="openMenu('Pulsa')">
+                👁
 
-    <div class="quick-icon">📱</div>
-    <small>Pulsa</small>
-
-  </button>
-
-
-  <button
-    class="quick-item"
-    onclick="openMenu('Kuota')">
-
-    <div class="quick-icon">📶</div>
-    <small>Kuota</small>
-
-  </button>
-
-
-  <button
-    class="quick-item"
-    onclick="openMenu('LCD')">
-
-    <div class="quick-icon">📲</div>
-    <small>LCD</small>
-
-  </button>
-
-
-  <button
-    class="quick-item"
-    onclick="openMenu('Baterai')">
-
-    <div class="quick-icon">🔋</div>
-    <small>Baterai</small>
-
-  </button>
-
-
-  <button
-    class="quick-item"
-    onclick="openMenu('Sparepart')">
-
-    <div class="quick-icon">🧰</div>
-    <small>Sparepart</small>
-
-  </button>
-
-</section>
-
-
-<!-- BANNER -->
-
-<section class="banner">
-
-  <h2>
-    Belanja kebutuhan
-    teknisi lebih mudah.
-  </h2>
-
-  <p>
-    LCD • Baterai • Sparepart • Aksesoris
-  </p>
-
-  <button onclick="scrollProduct()">
-    BELANJA SEKARANG
-  </button>
-
-</section>
-
-
-<!-- PRODUK -->
-
-<section class="section" id="produk">
-
-  <div class="section-head">
-
-    <h2>Produk Terlaris</h2>
-
-    <button onclick="showMessage('Semua produk')">
-      Lihat semua →
-    </button>
-
-  </div>
-
-
-  <div class="products" id="productList">
-
-    <!-- PRODUCT -->
-
-    <article class="product">
-
-      <div class="product-img">
-
-        <span class="stock">
-          READY
-        </span>
-
-        <div class="product-placeholder">
-          📱
-        </div>
-
-      </div>
-
-      <div class="product-info">
-
-        <div class="product-name">
-          LCD VIVO Y12
-        </div>
-
-        <div class="price">
-          Rp125.000
-        </div>
-
-        <div class="product-footer">
-
-          <span class="product-stock">
-            Stok tersedia
-          </span>
-
-          <button
-            class="add"
-            onclick="addCart('LCD VIVO Y12')">
-            +
-          </button>
+            </button>
 
         </div>
 
-      </div>
 
-    </article>
+        <div class="wallet-actions">
+
+            <button
+                class="wallet-action wallet-topup"
+                onclick="topUp()">
+
+                + Top Up
+
+            </button>
 
 
-    <article class="product">
+            <button
+                class="wallet-action wallet-history"
+                onclick="historyPage()">
 
-      <div class="product-img">
+                Riwayat
 
-        <span class="stock">
-          READY
-        </span>
-
-        <div class="product-placeholder">
-          📱
-        </div>
-
-      </div>
-
-      <div class="product-info">
-
-        <div class="product-name">
-          LCD OPPO A57
-        </div>
-
-        <div class="price">
-          Rp135.000
-        </div>
-
-        <div class="product-footer">
-
-          <span class="product-stock">
-            Stok tersedia
-          </span>
-
-          <button
-            class="add"
-            onclick="addCart('LCD OPPO A57')">
-            +
-          </button>
+            </button>
 
         </div>
 
-      </div>
-
-    </article>
+    </section>
 
 
-    <article class="product">
+    <!-- QUICK MENU -->
 
-      <div class="product-img">
+    <section class="quick-menu">
 
-        <span class="stock">
-          READY
-        </span>
+        <button
+            class="quick-item"
+            onclick="menu('Pulsa')">
 
-        <div class="product-placeholder">
-          📱
+            <div class="quick-icon">
+                📱
+            </div>
+
+            <span>Pulsa</span>
+
+        </button>
+
+
+        <button
+            class="quick-item"
+            onclick="menu('Kuota')">
+
+            <div class="quick-icon">
+                📶
+            </div>
+
+            <span>Kuota</span>
+
+        </button>
+
+
+        <button
+            class="quick-item"
+            onclick="menu('LCD')">
+
+            <div class="quick-icon">
+                📲
+            </div>
+
+            <span>LCD</span>
+
+        </button>
+
+
+        <button
+            class="quick-item"
+            onclick="menu('Baterai')">
+
+            <div class="quick-icon">
+                🔋
+            </div>
+
+            <span>Baterai</span>
+
+        </button>
+
+
+        <button
+            class="quick-item"
+            onclick="menu('Sparepart')">
+
+            <div class="quick-icon">
+                🧰
+            </div>
+
+            <span>Sparepart</span>
+
+        </button>
+
+    </section>
+
+
+    <!-- PROMO -->
+
+    <section class="promo">
+
+        <div class="promo-title">
+            Belanja kebutuhan
+            teknisi lebih mudah.
         </div>
 
-      </div>
-
-      <div class="product-info">
-
-        <div class="product-name">
-          LCD REDMI 10A
+        <div class="promo-text">
+            LCD • Baterai • Sparepart • Aksesoris
         </div>
 
-        <div class="price">
-          Rp115.000
-        </div>
+        <button
+            class="promo-button"
+            onclick="scrollToProducts()">
 
-        <div class="product-footer">
+            BELANJA SEKARANG
 
-          <span class="product-stock">
-            Stok tersedia
-          </span>
+        </button>
 
-          <button
-            class="add"
-            onclick="addCart('LCD REDMI 10A')">
-            +
-          </button>
-
-        </div>
-
-      </div>
-
-    </article>
+    </section>
 
 
-    <article class="product">
+    <!-- PRODUK -->
 
-      <div class="product-img">
+    <section
+        class="section"
+        id="productsSection">
 
-        <span class="stock">
-          READY
-        </span>
+        <div class="section-header">
 
-        <div class="product-placeholder">
-          📱
-        </div>
+            <div class="section-title">
+                Produk Terlaris
+            </div>
 
-      </div>
+            <button
+                class="section-link"
+                onclick="showToast('Halaman semua produk')">
 
-      <div class="product-info">
+                Lihat semua →
 
-        <div class="product-name">
-          LCD REALME C30
-        </div>
-
-        <div class="price">
-          Rp110.000
-        </div>
-
-        <div class="product-footer">
-
-          <span class="product-stock">
-            Stok tersedia
-          </span>
-
-          <button
-            class="add"
-            onclick="addCart('LCD REALME C30')">
-            +
-          </button>
-
-        </div>
-
-      </div>
-
-    </article>
-
-
-    <article class="product">
-
-      <div class="product-img">
-
-        <span class="stock">
-          READY
-        </span>
-
-        <div class="product-placeholder">
-          📱
-        </div>
-
-      </div>
-
-      <div class="product-info">
-
-        <div class="product-name">
-          LCD SAMSUNG A05S
-        </div>
-
-        <div class="price">
-          Rp145.000
-        </div>
-
-        <div class="product-footer">
-
-          <span class="product-stock">
-            Stok tersedia
-          </span>
-
-          <button
-            class="add"
-            onclick="addCart('LCD SAMSUNG A05S')">
-            +
-          </button>
+            </button>
 
         </div>
 
-      </div>
 
-    </article>
+        <div
+            class="products"
+            id="productList">
 
 
-    <article class="product">
+            <!-- PRODUCT 1 -->
 
-      <div class="product-img">
+            <article
+                class="product"
+                data-name="LCD VIVO Y12">
 
-        <span class="stock">
-          READY
-        </span>
+                <div class="product-image">
 
-        <div class="product-placeholder">
-          🔋
+                    <span class="product-status">
+                        READY
+                    </span>
+
+                    <div class="product-placeholder">
+                        📱
+                    </div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-name">
+                        LCD VIVO Y12
+                    </div>
+
+                    <div class="product-price">
+                        Rp125.000
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="product-stock">
+                            Stok tersedia
+                        </span>
+
+                        <button
+                            class="add-cart"
+                            onclick="addCart('LCD VIVO Y12')">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 2 -->
+
+            <article
+                class="product"
+                data-name="LCD OPPO A57">
+
+                <div class="product-image">
+
+                    <span class="product-status">
+                        READY
+                    </span>
+
+                    <div class="product-placeholder">
+                        📱
+                    </div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-name">
+                        LCD OPPO A57
+                    </div>
+
+                    <div class="product-price">
+                        Rp135.000
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="product-stock">
+                            Stok tersedia
+                        </span>
+
+                        <button
+                            class="add-cart"
+                            onclick="addCart('LCD OPPO A57')">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 3 -->
+
+            <article
+                class="product"
+                data-name="LCD REDMI 10A">
+
+                <div class="product-image">
+
+                    <span class="product-status">
+                        READY
+                    </span>
+
+                    <div class="product-placeholder">
+                        📱
+                    </div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-name">
+                        LCD REDMI 10A
+                    </div>
+
+                    <div class="product-price">
+                        Rp115.000
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="product-stock">
+                            Stok tersedia
+                        </span>
+
+                        <button
+                            class="add-cart"
+                            onclick="addCart('LCD REDMI 10A')">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 4 -->
+
+            <article
+                class="product"
+                data-name="LCD REALME C30">
+
+                <div class="product-image">
+
+                    <span class="product-status">
+                        READY
+                    </span>
+
+                    <div class="product-placeholder">
+                        📱
+                    </div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-name">
+                        LCD REALME C30
+                    </div>
+
+                    <div class="product-price">
+                        Rp110.000
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="product-stock">
+                            Stok tersedia
+                        </span>
+
+                        <button
+                            class="add-cart"
+                            onclick="addCart('LCD REALME C30')">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 5 -->
+
+            <article
+                class="product"
+                data-name="LCD SAMSUNG A05S">
+
+                <div class="product-image">
+
+                    <span class="product-status">
+                        READY
+                    </span>
+
+                    <div class="product-placeholder">
+                        📱
+                    </div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-name">
+                        LCD SAMSUNG A05S
+                    </div>
+
+                    <div class="product-price">
+                        Rp145.000
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="product-stock">
+                            Stok tersedia
+                        </span>
+
+                        <button
+                            class="add-cart"
+                            onclick="addCart('LCD SAMSUNG A05S')">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 6 -->
+
+            <article
+                class="product"
+                data-name="Baterai VIVO Y12">
+
+                <div class="product-image">
+
+                    <span class="product-status">
+                        READY
+                    </span>
+
+                    <div class="product-placeholder">
+                        🔋
+                    </div>
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-name">
+                        BATERAI VIVO Y12
+                    </div>
+
+                    <div class="product-price">
+                        Rp65.000
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="product-stock">
+                            Stok tersedia
+                        </span>
+
+                        <button
+                            class="add-cart"
+                            onclick="addCart('Baterai VIVO Y12')">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
         </div>
 
-      </div>
-
-      <div class="product-info">
-
-        <div class="product-name">
-          BATERAI VIVO Y12
-        </div>
-
-        <div class="price">
-          Rp65.000
-        </div>
-
-        <div class="product-footer">
-
-          <span class="product-stock">
-            Stok tersedia
-          </span>
-
-          <button
-            class="add"
-            onclick="addCart('Baterai VIVO Y12')">
-            +
-          </button>
-
-        </div>
-
-      </div>
-
-    </article>
-
-  </div>
-
-</section>
+    </section>
 
 </main>
 
 
-<!-- BOTTOM NAV -->
+<!-- =====================================================
+     BOTTOM NAV
+===================================================== -->
 
-<nav class="bottom">
+<nav class="bottom-nav">
 
-  <div class="bottom-inner">
-
-    <button
-      class="nav active"
-      onclick="home()">
-
-      <div>⌂</div>
-      Home
-
-    </button>
+    <div class="bottom-inner">
 
 
-    <button
-      class="nav"
-      onclick="openMenu('Kategori')">
+        <button
+            class="nav-item active"
+            onclick="goHome()">
 
-      <div>▦</div>
-      Kategori
+            <div class="nav-icon">
+                ⌂
+            </div>
 
-    </button>
+            Home
 
-
-    <button
-      class="nav"
-      onclick="historyPage()">
-
-      <div>🧾</div>
-      Pesanan
-
-    </button>
+        </button>
 
 
-    <button
-      class="nav"
-      onclick="topup()">
+        <button
+            class="nav-item"
+            onclick="menu('Kategori')">
 
-      <div>💳</div>
-      Saldo
+            <div class="nav-icon">
+                ▦
+            </div>
 
-    </button>
+            Kategori
+
+        </button>
 
 
-    <button
-      class="nav"
-      onclick="login()">
+        <button
+            class="nav-item"
+            onclick="historyPage()">
 
-      <div>♙</div>
-      Akun
+            <div class="nav-icon">
+                🧾
+            </div>
 
-    </button>
+            Pesanan
 
-  </div>
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="topUp()">
+
+            <div class="nav-icon">
+                💳
+            </div>
+
+            Saldo
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="login()">
+
+            <div class="nav-icon">
+                ♙
+            </div>
+
+            Akun
+
+        </button>
+
+
+    </div>
 
 </nav>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
 
 </div>
 
 
 <script>
 
-let balanceVisible=true;
-let cartCount=0;
+/* =====================================================
+   STATE
+===================================================== */
+
+let balanceVisible = true;
 
 
-/* =========================
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        }, 1800);
+}
+
+
+/* =====================================================
    LOGIN
-========================= */
+===================================================== */
 
 function login(){
 
-  alert(
-    "LOGIN\n\n" +
-    "Halaman login akan kita buat berikutnya."
-  );
+    showToast(
+        "Halaman login akan dibuat berikutnya"
+    );
 
 }
 
 
-/* =========================
-   TOPUP
-========================= */
+/* =====================================================
+   TOP UP
+===================================================== */
 
-function topup(){
+function topUp(){
 
-  alert(
-    "TOP UP SALDO\n\n" +
-    "Minimal top up: Rp10.000\n\n" +
-    "Setelah pembayaran dilakukan, " +
-    "pengajuan akan masuk ke admin untuk approval."
-  );
+    showToast(
+        "Minimal Top Up Rp10.000"
+    );
 
 }
 
 
-/* =========================
-   RIWAYAT
-========================= */
+/* =====================================================
+   HISTORY
+===================================================== */
 
 function historyPage(){
 
-  alert(
-    "RIWAYAT PESANAN\n\n" +
-    "Halaman riwayat akan dibuat setelah sistem login."
-  );
+    showToast(
+        "Riwayat akan tersedia setelah login"
+    );
 
 }
 
 
-/* =========================
+/* =====================================================
    MENU
-========================= */
+===================================================== */
 
-function openMenu(name){
+function menu(name){
 
-  alert(
-    "MENU " + name.toUpperCase() +
-    "\n\nHalaman ini akan kita buat pada tahap berikutnya."
-  );
+    showToast(
+        "Menu " + name
+    );
 
 }
 
 
-/* =========================
+/* =====================================================
    CART
-========================= */
+===================================================== */
 
 function addCart(product){
 
-  cartCount++;
-
-  alert(
-    product +
-    "\n\nDitambahkan ke keranjang."
-  );
+    showToast(
+        product + " masuk keranjang"
+    );
 
 }
 
 
-/* =========================
-   SEARCH
-========================= */
-
-function searchProduct(){
-
-  const keyword =
-    document
-      .getElementById("searchInput")
-      .value
-      .toLowerCase();
-
-  const products =
-    document.querySelectorAll(".product");
-
-  products.forEach(item => {
-
-    const name =
-      item
-        .querySelector(".product-name")
-        .textContent
-        .toLowerCase();
-
-    item.style.display =
-      name.includes(keyword)
-      ? ""
-      : "none";
-
-  });
-
-}
-
-
-/* =========================
+/* =====================================================
    BALANCE
-========================= */
+===================================================== */
 
 function toggleBalance(){
 
-  const balance =
-    document.getElementById("balance");
+    const balance =
+        document.getElementById("balance");
 
-  balanceVisible=!balanceVisible;
+    balanceVisible =
+        !balanceVisible;
 
-  balance.textContent =
-    balanceVisible
-    ? "Rp0"
-    : "••••••••";
+    balance.textContent =
+        balanceVisible
+        ? "Rp0"
+        : "••••••••";
 
 }
 
 
-/* =========================
-   SCROLL
-========================= */
+/* =====================================================
+   SEARCH
+===================================================== */
 
-function scrollProduct(){
+function searchProducts(){
 
-  document
-    .getElementById("produk")
-    .scrollIntoView({
-      behavior:"smooth"
+    const keyword =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const products =
+        document.querySelectorAll(".product");
+
+    products.forEach(product => {
+
+        const name =
+            product
+            .dataset
+            .name
+            .toLowerCase();
+
+        product.style.display =
+            name.includes(keyword)
+            ? ""
+            : "none";
+
     });
 
 }
 
 
-/* =========================
-   HOME
-========================= */
+/* =====================================================
+   SCROLL PRODUCT
+===================================================== */
 
-function home(){
+function scrollToProducts(){
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+    document
+        .getElementById("productsSection")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
 
 }
 
 
-/* =========================
-   MESSAGE
-========================= */
+/* =====================================================
+   HOME
+===================================================== */
 
-function showMessage(title){
+function goHome(){
 
-  alert(title + "\n\nFitur akan dibuat pada tahap berikutnya.");
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
 }
 
